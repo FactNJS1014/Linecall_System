@@ -3,8 +3,9 @@
 @section('content')
     <div class="container mt-3">
         <h3 class="text-center mb-2" id="textheader"><i class="fa-solid fa-file-medical fa-lg mx-4"></i>แบบฟอร์มบันทึกข้อมูล Line-call Production</h3>
-        <form action="" class="needs-validation" id="gen_record" novalidate>
-            @csrf
+        <form action="" method="POST" class="needs-validation" id="gen_record" enctype=
+            "multipart/form-data" novalidate>
+
             <div class="card border-dark active" id="card1" >
                 <div class="card-header">
                     <p class="fs-5 mt-2">ส่วนบันทึกข้อมูลทั่วไป</p>
@@ -151,11 +152,11 @@
                     <div class="row mt-2">
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">NG Position:</label>
-                            <input type="text" name="ng_pst" id="ng_pst" class="form-control" placeholder="กรอก NG Position" required>
+                            <input type="text" name="ng_pst[]" id="ng_pst" class="form-control" placeholder="กรอก NG Position" required>
                         </div>
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">Serial No.:</label>
-                            <input type="text" name="serial" id="serial" class="form-control" placeholder="กรอก Serial" required>
+                            <input type="text" name="serial[]" id="serial" class="form-control" placeholder="กรอก Serial" required>
                         </div>
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">Ref-Document:</label>
@@ -202,7 +203,7 @@
                     </div>
                     <div class="d-flex justify-content-center">
                         <input type="submit" value="บันทึก" class="btn submitbtn mt-3">
-
+                        <input type="hidden" name="token" id="token" value="{{csrf_token()}}">
                     </div>
 
                 </div>
@@ -254,14 +255,32 @@
                             title: 'กรอกข้อมูลด้วยนะ',
                             icon: "warning"
                         })
-                    }else{
+                    }
+                    else{
                         event.preventDefault()
                         event.stopPropagation()
+                        var images = $('#imageInput').prop('files')
+                        var form = new FormData();
+                        for (let i =0; i < images.length ; i++){
+                            console.log(i);
+
+                            form.append("files[]", $('#imageInput').prop('files')[i]);
+                        }
+                        form.append('data', $('#gen_record').serialize())
+                        //var _token = $('#token').val().trim();
+                        var _token = $('meta[name="csrf-token"]').attr('content'); // Get CSRF token from meta tag
+                        form.append("_token", _token);
+                        console.log(Array.from(form.entries()))
+
+
+                        // console.log(images)
                         $.ajax({
                             url: '{{route('recordPrb')}}',
-                            method: 'post',
-                            data: $('#gen_record').serialize(),
-                            dataType: 'json',
+                            type: 'post',
+                            data: form,
+                            contentType : false,
+                            processData: false,
+                            cache: false,
                             beforeSend() {
                                 Swal.fire({
                                     title: "กำลังบันทึกข้อมูล",
@@ -273,27 +292,21 @@
                                     },
                                 });
                             },
-                            success: function(data) {
+                            success: function (data){
                                 console.log(data)
-                                // Swal.close()
-                                // if (data.insert && data.images) {
-                                //     Swal.fire({
-                                //         title: "บันทึกข้อมูลสำเร็จ",
-                                //         icon: "success",
-                                //         showConfirmButton: false,
-                                //         timer: 1000,
-                                //     });
-                                // } else{
-                                //     Swal.fire({
-                                //         title: "ไม่สามารถบันทึกได้",
-                                //         icon: "error",
-                                //         showConfirmButton: false,
-                                //         timer: 6000,
-                                //     });
-                                // }
+                                if (data.insert && dara.image){
+                                    Swal.fire({
+                                        title: "บันทึกข้อมูลสำเร็จ",
+                                        icon: "success",
+                                        showConfirmButton: false,
+                                        timer: 1000,
+                                    })
+                                }
                             }
 
                         })
+
+
 
                     }
 
