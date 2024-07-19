@@ -1,0 +1,334 @@
+*,
+::after,
+::before {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Mali", cursive;
+    margin: 0;
+    background: #dfe6e9;
+    list-style-type: none;
+}
+#textheader{
+    background: #2e363e;
+    padding: 20px;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: 600 ;
+    color: #fff;
+}
+
+
+a {
+    cursor: pointer;
+    text-decoration: none;
+    font-family: "Mali", cursive;
+    font-weight: 700;
+
+}
+
+li {
+    list-style: none;
+}
+
+/* Layout skeleton */
+
+.wrapper {
+    align-items: stretch;
+    display: flex;
+    width: 100%;
+}
+
+#sidebar {
+    max-width: 264px;
+    min-width: 264px;
+    transition: all 0.35s ease-in-out;
+    box-shadow: 0 0 35px 0 rgba(49, 57, 66, 0.5);
+    z-index: 1111;
+    background: #2e363e;
+
+
+}
+
+/* Sidebar collapse */
+
+#sidebar.collapsed {
+    margin-left: -264px;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    transition: all 0.35s ease-in-out;
+
+}
+
+
+
+hr{
+    color: #fff;
+
+}
+
+
+/*.sidebar-logo {*/
+/*    padding: 1.15rem 1.5rem;*/
+/*}*/
+
+.sidebar-logo a {
+    color: #edede9;
+    font-size: 1.35rem;
+    font-weight: 800;
+    font-family: "Mali", cursive;
+}
+
+.sidebar-nav {
+    padding: 0;
+}
+
+.sidebar-header {
+    color: #edede9;
+    font-size: 12px;
+    padding: 1.5rem 1.5rem .375rem;
+
+}
+
+a.sidebar-link {
+    padding: 20px;
+    color: #edede9;
+    position: relative;
+    display: block;
+    font-size: 16px;
+
+}
+
+a.sidebar-link:hover{
+    background: #fff;
+    color: #ffb703;
+}
+.sidebar-link.active{
+    background: #fff;
+    color: #4B70F5;
+
+}
+
+.sidebar-link[data-bs-toggle="collapse"]::after {
+    border: solid;
+    border-width: 0 .075rem .075rem 0;
+    content: "";
+    display: inline-block;
+    padding: 2px;
+    position: absolute;
+    right: 1.5rem;
+    top: 1.4rem;
+    transform: rotate(-135deg);
+    transition: all .2s ease-out;
+}
+
+.sidebar-link[data-bs-toggle="collapse"].collapsed::after {
+    transform: rotate(45deg);
+    transition: all .2s ease-out;
+}
+
+.content {
+    flex: 1;
+    max-width: 100vw;
+    width: 100vw;
+}
+
+/* Responsive */
+
+@media (min-width:768px) {
+    .content {
+        width: auto;
+    }
+}
+.navbar-toggler-icon{
+    color: #031D44;
+}
+.card{
+    background: #f1cb71;
+
+}
+
+/*.card {*/
+/*    display: none;*/
+/*    background: #a3cef1;*/
+
+/*}*/
+/*.card.active {*/
+/*    display: block;*/
+/*}*/
+
+.card-header{
+    font-weight: 600;
+    background: #2e363e;
+    color: #fff;
+}
+
+.btn.nextbtn{
+    color: #00509d;
+    font-weight: bold;
+}
+.btn.nextbtn:hover{
+    background: #0582ca;
+    color: #fff;
+}
+.btn.backbtn{
+    color: #22223b;
+    font-weight: bold;
+}
+.h5 {
+    font-weight: 800;
+    border-radius: 5px;
+    width: auto;
+    padding: 5px;
+}
+.btn.submitbtn{
+    color: #d8f3dc;
+    background: #081c15;
+    font-weight: 600 ;
+    width: 200px;
+}
+.btn.submitbtn:hover{
+    color: #081c15;
+    background: #d8f3dc;
+}
+
+select,option{
+    font-weight: 600 ;
+}
+
+.form-select{
+    font-size: 20px;
+    font-weight: 600 ;
+}
+
+input[type=text],input[type=number]{
+    font-size: 20px;
+    font-weight: 600 ;
+
+
+}
+
+table thead th{
+    font-size: 22px;
+    font-weight: 600 ;
+    padding: 5px;
+    background: #22577a;
+    color: #fff;
+}
+
+.text-header{
+    font-size: 22px;
+    font-weight: 600 ;
+}
+
+#imagePreview {
+    display: none;
+    max-width: 200px;
+    max-height: 200px;
+    cursor: pointer; /* Indicate that the image is clickable */
+    transition: transform 0.25s ease, top 0.25s ease, left 0.25s ease; /* Smooth zoom transition */
+    position: relative; /* Needed for absolute positioning when zoomed */
+    margin-top: 10px;
+}
+
+#imagePreview.zoomed {
+    transform: scale(2); /* Scale up the image */
+    top: 50%;
+    left: 60%;
+    transform: translate(-50%, -50%) scale(2); /* Center the image and zoom */
+    position: fixed; /* Overlay on the entire screen */
+    z-index: 1000; /* Ensure it is on top */
+}
+.image-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#section_master , #lv1_app , #emp_last{
+    width: 150%;
+}
+
+#form-content{
+    margin-left: 30%;
+}
+
+.btn.savebtn{
+    background: #2e363e;
+    color: #fff;
+    font-weight: 700;
+    width: 200px;
+}
+
+.btn.savebtn:hover{
+    background: #eda836;
+    color: #000;
+}
+
+.input-check{
+    padding: 10px;
+}
+
+.form-check{
+    font-weight: 600;
+}
+
+/* Ensure the search input fields are always visible */
+#test thead input {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 8px;
+}
+
+/* Align the input fields with the table headers */
+#test thead tr:nth-child(2) th {
+    padding: 8px;
+}
+
+/* Adjust the DataTable header to accommodate the input fields */
+.dataTables_scrollHeadInner {
+    display: block;
+}
+
+/* Fixed the cloned header row so it's always visible */
+#test thead tr:nth-child(2) {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 1;
+}
+
+.btn.masterbtn{
+    background: #2e363e;
+    color: #fff;
+}
+.btn.masterbtn:hover{
+    background: #0582ca;
+    color: #fff;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
