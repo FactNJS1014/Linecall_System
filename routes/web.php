@@ -41,4 +41,5 @@ Route::get('/reports' , function (){
 
 //บันทึกข้อมูล Leak and Root 5 Why
 Route::post('/LeakRecord' , [LeakController::class , 'recordLeak'])->name('recordLeak');
-Route::post('/ProblemRecord' , [ProblemController::class , 'recordPrb'])->name('recordPrb');
+
+Route::post('/record/data', [ProblemController::class , 'recordData'])->name('recordData');

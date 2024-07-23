@@ -3,9 +3,9 @@
 @section('content')
     <div class="container mt-3">
         <h3 class="text-center mb-2" id="textheader"><i class="fa-solid fa-file-medical fa-lg mx-4"></i>แบบฟอร์มบันทึกข้อมูล Line-call Production</h3>
-        <form method="post" class="needs-validation" id="gen_record" enctype=
+        <form action="" method="post" class="needs-validation" id="gen_record" enctype=
             "multipart/form-data" novalidate>
-
+            @csrf
             <div class="card border-dark active" id="card1" >
                 <div class="card-header">
                     <p class="fs-5 mt-2">ส่วนบันทึกข้อมูลทั่วไป</p>
@@ -134,13 +134,13 @@
                             <label class="h5" style="color: #003f88;">Rank:</label>
                             <div class="d-flex">
                                 <div class="form-check">
-                                    <input class="form-check-input input-check" type="radio" name="type" id="type1" value="A">
+                                    <input class="form-check-input input-check" type="radio" name="type" id="type1">
                                     <label class="form-check-label fs-5 ms-1" for="flexRadioDefault1" style="color: #003f88;">
                                         A
                                     </label>
                                 </div>
                                 <div class="form-check ms-5">
-                                    <input class="form-check-input input-check" type="radio" name="type" id="type2" value="B">
+                                    <input class="form-check-input input-check" type="radio" name="type" id="type2">
                                     <label class="form-check-label fs-5 ms-1" for="flexRadioDefault2" style="color: #003f88;">
                                         B
                                     </label>
@@ -202,8 +202,7 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-center">
-
-                        <input type="submit" class="btn submitbtn mt-3" value="บันทึก">
+                        <button class="btn submitbtn mt-3" onclick="RecordData()">บันทึก</button>
                         <input type="hidden" name="token" id="token" value="{{csrf_token()}}">
                     </div>
 
@@ -238,77 +237,7 @@
                 $('#' + prevCard).addClass('active');
             });
 
-            'use strict'
 
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            const forms = document.querySelectorAll('.needs-validation')
-
-            // Loop over them and prevent submission
-            Array.from(forms).forEach(form => {
-                form.addEventListener('submit', event => {
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
-                    }else{
-                        event.preventDefault()
-                        console.log('Ready')
-                        var images = $('#images').prop('files');
-                        console.log(images)
-
-                        var formData = new FormData();
-
-                        for (let i = 0; i < images.length; i++) {
-                            console.log(i);
-                            formData.append("files[]", $('#images').prop('files')[i]);
-                        }
-                        formData.append('data', $('#gen_record').serialize());
-                        var _token = $('meta[name="csrf-token"]').attr('content'); // Get CSRF token from meta tag
-                        formData.append("_token", _token);
-
-
-                        $.ajax({
-                            url: '{{ route('recordData') }}',
-                            method: "post",
-                            data: formData,
-                            contentType: false,
-                            processData: false,
-                            cache: false,
-                            beforeSend: function () {
-                                Swal.fire({
-                                    title: "กำลังบันทึกข้อมูล",
-                                    icon: "info",
-                                    showConfirmButton: false,
-                                    willOpen: () => {
-                                        Swal.showLoading();
-                                    },
-                                });
-                            },
-                            success: function (data) {
-                                console.log(data);
-                                if (data.recdata & data.recImage){
-                                    Swal.fire({
-                                        title: 'บันทึกเสร็จสิ้น',
-                                        icon: "success",
-                                        showConfirmButton: false,
-                                        timer: 1000
-                                    })
-                                }else{
-                                    Swal.fire({
-                                        title: 'ไม่สามารถบันทึกได้',
-                                        icon: "error",
-                                        showConfirmButton: false,
-                                        timer: 1000
-                                    })
-                                }
-                            }
-                        });
-
-                    }
-
-
-                    form.classList.add('was-validated')
-                }, false)
-            })
 
 
         });
@@ -408,7 +337,14 @@
         document.getElementById("datenow").value = formattedDate;
 
 
-
+        /**
+         * TODO:23-07-2024
+         * *Check alert form
+         * */
+        function RecordData(e){
+            e.preventDefault()
+            console.log('Ready')
+        }
 
 
 
