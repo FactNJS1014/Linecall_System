@@ -24,9 +24,9 @@ Route::get('/record2', function () {
     return view('Record02');
 })->name('index2');
 
-Route::get('/approve', function () {
-    return view('apr_linecall');
-})->name('approve');
+//Route::get('/approve', function () {
+//    return view('apr_linecall');
+//})->name('approve');
 
 Route::get('/rankmaster', function () {
     return view('RankApp');
@@ -43,3 +43,7 @@ Route::get('/reports' , function (){
 Route::post('/LeakRecord' , [LeakController::class , 'recordLeak'])->name('recordLeak');
 
 Route::post('/record/data', [ProblemController::class , 'recordData'])->name('recordData');
+
+
+//fetch data
+Route::get('/approve' , [ProblemController::class , 'fetchDataProblem'])->name('approve');

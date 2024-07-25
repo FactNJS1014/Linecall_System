@@ -128,19 +128,19 @@
                         </div>
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">Percentage (%):</label>
-                            <input type="number" name="percent" id="percent" class="form-control" placeholder="คิดเป็น %"  required>
+                            <input type="text" name="percent" id="percent" class="form-control" placeholder="คิดเป็น %">
                         </div>
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">Rank:</label>
                             <div class="d-flex">
                                 <div class="form-check">
-                                    <input class="form-check-input input-check" type="radio" name="type" id="type1" value="A">
+                                    <input class="form-check-input input-check" type="radio" name="type" id="type1" value="A" required>
                                     <label class="form-check-label fs-5 ms-1" for="flexRadioDefault1" style="color: #003f88;">
                                         A
                                     </label>
                                 </div>
                                 <div class="form-check ms-5">
-                                    <input class="form-check-input input-check" type="radio" name="type" id="type2" value="B">
+                                    <input class="form-check-input input-check" type="radio" name="type" id="type2" value="B" required>
                                     <label class="form-check-label fs-5 ms-1" for="flexRadioDefault2" style="color: #003f88;">
                                         B
                                     </label>
@@ -285,9 +285,9 @@
                             },
                             success: function (data) {
                                 console.log(data);
-                                if (data.recdata & data.recImage){
+                                if (data.recdata && data.images){
                                     Swal.fire({
-                                        title: 'บันทึกเสร็จสิ้น',
+                                        title: 'บันทึกข้อมูลเสร็จสิ้น',
                                         icon: "success",
                                         showConfirmButton: false,
                                         timer: 1000
