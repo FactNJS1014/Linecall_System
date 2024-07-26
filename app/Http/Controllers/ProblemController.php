@@ -21,6 +21,7 @@ class ProblemController extends Controller
             array_push($value_arr, $value[1]);
         }
 
+
         $YM = date('Ym');
         $LNCL_HREC_ID = '';
         $LNCL_IMAGES_ID = '';
@@ -41,24 +42,25 @@ class ProblemController extends Controller
 
         $recPrb = [
             'LNCL_HREC_ID' => $LNCL_HREC_ID,
-            'LNCL_HREC_EMPID' => $value_arr[1],
-            'LNCL_HREC_LINE' => $value_arr[2],
-            'LNCL_HREC_CUS' => $value_arr[3],
-            'LNCL_HREC_WON' => $value_arr[4],
-            'LNCL_HREC_MDLCD' => $value_arr[5],
-            'LNCL_HREC_MDLNM' => $value_arr[6],
-            'LNCL_HREC_NGCD' => $value_arr[7],
-            'LNCL_HREC_NGPRCS' => $value_arr[8],
-            'LNCL_HREC_QTY' => $value_arr[9],
-            'LNCL_HREC_DEFICT' => $value_arr[10],
-            'LNCL_HREC_PERCENT' => $value_arr[11],
-            'LNCL_HREC_RANKTYPE' => $value_arr[12],
-            'LNCL_HREC_NGPST' => $value_arr[13],
-            'LNCL_HREC_SERIAL' => $value_arr[14],
-            'LNCL_HREC_REFDOC' => $value_arr[15],
-            'LNCL_HREC_PROBLEM' => $value_arr[16],
-            'LNCL_HREC_CAUSE' => $value_arr[17],
-            'LNCL_HREC_ACTION' => $value_arr[18],
+            'LNCL_HREC_SECTION' => $value_arr[1],
+            'LNCL_HREC_EMPID' => $value_arr[2],
+            'LNCL_HREC_LINE' => $value_arr[3],
+            'LNCL_HREC_CUS' => $value_arr[4],
+            'LNCL_HREC_WON' => $value_arr[5],
+            'LNCL_HREC_MDLCD' => $value_arr[6],
+            'LNCL_HREC_MDLNM' => $value_arr[7],
+            'LNCL_HREC_NGCD' => $value_arr[8],
+            'LNCL_HREC_NGPRCS' => $value_arr[9],
+            'LNCL_HREC_QTY' => $value_arr[10],
+            'LNCL_HREC_DEFICT' => $value_arr[11],
+            'LNCL_HREC_PERCENT' => $value_arr[12],
+            'LNCL_HREC_RANKTYPE' => $value_arr[13],
+            'LNCL_HREC_NGPST' => $value_arr[14],
+            'LNCL_HREC_SERIAL' => $value_arr[15],
+            'LNCL_HREC_REFDOC' => $value_arr[16],
+            'LNCL_HREC_PROBLEM' => $value_arr[17],
+            'LNCL_HREC_CAUSE' => $value_arr[18],
+            'LNCL_HREC_ACTION' => $value_arr[19],
             'LNCL_HREC_STD' => 1,
             'LNCL_HREC_DATE' => $value_arr[0],
             'LNCL_HREC_LSTDT' => $currentDate,
@@ -128,19 +130,28 @@ class ProblemController extends Controller
         $images = DB::table('LNCL_IMAGES')
             ->join('LNCL_HREC_TBL', 'LNCL_HREC_TBL.LNCL_HREC_ID', '=', 'LNCL_IMAGES.LNCL_HREC_ID')
             ->select('LNCL_IMAGES.*')
+            ->where('LNCL_IMAGES_TYPE', 'Problem')
             ->get()
             ->groupBy('LNCL_HREC_ID');
 
-        // Fetch documents and group by LNCL_HREC_ID
+        // Fetch documents
         $documents = DB::table('LNCL_HREC_TBL')
-            ->join('LNCL_IMAGES', 'LNCL_IMAGES.LNCL_HREC_ID', '=', 'LNCL_HREC_TBL.LNCL_HREC_ID')
             ->select('LNCL_HREC_TBL.*')
+            ->get();
+        $leakdoc = DB::table('LNCL_LEAKANDROOT_TBL')
+            ->select('LNCL_LEAKANDROOT_TBL.*')
+            ->get();
+        $imagesleak = DB::table('LNCL_IMAGES')
+            ->join('LNCL_HREC_TBL', 'LNCL_HREC_TBL.LNCL_HREC_ID', '=', 'LNCL_IMAGES.LNCL_HREC_ID')
+            ->select('LNCL_IMAGES.*')
+            ->where('LNCL_IMAGES_TYPE', 'Leak')
             ->get()
             ->groupBy('LNCL_HREC_ID');
 
         // Pass grouped data to the view
-        return view('apr_linecall', compact('images', 'documents'));
+        return view('apr_linecall', compact('images', 'documents' ,'leakdoc', 'imagesleak'));
     }
+
 
 
 }

@@ -16,6 +16,15 @@
                             <label class="h5" style="color: #003f88;">วันที่ปัจจุบัน</label>
                             <input type="date" name="datenow" id="datenow" class="form-control fs-5" style="font-weight: 700">
                         </div>
+                        <div class="col-md-4">
+                            <label class="h5" style="color: #003f88;">Section</label>
+                            <select name="section_rec" id="section_rec" class="form-select form-control" required>
+                                <option value="" selected disabled>เลือกแผนก</option>
+                                <option value="MT">MT</option>
+                                <option value="AM">AM</option>
+
+                            </select>
+                        </div>
 
                     </div>
                     <div class="row">
@@ -222,21 +231,7 @@
         $(document).ready(function(){
             $('#li-record').addClass('active')
 
-            $('.next-btn').click(function(e){
-                e.preventDefault();
-                e.stopPropagation();
-                var nextCard = $(this).data('next');
-                $('.card').removeClass('active');
-                $('#' + nextCard).addClass('active');
-            });
 
-            $('.back-btn').click(function(e){
-                e.preventDefault();
-                e.stopPropagation();
-                var prevCard = $(this).data('back');
-                $('.card').removeClass('active');
-                $('#' + prevCard).addClass('active');
-            });
 
             'use strict'
 

@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProblemController;
+use App\Http\Controllers\DataformController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,4 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('images' , [ProblemController::class , 'fetchDataProblem']);
+Route::get('/images' , [ProblemController::class , 'fetchDataProblem']);
+Route::get('/showform01' , [DataformController::class , 'fetchDataRec01'])->name('data_first');

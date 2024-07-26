@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LeakController;
 use App\Http\Controllers\RootController;
 use App\Http\Controllers\ProblemController;
+use App\Http\Controllers\DataformController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,4 +47,6 @@ Route::post('/record/data', [ProblemController::class , 'recordData'])->name('re
 
 
 //fetch data
+Route::get('/showform01' , [DataformController::class , 'fetchDataRec01'])->name('data_first');
 Route::get('/approve' , [ProblemController::class , 'fetchDataProblem'])->name('approve');
+//Route::get('/approve' , [LeakController::class , 'fetchDataLeak'])->name('approve');

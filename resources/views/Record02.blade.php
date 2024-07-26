@@ -2,7 +2,28 @@
 @section('title','Linecall-02')
 @section('content')
     <h3 class="text-center mb-4" id="textheader"><i class="fa-solid fa-file-medical fa-lg mx-4"></i>แบบฟอร์มบันทึกข้อมูลปัญหาและการหลุดรอย</h3>
-    <form action="" id="leak_rec" class="needs-validation" novalidate>
+    <div class="p-2">
+        <table class="table table-bordered" id="data_rec01">
+            <thead class="table-dark">
+                <tr>
+                    <th>Section</th>
+                    <th>Model Code</th>
+                    <th>NG Code</th>
+                    <th>NG Position</th>
+                    <th>Show Form 5 Why </th>
+                </tr>
+            </thead>
+            <tbody style="font-weight: bold; font-size: 22px">
+
+            </tbody>
+        </table>
+
+    </div>
+
+    <p id="text_id" style="font-size: 24px; font-weight: 700; color: #3a5a40; background: #fff;"></p>
+    <form method="post" id="leak_rec" class="needs-validation" enctype=
+        "multipart/form-data" novalidate>
+
         <div class="row mt-3">
             <div class="col-md-4">
                 <label class="h5" style="color: #003f88;">รหัสพนักงาน:</label>
@@ -36,9 +57,9 @@
                     <tr>
                         <td><textarea name="l_why1" id="l_why1"  rows="3" class="form-control" style="font-size: 20px; font-weight: 700;" placeholder="why1" required></textarea></td>
 
-                        <td rowspan="5"><input type="file"name="l_upload"id="l_upload"class="form-control" onchange="previewImage(event)">
+                        <td rowspan="5"><input type="file" name="l_upload[]" id="l_upload" class="form-control" accept="image/*" multiple onchange="previewImages(event)">
                             <div class="d-flex justify-content-center mt-2">
-                                <img src="" id="imagePreview" alt="" width="500px">
+                                <div id="imagePreview1" class="image-container"></div>
 
                             </div></td>
                     </tr>
@@ -79,7 +100,9 @@
 
     </form>
 
-    <form action="" id="Root_rec" class="needs-validation" novalidate>
+    <form method="post" id="Root_rec" class="needs-validation" enctype=
+        "multipart/form-data" novalidate>
+
         <div class="card mt-3">
             <div class="p-2">
                 <table class="table table-bordered mt-2">
@@ -95,9 +118,9 @@
                     <tr>
                         <td><textarea name="r_why1" id="r_why1"  rows="3" class="form-control" style="font-size: 20px; font-weight: 700;" placeholder="why1" required></textarea></td>
 
-                        <td rowspan="5"><input type="file"name="r_upload"id="r_upload"class="form-control" onchange="previewImage(event)">
+                        <td rowspan="5"><input type="file" name="r_upload[]" id="r_upload" class="form-control" accept="image/*" multiple onchange="previewImages2(event)">
                             <div class="d-flex justify-content-center mt-2">
-                                <img src="" id="imagePreview" alt="" width="500px">
+                                <div id="imagePreview2" class="image-container"></div>
 
                             </div></td>
                     </tr>
@@ -141,55 +164,311 @@
             $('#li-record2').addClass('active');
 
             /**
-             * TODO: Validate Form Data Record 3 Card
-             * * 12-07-2024
+             * TODO:26-07-2024
+             * *Show data and click show form record (แสดงข้อมูลในแบบฟอร์มหลัก และคลิกปุ่มเพื่อบันทึกฟอร์มที่ 2)
              * */
-                // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            const forms = document.querySelectorAll('.needs-validation')
+            $('#leak_rec').hide()
+            $('#Root_rec').hide()
 
-            // Loop over them and prevent submission
-            Array.from(forms).forEach(form => {
-                form.addEventListener('submit', event => {
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
-                        Swal.fire({
-                            title: 'กรอกข้อมูลด้วยนะ',
-                            icon: "warning"
-                        })
-                    }else{
-                        event.preventDefault()
-                        event.stopPropagation()
-                        if (form.id === 'prbandesc') {
-                            alert('The form with id "gen_record" is fully filled out and validated!');
+            $.ajax({
+                url: '{{route('data_first')}}',
+                type: 'get',
+                dataType: 'json',
+                success: async function (show) {
+                    //console.log(show)
+                    let html = '';
+                    show.datafirst.map((list) => {
+                        console.log(list)
+                        html += '<tr id="row-' + list.LNCL_HREC_ID + '">'
+                        html += '<td>' + list.LNCL_HREC_SECTION + '</td>'
+                        html += '<td>' + list.LNCL_HREC_MDLCD + '</td>'
+                        html += '<td>' + list.LNCL_HREC_NGCD + '</td>'
+                        html += '<td>' + list.LNCL_HREC_NGPST + '</td>'
+                        html += '<td><button class="btn btnview" onclick=\'btnview("' + list.LNCL_HREC_ID + '","'+ list.LNCL_HREC_SECTION +'")\'><i class="fa-solid fa-eye fa-lg mx-2"></i>View Form</button></td>'
+                        html += '<tr>'
+                    })
+
+                    await $('#data_rec01 tbody').html(html);
+                }
+            })
+            let currentId = null;
+            let currentsec = null;
+            btnview = (id , sec) => {
+                //alert(id)
+
+                currentId = id;
+                currentsec = sec;
+                console.log('Viewing Form ID:', id);
+                console.log('Viewing Form Section:', sec);
+
+                // Show the forms
+                $('#leak_rec').show();
+                $('#Root_rec').show();
+
+                // Reset forms
+                $('#leak_rec').trigger("reset");
+                $('#Root_rec').trigger("reset");
+
+                $('#text_id').text('Section Record: '+ currentsec)
+
+                /**
+                 * TODO: Validate Form Data Record 3 Card
+                 * * 12-07-2024
+                 * */
+                    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                'use strict'
+
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                const forms = document.querySelectorAll('.needs-validation')
+
+                // Loop over them and prevent submission
+                Array.from(forms).forEach(form => {
+                    form.addEventListener('submit', event => {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }else{
+                            event.preventDefault();
+                            event.stopPropagation();
+
+                            const form = event.target;
+                            if (form.id === 'leak_rec') {
+                                if (currentId,currentsec) {
+                                    console.log('Submitting Leak Rec ID:', currentId);
+
+
+                                    var images_l = $('#l_upload').prop('files');
+                                    var formData1 = new FormData();
+
+                                    for (let i = 0; i < images_l.length; i++) {
+                                        formData1.append("filesup01[]", images_l[i]);
+                                    }
+                                    formData1.append('Leakdata', $('#leak_rec').serialize());
+                                    var _token = $('meta[name="csrf-token"]').attr('content'); // Get CSRF token from meta tag
+                                    formData1.append("_token", _token);
+                                    formData1.append("id" , currentId);
+                                    $.ajax({
+                                        url: '{{route('recordLeak')}}',
+                                        type: 'post',
+                                        data: formData1,
+                                        contentType: false,
+                                        processData: false,
+                                        cache: false,
+                                        beforeSend: function () {
+                                            Swal.fire({
+                                                title: "กำลังบันทึกข้อมูล",
+                                                icon: "info",
+                                                showConfirmButton: false,
+                                                willOpen: () => {
+                                                    Swal.showLoading();
+                                                },
+                                            });
+                                        },
+                                        success: function (res) {
+                                            console.log(res)
+                                            if (res.status === 'success') {
+                                                Swal.fire({
+                                                    title: 'บันทึกข้อมูลเสร็จสิ้น',
+                                                    icon: "success",
+                                                    showConfirmButton: false,
+                                                    timer: 1000
+                                                }).then((result) =>{
+                                                    $('#leak_rec').hide();
+                                                })
+                                            } else {
+                                                Swal.fire({
+                                                    title: 'ไม่สามารถบันทึกได้',
+                                                    icon: "error",
+                                                    showConfirmButton: false,
+                                                    timer: 1000
+                                                });
+                                            }
+                                        }
+                                    });
+                                }
+                            } else if (form.id === 'Root_rec') {
+                                if (currentId) {
+                                    console.log('Submitting Root Rec ID:', currentId);
+                                    $('#Root_rec').hide();
+
+                                    {{--var images_r = $('#r_upload').prop('files');--}}
+                                    {{--var formData2 = new FormData();--}}
+
+                                    {{--for (let i = 0; i < images_r.length; i++) {--}}
+                                    {{--    formData2.append("filesup02[]", images_r[i]);--}}
+                                    {{--}--}}
+                                    {{--formData2.append('data2', $('#Root_rec').serialize());--}}
+                                    {{--var _token = $('meta[name="csrf-token"]').attr('content'); // Get CSRF token from meta tag--}}
+                                    {{--formData2.append("_token", _token);--}}
+
+                                    {{--$.ajax({--}}
+                                    {{--    url: '{{route('recordRoot')}}',--}}
+                                    {{--    type: 'post',--}}
+                                    {{--    data: formData2,--}}
+                                    {{--    contentType: false,--}}
+                                    {{--    processData: false,--}}
+                                    {{--    cache: false,--}}
+                                    {{--    beforeSend: function () {--}}
+                                    {{--        Swal.fire({--}}
+                                    {{--            title: "กำลังบันทึกข้อมูล",--}}
+                                    {{--            icon: "info",--}}
+                                    {{--            showConfirmButton: false,--}}
+                                    {{--            willOpen: () => {--}}
+                                    {{--                Swal.showLoading();--}}
+                                    {{--            },--}}
+                                    {{--        });--}}
+                                    {{--    },--}}
+                                    {{--    success: function (res) {--}}
+                                    {{--        if (res.status === 'success') {--}}
+                                    {{--            Swal.fire({--}}
+                                    {{--                title: 'บันทึกข้อมูลเสร็จสิ้น',--}}
+                                    {{--                icon: "success",--}}
+                                    {{--                showConfirmButton: false,--}}
+                                    {{--                timer: 1000--}}
+                                    {{--            });--}}
+                                    {{--        } else {--}}
+                                    {{--            Swal.fire({--}}
+                                    {{--                title: 'ไม่สามารถบันทึกได้',--}}
+                                    {{--                icon: "error",--}}
+                                    {{--                showConfirmButton: false,--}}
+                                    {{--                timer: 1000--}}
+                                    {{--            });--}}
+                                    {{--        }--}}
+                                    {{--    }--}}
+                                    {{--});--}}
+                                }
+                            }
+
                         }
 
-                    }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
 
 
-                    form.classList.add('was-validated')
-                }, false)
-            })
+            }
+
+
 
 
         })
+
         /**
-         * TODO: 12-07-2024
+         * TODO: 25-07-2024
          * * show Preview Image
          *  */
-        function previewImage(event) {
-            var reader = new FileReader();
-            reader.onload = function(){
-                var output = document.getElementById('imagePreview');
-                output.src = reader.result;
-                output.style.display = 'block'; // Show the image preview
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
-        document.getElementById('imagePreview').addEventListener('click', function() {
-            this.classList.toggle('zoomed');
-        });
+        function previewImages(event) {
+            var files = event.target.files;
 
+            if (files.length > 3) {
+                alert('You can only upload a maximum of 3 images');
+                document.getElementById('l_upload').value = ''; // Clear the input
+                return;
+            }
+
+
+            var container = document.getElementById('imagePreview1');
+            container.innerHTML = ''; // Clear previous images
+
+            Array.from(files).forEach(file => {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var img = new Image();
+                    img.src = e.target.result;
+                    img.onload = function () {
+                        var canvas = document.createElement('canvas');
+                        var ctx = canvas.getContext('2d');
+                        var maxWidth = 520; // Set the max width or height for the resized image
+                        var maxHeight = 520;
+                        var width = img.width;
+                        var height = img.height;
+
+                        if (width > height) {
+                            if (width > maxWidth) {
+                                height *= maxWidth / width;
+                                width = maxWidth;
+                            }
+                        } else {
+                            if (height > maxHeight) {
+                                width *= maxHeight / height;
+                                height = maxHeight;
+                            }
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        var resizedImg = new Image();
+                        resizedImg.src = canvas.toDataURL();
+                        resizedImg.classList.add('image-preview');
+                        resizedImg.addEventListener('click', function () {
+                            this.classList.toggle('zoomed');
+                        });
+                        container.appendChild(resizedImg);
+
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function previewImages2(event) {
+            var files = event.target.files;
+
+            if (files.length > 3) {
+                alert('You can only upload a maximum of 3 images');
+                document.getElementById('r_upload').value = ''; // Clear the input
+                return;
+            }
+
+
+            var container2 = document.getElementById('imagePreview2');
+            container2.innerHTML = ''; // Clear previous images
+
+            Array.from(files).forEach(file => {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var img = new Image();
+                    img.src = e.target.result;
+                    img.onload = function () {
+                        var canvas = document.createElement('canvas');
+                        var ctx = canvas.getContext('2d');
+                        var maxWidth = 520; // Set the max width or height for the resized image
+                        var maxHeight = 520;
+                        var width = img.width;
+                        var height = img.height;
+
+                        if (width > height) {
+                            if (width > maxWidth) {
+                                height *= maxWidth / width;
+                                width = maxWidth;
+                            }
+                        } else {
+                            if (height > maxHeight) {
+                                width *= maxHeight / height;
+                                height = maxHeight;
+                            }
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        var resizedImg = new Image();
+                        resizedImg.src = canvas.toDataURL();
+                        resizedImg.classList.add('image-preview');
+                        resizedImg.addEventListener('click', function () {
+                            this.classList.toggle('zoomed');
+                        });
+                        container2.appendChild(resizedImg);
+
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        }
 
 
 
