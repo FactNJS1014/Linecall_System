@@ -1,12 +1,13 @@
 @extends('template.template')
-@section('title','Linecall-01')
+@section('title', 'บันทึกฟอร์ม 1')
 @section('content')
     <div class="container mt-3">
-        <h3 class="text-center mb-2" id="textheader"><i class="fa-solid fa-file-medical fa-lg mx-4"></i>แบบฟอร์มบันทึกข้อมูล Line-call Production</h3>
+        <h3 class="text-center mb-2" id="textheader"><i class="fa-solid fa-file-medical fa-lg mx-4"></i>แบบฟอร์มบันทึกข้อมูล
+            Line-call Production</h3>
         <form method="post" class="needs-validation" id="gen_record" enctype=
             "multipart/form-data" novalidate>
 
-            <div class="card border-dark active" id="card1" >
+            <div class="card border-dark active" id="card1">
                 <div class="card-header">
                     <p class="fs-5 mt-2">ส่วนบันทึกข้อมูลทั่วไป</p>
                 </div>
@@ -14,7 +15,8 @@
                     <div class="row">
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">วันที่ปัจจุบัน</label>
-                            <input type="date" name="datenow" id="datenow" class="form-control fs-5" style="font-weight: 700">
+                            <input type="date" name="datenow" id="datenow" class="form-control fs-5"
+                                style="font-weight: 700">
                         </div>
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">Section</label>
@@ -30,7 +32,8 @@
                     <div class="row">
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">รหัสพนักงาน:</label>
-                            <input type="text" name="empid" id="empid" class="form-control" placeholder="กรอกรหัสพนักงาน" required>
+                            <input type="text" name="empid" id="empid" class="form-control"
+                                placeholder="กรอกรหัสพนักงาน" required>
                         </div>
 
                         <div class="col-md-4">
@@ -96,61 +99,74 @@
                         </div>
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">Customer:</label>
-                            <input type="text" name="customer" id="customer" class="form-control" placeholder="เลือกลูกค้า" required>
+                            <input type="text" name="customer" id="customer" class="form-control"
+                                placeholder="เลือกลูกค้า" required>
                         </div>
 
                     </div>
                     <div class="row mt-2">
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">Work Order:</label>
-                            <input type="text" name="won" id="won" class="form-control" placeholder="กรอก Work-Order" required>
+                            <input type="text" name="won" id="won" class="form-control"
+                                placeholder="กรอก Work-Order" required>
                         </div>
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">Model Code:</label>
-                            <input type="text" name="mdlcd" id="mdlcd" class="form-control" placeholder="กรอก Model Code" required>
+                            <input type="text" name="mdlcd" id="mdlcd" class="form-control"
+                                placeholder="กรอก Model Code" required>
                         </div>
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">Model Name:</label>
-                            <input type="text" name="mdlnm" id="mdlnm" class="form-control" placeholder="Model Name" required>
+                            <input type="text" name="mdlnm" id="mdlnm" class="form-control"
+                                placeholder="Model Name" required>
                         </div>
 
                     </div>
                     <div class="row mt-2">
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">NG Code:</label>
-                            <input type="text" name="ng_code" id="ng_code" class="form-control" placeholder="กรอก NG Code" required>
+                            <input type="text" name="ng_code" id="ng_code" class="form-control"
+                                placeholder="กรอก NG Code" required>
                         </div>
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">NG Process:</label>
-                            <input type="text" name="ng_prc" id="ng_prc" class="form-control" placeholder="กรอก NG Process" required>
+                            <input type="text" name="ng_prc" id="ng_prc" class="form-control"
+                                placeholder="กรอก NG Process" required>
                         </div>
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">Qty (จำนวนงานที่ผลิตทั้งหมด):</label>
-                            <input type="number" name="qty" id="qty" class="form-control" placeholder="กรอก QTY" oninput="calculate()" required>
+                            <input type="number" name="qty" id="qty" class="form-control"
+                                placeholder="กรอก QTY" oninput="calculate()" required>
                         </div>
                     </div>
                     <div class="row mt-2">
 
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">Defict (จำนวนงานเสีย):</label>
-                            <input type="number" name="defict" id="defict" class="form-control" placeholder="กรอก Defict" oninput="calculate()" required>
+                            <input type="number" name="defict" id="defict" class="form-control"
+                                placeholder="กรอก Defict" oninput="calculate()" required>
                         </div>
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">Percentage (%):</label>
-                            <input type="text" name="percent" id="percent" class="form-control" placeholder="คิดเป็น %">
+                            <input type="text" name="percent" id="percent" class="form-control"
+                                placeholder="คิดเป็น %">
                         </div>
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">Rank:</label>
                             <div class="d-flex">
                                 <div class="form-check">
-                                    <input class="form-check-input input-check" type="radio" name="type" id="type1" value="A" required>
-                                    <label class="form-check-label fs-5 ms-1" for="flexRadioDefault1" style="color: #003f88;">
+                                    <input class="form-check-input input-check" type="radio" name="type"
+                                        id="type1" value="A" required>
+                                    <label class="form-check-label fs-5 ms-1" for="flexRadioDefault1"
+                                        style="color: #003f88;">
                                         A
                                     </label>
                                 </div>
                                 <div class="form-check ms-5">
-                                    <input class="form-check-input input-check" type="radio" name="type" id="type2" value="B" required>
-                                    <label class="form-check-label fs-5 ms-1" for="flexRadioDefault2" style="color: #003f88;">
+                                    <input class="form-check-input input-check" type="radio" name="type"
+                                        id="type2" value="B" required>
+                                    <label class="form-check-label fs-5 ms-1" for="flexRadioDefault2"
+                                        style="color: #003f88;">
                                         B
                                     </label>
                                 </div>
@@ -161,15 +177,18 @@
                     <div class="row mt-2">
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">NG Position:</label>
-                            <input type="text" name="ng_pst[]" id="ng_pst" class="form-control" placeholder="กรอก NG Position" required>
+                            <input type="text" name="ng_pst[]" id="ng_pst" class="form-control"
+                                placeholder="กรอก NG Position" required>
                         </div>
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">Serial No.:</label>
-                            <input type="text" name="serial[]" id="serial" class="form-control" placeholder="กรอก Serial" required>
+                            <input type="text" name="serial[]" id="serial" class="form-control"
+                                placeholder="กรอก Serial" required>
                         </div>
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">Ref-Document:</label>
-                            <input type="number" name="doc" id="doc" class="form-control" placeholder="กรอกเลขเอกสาร" required>
+                            <input type="number" name="doc" id="doc" class="form-control"
+                                placeholder="กรอกเลขเอกสาร" required>
                         </div>
 
                     </div>
@@ -177,23 +196,26 @@
                         <div class="p-2">
                             <table class="table table-bordered">
                                 <thead>
-                                <tr>
-                                    <th width="50%" style="background: #273642; color: #ffffff;">Problem</th>
-                                    <th style="background: #273642; color: #ffffff;">Upload Image</th>
-                                </tr>
+                                    <tr>
+                                        <th width="50%" style="background: #273642; color: #ffffff;">Problem</th>
+                                        <th style="background: #273642; color: #ffffff;">Upload Image</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>
-                                        <textarea name="problem" id="problem" rows="5" class="form-control" style="font-size: 20px; font-weight: 700;" placeholder="ระบุปัญหา" required></textarea></td>
-                                    <td>
-                                        <input type="file" name="images[]" id="images" accept="image/*" multiple onchange="previewImages(event)">
-                                        <div class="d-flex justify-content-center mt-2">
-                                            <div id="imageContainer" class="image-container"></div>
+                                    <tr>
+                                        <td>
+                                            <textarea name="problem" id="problem" rows="5" class="form-control"
+                                                style="font-size: 20px; font-weight: 700;" placeholder="ระบุปัญหา" required></textarea>
+                                        </td>
+                                        <td>
+                                            <input type="file" name="images[]" id="images" accept="image/*"
+                                                multiple onchange="previewImages(event)">
+                                            <div class="d-flex justify-content-center mt-2">
+                                                <div id="imageContainer" class="image-container"></div>
 
-                                        </div>
-                                    </td>
-                                </tr>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -203,17 +225,19 @@
                     <div class="row mt-2">
                         <div class="col-md-6">
                             <label class="h5" style="color: #003f88;">Cause:</label>
-                            <textarea name="cause" id="cause" rows="5" class="form-control" style="font-size: 20px; font-weight: 700;" placeholder="ระบุสาเหตุ" required></textarea>
+                            <textarea name="cause" id="cause" rows="5" class="form-control"
+                                style="font-size: 20px; font-weight: 700;" placeholder="ระบุสาเหตุ" required></textarea>
                         </div>
                         <div class="col-md-6">
                             <label class="h5" style="color: #003f88;">Temporary action:</label>
-                            <textarea name="action" id="action" rows="5" class="form-control" style="font-size: 20px; font-weight: 700;" placeholder="ระบุ action" required></textarea>
+                            <textarea name="action" id="action" rows="5" class="form-control"
+                                style="font-size: 20px; font-weight: 700;" placeholder="ระบุ action" required></textarea>
                         </div>
                     </div>
                     <div class="d-flex justify-content-center">
 
                         <input type="submit" class="btn submitbtn mt-3" value="บันทึก">
-                        <input type="hidden" name="token" id="token" value="{{csrf_token()}}">
+                        <input type="hidden" name="token" id="token" value="{{ csrf_token() }}">
                     </div>
 
                 </div>
@@ -227,8 +251,7 @@
 
 @push('script_content')
     <script !src="">
-
-        $(document).ready(function(){
+        $(document).ready(function() {
             $('#li-record').addClass('active')
 
 
@@ -244,7 +267,7 @@
                     if (!form.checkValidity()) {
                         event.preventDefault()
                         event.stopPropagation()
-                    }else{
+                    } else {
                         event.preventDefault()
                         console.log('Ready')
                         var images = $('#images').prop('files');
@@ -257,7 +280,8 @@
                             formData.append("files[]", $('#images').prop('files')[i]);
                         }
                         formData.append('data', $('#gen_record').serialize());
-                        var _token = $('meta[name="csrf-token"]').attr('content'); // Get CSRF token from meta tag
+                        var _token = $('meta[name="csrf-token"]').attr(
+                        'content'); // Get CSRF token from meta tag
                         formData.append("_token", _token);
 
 
@@ -268,7 +292,7 @@
                             contentType: false,
                             processData: false,
                             cache: false,
-                            beforeSend: function () {
+                            beforeSend: function() {
                                 Swal.fire({
                                     title: "กำลังบันทึกข้อมูล",
                                     icon: "info",
@@ -278,16 +302,16 @@
                                     },
                                 });
                             },
-                            success: function (data) {
+                            success: function(data) {
                                 console.log(data);
-                                if (data.recdata && data.images){
+                                if (data.recdata && data.images) {
                                     Swal.fire({
                                         title: 'บันทึกข้อมูลเสร็จสิ้น',
                                         icon: "success",
                                         showConfirmButton: false,
                                         timer: 1000
                                     })
-                                }else{
+                                } else {
                                     Swal.fire({
                                         title: 'ไม่สามารถบันทึกได้',
                                         icon: "error",
@@ -371,13 +395,13 @@
          * * calculate percentage
          * */
 
-        function calculate(){
+        function calculate() {
             var input1 = document.getElementById('qty').value;
             var input2 = document.getElementById('defict').value;
-            var percent = (input2/input1)*100;
-            if (!isNaN(percent)){
+            var percent = (input2 / input1) * 100;
+            if (!isNaN(percent)) {
                 document.getElementById('percent').value = percent.toFixed(2);
-            }else{
+            } else {
                 document.getElementById('percent').value = "";
 
             }
@@ -401,11 +425,5 @@
             (day < 10 ? "0" + day : day);
 
         document.getElementById("datenow").value = formattedDate;
-
-
-
-
-
-
     </script>
 @endpush

@@ -148,8 +148,19 @@ class ProblemController extends Controller
             ->get()
             ->groupBy('LNCL_HREC_ID');
 
+        $imagesroot = DB::table('LNCL_IMAGES')
+            ->join('LNCL_HREC_TBL', 'LNCL_HREC_TBL.LNCL_HREC_ID', '=', 'LNCL_IMAGES.LNCL_HREC_ID')
+            ->select('LNCL_IMAGES.*')
+            ->where('LNCL_IMAGES_TYPE', 'Root')
+            ->get()
+            ->groupBy('LNCL_HREC_ID');
+
         // Pass grouped data to the view
-        return view('apr_linecall', compact('images', 'documents' ,'leakdoc', 'imagesleak'));
+        return view('apr_linecall', compact('images',
+            'documents' ,
+            'leakdoc',
+            'imagesleak',
+            'imagesroot'));
     }
 
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\RootController;
 use App\Http\Controllers\ProblemController;
 use App\Http\Controllers\DataformController;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -42,11 +43,13 @@ Route::get('/reports' , function (){
 
 //บันทึกข้อมูล Leak and Root 5 Why
 Route::post('/LeakRecord' , [LeakController::class , 'recordLeak'])->name('recordLeak');
-
 Route::post('/record/data', [ProblemController::class , 'recordData'])->name('recordData');
+Route::post('/Root/data', [RootController::class , 'recordRoot'])->name('recordRoot');
 
 
 //fetch data
 Route::get('/showform01' , [DataformController::class , 'fetchDataRec01'])->name('data_first');
 Route::get('/approve' , [ProblemController::class , 'fetchDataProblem'])->name('approve');
+Route::get('/showform02' , [DataformController::class , 'fetchDataRec02'])->name('data_second');
+Route::get('/showdata/record' , [DataformController::class , 'fetchDataRecord'])->name('data_record');
 //Route::get('/approve' , [LeakController::class , 'fetchDataLeak'])->name('approve');

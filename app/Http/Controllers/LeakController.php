@@ -42,6 +42,7 @@ class LeakController extends Controller
             'LNCL_LEAK_WHY5' => $formdata['l_why5'],
             'LNCL_LEAK_ACTION' => $formdata['action_l'],
             'LNCL_LEAK_LSTDT' => $currentDate,
+            'LNCL_LEAKREC_STD' => 1,
         ];
 
         // Insert into LNCL_LEAKANDROOT_TBL

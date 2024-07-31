@@ -376,7 +376,14 @@ table thead th{
     background: #fff;
     color: #014f86;
 }
-
+#textheader2{
+    background: #006d77;
+    padding: 20px;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: 600 ;
+    color: #fff;
+}
 
 
 
