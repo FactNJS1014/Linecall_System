@@ -20,7 +20,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/images' , [ProblemController::class , 'fetchDataProblem']);
-Route::get('/showform01' , [DataformController::class , 'fetchDataRec01'])->name('data_first');
-Route::get('/showform02' , [DataformController::class , 'fetchDataRec02'])->name('data_second');
-Route::get('/showdata/record' , [DataformController::class , 'fetchDataRecord'])->name('data_record');
+Route::get('/images', [ProblemController::class, 'fetchDataProblem']);
+Route::get('/showform01', [DataformController::class, 'fetchDataRec01'])->name('data_first');
+Route::get('/showform02', [DataformController::class, 'fetchDataRec02'])->name('data_second');
+Route::get('/showdata/record', [DataformController::class, 'fetchDataRecord'])->name('data_record');
+Route::get('/showdata/getedit1', [DataformController::class, 'getDataEditForm1'])->name('get_editform1');

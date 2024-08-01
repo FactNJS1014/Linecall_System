@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 class RootController extends Controller
 {
     public function recordRoot(Request $request)
@@ -33,12 +35,11 @@ class RootController extends Controller
         $imagesType = 'Root';
         $files = $request->file('filesup02');
 
-        if($request->hasFile('filesup02'))
-        {
+        if ($request->hasFile('filesup02')) {
 
             foreach ($files as $file) {
                 $extension = $file->getClientOriginalExtension();
-                $fileName = 'IMG-'.$YM.'-'.rand(000,999).'.'.$extension;
+                $fileName = 'IMG-' . $YM . '-' . rand(000, 999) . '.' . $extension;
                 $destinationPath = 'public/images/';
                 $file->move($destinationPath, $fileName);
 
@@ -49,7 +50,7 @@ class RootController extends Controller
                     ->first();
 
                 if (empty($findPreviousMaxID)) {
-                    $LNCL_IMAGES_ID = 'IMGID-'.$YM.'-000001';
+                    $LNCL_IMAGES_ID = 'IMGID-' . $YM . '-000001';
                 } else {
                     $LNCL_IMAGES_ID = AutogenerateKey('IMGID', $findPreviousMaxID->LNCL_IMAGES_ID);
                 }
@@ -67,6 +68,31 @@ class RootController extends Controller
         }
 
         return response()->json(['form2' => $root_up]);
+    }
 
+    public function updateRoot(Request $request)
+    {
+        $id = $request->input('recid');
+        $form_r = $request->input('rform');
+        parse_str($form_r, $formdata);
+
+        $currentDate = date('Y-m-d H:i:s');
+
+        $root_up2 = [
+            'LNCL_ESC_WHY1' => $formdata['r_why1'],
+            'LNCL_ESC_WHY2' => $formdata['r_why2'],
+            'LNCL_ESC_WHY3' => $formdata['r_why3'],
+            'LNCL_ESC_WHY4' => $formdata['r_why4'],
+            'LNCL_ESC_WHY5' => $formdata['r_why5'],
+            'LNCL_ESC_ACTION' => $formdata['action_r'],
+            'LNCL_ROOTUPDATE_STD' => 1,
+            'LNCL_ROOTUPDATE_LSTDT' => $currentDate,
+        ];
+
+        DB::table('LNCL_LEAKANDROOT_TBL')
+            ->where('LNCL_HREC_ID', $id)
+            ->update($root_up2);
+
+        return response()->json(['up' => $root_up2]);
     }
 }

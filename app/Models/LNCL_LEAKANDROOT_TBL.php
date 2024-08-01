@@ -33,6 +33,7 @@ class LNCL_LEAKANDROOT_TBL extends Model
         'LNCL_ROOTUPDATE_STD',
         'LNCL_LEAKUPDATE_LSTDT',
         'LNCL_ROOTUPDATE_LSTDT',
+        'LNCL_ROOT_LSTDT'
 
     ];
     protected $primaryKey = 'LNCL_LEAKANDROOT_ID';

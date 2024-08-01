@@ -34,7 +34,7 @@ Route::get('/rankmaster', function () {
     return view('RankApp');
 })->name('rankmaster');
 
-Route::get('/reports' , function (){
+Route::get('/reports', function () {
     return view('reports');
 })->name('reports');
 
@@ -42,14 +42,19 @@ Route::get('/reports' , function (){
 //Route::get('/images_upload',[ImageController::class , 'index'])->name('images-upload');
 
 //บันทึกข้อมูล Leak and Root 5 Why
-Route::post('/LeakRecord' , [LeakController::class , 'recordLeak'])->name('recordLeak');
-Route::post('/record/data', [ProblemController::class , 'recordData'])->name('recordData');
-Route::post('/Root/data', [RootController::class , 'recordRoot'])->name('recordRoot');
+Route::post('/LeakRecord', [LeakController::class, 'recordLeak'])->name('recordLeak');
+Route::post('/Leak/update', [LeakController::class, 'updateLeak'])->name('updateLeak');
+Route::post('/record/data', [ProblemController::class, 'recordData'])->name('recordData');
+Route::post('/update/data', [ProblemController::class, 'updateData'])->name('updateData');
+Route::post('/Root/data', [RootController::class, 'recordRoot'])->name('recordRoot');
+Route::post('/Root/update', [RootController::class, 'updateRoot'])->name('updateRoot');
 
 
 //fetch data
-Route::get('/showform01' , [DataformController::class , 'fetchDataRec01'])->name('data_first');
-Route::get('/approve' , [ProblemController::class , 'fetchDataProblem'])->name('approve');
-Route::get('/showform02' , [DataformController::class , 'fetchDataRec02'])->name('data_second');
-Route::get('/showdata/record' , [DataformController::class , 'fetchDataRecord'])->name('data_record');
+Route::get('/showform01', [DataformController::class, 'fetchDataRec01'])->name('data_first');
+Route::get('/approve', [ProblemController::class, 'fetchDataProblem'])->name('approve');
+Route::get('/showform02', [DataformController::class, 'fetchDataRec02'])->name('data_second');
+Route::get('/showdata/record', [DataformController::class, 'fetchDataRecord'])->name('data_record');
+Route::get('/showdata/getedit1', [DataformController::class, 'getDataEditForm1'])->name('get_editform1');
+Route::get('/showdata/getedit2', [DataformController::class, 'getDataEditForm2'])->name('get_editform2');
 //Route::get('/approve' , [LeakController::class , 'fetchDataLeak'])->name('approve');

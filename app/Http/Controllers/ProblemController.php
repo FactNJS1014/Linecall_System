@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\LNCL_HREC_TBL;
 use App\Models\LNCL_IMAGES;
 use Illuminate\Http\Request;
@@ -11,14 +12,14 @@ class ProblemController extends Controller
     public function recordData(Request $request)
     {
         $currentDate = date('Y-m-d H:i:s');
-        $data = $request->input('data');
+        $data =  $request->input('data');
         parse_str($data, $formdata); // Parse the serialized string into an array
 
         $explodedData = explode('&',  $data);
-        $value_arr = [];
+        $formdata = [];
         foreach ($explodedData as $value) {
             $value = explode('=', $value);
-            array_push($value_arr, $value[1]);
+            array_push($formdata, $value[1]);
         }
 
 
@@ -32,7 +33,7 @@ class ProblemController extends Controller
             ->first();
 
         if (empty($findPreviousMaxID)) {
-            $LNCL_HREC_ID = 'LNCLREC-'.$YM.'-000001';
+            $LNCL_HREC_ID = 'LNCLREC-' . $YM . '-000001';
         } else {
             $LNCL_HREC_ID = AutogenerateKey('LNCLREC', $findPreviousMaxID->LNCL_HREC_ID);
         }
@@ -42,27 +43,27 @@ class ProblemController extends Controller
 
         $recPrb = [
             'LNCL_HREC_ID' => $LNCL_HREC_ID,
-            'LNCL_HREC_SECTION' => $value_arr[1],
-            'LNCL_HREC_EMPID' => $value_arr[2],
-            'LNCL_HREC_LINE' => $value_arr[3],
-            'LNCL_HREC_CUS' => $value_arr[4],
-            'LNCL_HREC_WON' => $value_arr[5],
-            'LNCL_HREC_MDLCD' => $value_arr[6],
-            'LNCL_HREC_MDLNM' => $value_arr[7],
-            'LNCL_HREC_NGCD' => $value_arr[8],
-            'LNCL_HREC_NGPRCS' => $value_arr[9],
-            'LNCL_HREC_QTY' => $value_arr[10],
-            'LNCL_HREC_DEFICT' => $value_arr[11],
-            'LNCL_HREC_PERCENT' => $value_arr[12],
-            'LNCL_HREC_RANKTYPE' => $value_arr[13],
-            'LNCL_HREC_NGPST' => $value_arr[14],
-            'LNCL_HREC_SERIAL' => $value_arr[15],
-            'LNCL_HREC_REFDOC' => $value_arr[16],
-            'LNCL_HREC_PROBLEM' => $value_arr[17],
-            'LNCL_HREC_CAUSE' => $value_arr[18],
-            'LNCL_HREC_ACTION' => $value_arr[19],
+            'LNCL_HREC_SECTION' => $formdata[1],
+            'LNCL_HREC_EMPID' => $formdata[2],
+            'LNCL_HREC_LINE' => $formdata[3],
+            'LNCL_HREC_CUS' => $formdata[4],
+            'LNCL_HREC_WON' => $formdata[5],
+            'LNCL_HREC_MDLCD' => $formdata[6],
+            'LNCL_HREC_MDLNM' => $formdata[7],
+            'LNCL_HREC_NGCD' => $formdata[8],
+            'LNCL_HREC_NGPRCS' => $formdata[9],
+            'LNCL_HREC_QTY' => $formdata[10],
+            'LNCL_HREC_DEFICT' => $formdata[11],
+            'LNCL_HREC_PERCENT' => $formdata[12],
+            'LNCL_HREC_RANKTYPE' => $formdata[13],
+            'LNCL_HREC_NGPST' => $formdata[14],
+            'LNCL_HREC_SERIAL' => $formdata[15],
+            'LNCL_HREC_REFDOC' => $formdata[16],
+            'LNCL_HREC_PROBLEM' => $formdata[17],
+            'LNCL_HREC_CAUSE' => $formdata[18],
+            'LNCL_HREC_ACTION' => $formdata[19],
             'LNCL_HREC_STD' => 1,
-            'LNCL_HREC_DATE' => $value_arr[0],
+            'LNCL_HREC_DATE' => $formdata[0],
             'LNCL_HREC_LSTDT' => $currentDate,
         ];
 
@@ -71,13 +72,12 @@ class ProblemController extends Controller
 
 
         $imagesType = 'Problem';
-        $files = $request->file('files');
-        if($request->hasFile('files'))
-        {
+        $files = file('files');
+        if ($request->hasFile('files')) {
 
             foreach ($files as $file) {
                 $extension = $file->getClientOriginalExtension();
-                $fileName = 'IMG-'.$YM.'-'.rand(000,999).'.'.$extension;
+                $fileName = 'IMG-' . $YM . '-' . rand(000, 999) . '.' . $extension;
                 $destinationPath = 'public/images/';
                 $file->move($destinationPath, $fileName);
 
@@ -87,7 +87,7 @@ class ProblemController extends Controller
                     ->first();
 
                 if (empty($findPreviousMaxID)) {
-                    $LNCL_IMAGES_ID = 'IMGID-'.$YM.'-000001';
+                    $LNCL_IMAGES_ID = 'IMGID-' . $YM . '-000001';
                 } else {
                     $LNCL_IMAGES_ID = AutogenerateKey('IMGID', $findPreviousMaxID->LNCL_IMAGES_ID);
                 }
@@ -103,19 +103,19 @@ class ProblemController extends Controller
             }
         }
 
-//        $fileNames = '';
-//        if ($request->hasFile('files')) {
-//            $files = $request->file('files');
-//
-//            foreach ($files as $file) {
-//                $extension = $file->getClientOriginalExtension();
-//                $fileName = 'IMG-'.$YM.'-'.rand(000,999).'.'.$extension;
-//                $destinationPath = 'public/images/';
-//                $file->move($destinationPath, $fileName);
-//                $fileNames = $fileNames.$fileName.",";
-//            }
-//        }
-//        $imagedb = $fileNames;
+        //        $fileNames = '';
+        //        if (hasFile('files')) {
+        //            $files = file('files');
+        //
+        //            foreach ($files as $file) {
+        //                $extension = $file->getClientOriginalExtension();
+        //                $fileName = 'IMG-'.$YM.'-'.rand(000,999).'.'.$extension;
+        //                $destinationPath = 'public/images/';
+        //                $file->move($destinationPath, $fileName);
+        //                $fileNames = $fileNames.$fileName.",";
+        //            }
+        //        }
+        //        $imagedb = $fileNames;
 
 
         return response()->json([
@@ -156,13 +156,76 @@ class ProblemController extends Controller
             ->groupBy('LNCL_HREC_ID');
 
         // Pass grouped data to the view
-        return view('apr_linecall', compact('images',
-            'documents' ,
+        return view('apr_linecall', compact(
+            'images',
+            'documents',
             'leakdoc',
             'imagesleak',
-            'imagesroot'));
+            'imagesroot'
+        ));
     }
 
+    public function updateData(Request $request)
+    {
+        // Retrieve the ID from the request
+        $id = $request->input('id');
 
+        // Get the current date and time
+        $currentDate = date('Y-m-d H:i:s');
 
+        // Retrieve the serialized data from the request
+        $data =  $request->input('data');
+
+        // Parse the serialized string into an array
+        parse_str($data, $formdata);
+        $explodedData = explode('&',  $data);
+        $formdata = [];
+        foreach ($explodedData as $value) {
+            $value = explode('=', $value);
+            array_push($formdata, $value[1]);
+        }
+        // Check if the parsing was successful and the required fields are present
+        // if (empty($formdata) || !isset($formdata['section_rec'])) {
+        //     return response()->json(['error' => 'Invalid data format or missing required fields'], 400);
+        // }
+        //return response()->json($formdata);
+        // Prepare the data for update
+        $updatePrb = [
+            'LNCL_HREC_SECTION' => $formdata[1],
+            'LNCL_HREC_EMPID' => $formdata[2],
+            'LNCL_HREC_LINE' => $formdata[3],
+            'LNCL_HREC_CUS' => $formdata[4],
+            'LNCL_HREC_WON' => $formdata[5],
+            'LNCL_HREC_MDLCD' => $formdata[6],
+            'LNCL_HREC_MDLNM' => $formdata[7],
+            'LNCL_HREC_NGCD' => $formdata[8],
+            'LNCL_HREC_NGPRCS' => $formdata[9],
+            'LNCL_HREC_QTY' => $formdata[10],
+            'LNCL_HREC_DEFICT' => $formdata[11],
+            'LNCL_HREC_PERCENT' => $formdata[12],
+            'LNCL_HREC_RANKTYPE' => $formdata[13],
+            'LNCL_HREC_NGPST' => $formdata[14],
+            'LNCL_HREC_SERIAL' => $formdata[15],
+            'LNCL_HREC_REFDOC' => $formdata[16],
+            'LNCL_HREC_PROBLEM' => $formdata[17],
+            'LNCL_HREC_CAUSE' => $formdata[18],
+            'LNCL_HREC_ACTION' => $formdata[19],
+            'LNCL_UPDATE_LSTDT' => $currentDate,
+            'LNCL_UPDATE_STD' => 1,
+        ];
+
+        // Perform the update operation
+        $updatedRows = DB::table('LNCL_HREC_TBL')
+            ->where('LNCL_HREC_ID', $id)
+            ->update($updatePrb);
+
+        //return response()->json($updatedRows);
+
+        // Check if the update was successful
+        if ($updatedRows > 0) {
+            return response()->json(['update' => true, 'data' => $updatePrb]);
+        } else {
+            return response()->json(['update' => false, 'msg' => 'Error updating record, please contact admin'], 500);
+        }
+    }
 }

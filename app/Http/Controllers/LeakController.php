@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 class LeakController extends Controller
 {
     public function recordLeak(Request $request)
@@ -11,13 +13,13 @@ class LeakController extends Controller
         $data = $request->input('Leakdata');
         parse_str($data, $formdata);
         $id = $request->input('id');
-//        return response()->json($id);
+        //        return response()->json($id);
 
         $currentDate = date('Y-m-d H:i:s');
         $YM = date('Ym');
         $LeakId = '';
 
-            // Loop through the joined data and insert into LNCL_LEAKANDROOT_TBL
+        // Loop through the joined data and insert into LNCL_LEAKANDROOT_TBL
 
         $findPreviousMaxID = DB::table('LNCL_LEAKANDROOT_TBL')
             ->select('LNCL_LEAKANDROOT_ID')
@@ -25,7 +27,7 @@ class LeakController extends Controller
             ->first();
 
         if (empty($findPreviousMaxID)) {
-            $LeakId = 'LANDRREC-'.$YM.'-000001';
+            $LeakId = 'LANDRREC-' . $YM . '-000001';
         } else {
             $LeakId = AutogenerateKey('LANDRREC', $findPreviousMaxID->LNCL_LEAKANDROOT_ID);
         }
@@ -54,12 +56,11 @@ class LeakController extends Controller
         $imagesType = 'Leak';
         $files = $request->file('filesup01');
 
-        if($request->hasFile('filesup01'))
-        {
+        if ($request->hasFile('filesup01')) {
 
             foreach ($files as $file) {
                 $extension = $file->getClientOriginalExtension();
-                $fileName = 'IMG-'.$YM.'-'.rand(000,999).'.'.$extension;
+                $fileName = 'IMG-' . $YM . '-' . rand(000, 999) . '.' . $extension;
                 $destinationPath = 'public/images/';
                 $file->move($destinationPath, $fileName);
 
@@ -70,7 +71,7 @@ class LeakController extends Controller
                     ->first();
 
                 if (empty($findPreviousMaxID)) {
-                    $LNCL_IMAGES_ID = 'IMGID-'.$YM.'-000001';
+                    $LNCL_IMAGES_ID = 'IMGID-' . $YM . '-000001';
                 } else {
                     $LNCL_IMAGES_ID = AutogenerateKey('IMGID', $findPreviousMaxID->LNCL_IMAGES_ID);
                 }
@@ -90,20 +91,30 @@ class LeakController extends Controller
         return response()->json(['status' => 'success', 'message' => 'Data inserted successfully.']);
     }
 
-//    public function fetchDataLeak(Request $request){
-//        $id = $request->input('id');
-//        $leakdoc = DB::table('LNCL_LEAKANDROOT_TBL')
-//            ->select('LNCL_LEAKANDROOT_TBL.*')
-//            ->where('LNCL_HREC_ID', $id)
-//            ->get();
-//        $imagesleak = DB::table('LNCL_IMAGES')
-//            ->join('LNCL_HREC_TBL', 'LNCL_HREC_TBL.LNCL_HREC_ID', '=', 'LNCL_IMAGES.LNCL_HREC_ID')
-//            ->select('LNCL_IMAGES.*')
-//            ->where('LNCL_IMAGES_TYPE', 'Leak')
-//            ->get()
-//            ->groupBy('LNCL_HREC_ID');
-//
-//        return view('apr_linecall').compact('leakdoc', 'imagesleak');
-//    }
+    public function updateLeak(Request $request)
+    {
+        $data = $request->input('lform');
+        parse_str($data, $formdata);
+        $id = $request->input('recid');
 
+        $currentDate = date('Y-m-d H:i:s');
+
+        $leakUpdate = [
+            'LNCL_LEAK_WHY1' => $formdata['l_why1'],
+            'LNCL_LEAK_WHY2' => $formdata['l_why2'],
+            'LNCL_LEAK_WHY3' => $formdata['l_why3'],
+            'LNCL_LEAK_WHY4' => $formdata['l_why4'],
+            'LNCL_LEAK_WHY5' => $formdata['l_why5'],
+            'LNCL_LEAK_ACTION' => $formdata['action_l'],
+            'LNCL_LEAKUPDATE_STD' => 1,
+            'LNCL_LEAKUPDATE_LSTDT' => $currentDate,
+
+        ];
+        DB::table('LNCL_LEAKANDROOT_TBL')
+            ->where('LNCL_HREC_ID', $id)
+            ->update($leakUpdate);
+
+
+        return response()->json(['success' => $leakUpdate]);
+    }
 }

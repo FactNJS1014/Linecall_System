@@ -9,7 +9,8 @@
 
             <div class="card border-dark active" id="card1">
                 <div class="card-header">
-                    <p class="fs-5 mt-2">ส่วนบันทึกข้อมูลทั่วไป</p>
+                    <p class="fs-5 mt-2">ส่วนบันทึกข้อมูลทั่วไป &nbsp;<span><button type="button" class="btn btnedit"
+                                onclick="btnUpdateData()" id="editbtndata">แสดงข้อมูลการแก้ไขเพิ่มเติม</button></span></p>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -152,25 +153,13 @@
                                 placeholder="คิดเป็น %">
                         </div>
                         <div class="col-md-4">
-                            <label class="h5" style="color: #003f88;">Rank:</label>
-                            <div class="d-flex">
-                                <div class="form-check">
-                                    <input class="form-check-input input-check" type="radio" name="type"
-                                        id="type1" value="A" required>
-                                    <label class="form-check-label fs-5 ms-1" for="flexRadioDefault1"
-                                        style="color: #003f88;">
-                                        A
-                                    </label>
-                                </div>
-                                <div class="form-check ms-5">
-                                    <input class="form-check-input input-check" type="radio" name="type"
-                                        id="type2" value="B" required>
-                                    <label class="form-check-label fs-5 ms-1" for="flexRadioDefault2"
-                                        style="color: #003f88;">
-                                        B
-                                    </label>
-                                </div>
-                            </div>
+                            <label class="h5" style="color: #003f88;">Choose Rank</label>
+                            <select name="type" id="type" class="form-select form-control" required>
+                                <option value="" selected disabled>เลือก Rank</option>
+                                <option value="A">Rank A</option>
+                                <option value="B">Rank B</option>
+
+                            </select>
                         </div>
 
                     </div>
@@ -237,6 +226,8 @@
                     <div class="d-flex justify-content-center">
 
                         <input type="submit" class="btn submitbtn mt-3" value="บันทึก">
+                        <input type="button" class="btn btnedit mt-3" id="updatedata" value="อัพเดทข้อมูล"
+                            onclick="update()">
                         <input type="hidden" name="token" id="token" value="{{ csrf_token() }}">
                     </div>
 
@@ -281,7 +272,7 @@
                         }
                         formData.append('data', $('#gen_record').serialize());
                         var _token = $('meta[name="csrf-token"]').attr(
-                        'content'); // Get CSRF token from meta tag
+                            'content'); // Get CSRF token from meta tag
                         formData.append("_token", _token);
 
 
@@ -425,5 +416,95 @@
             (day < 10 ? "0" + day : day);
 
         document.getElementById("datenow").value = formattedDate;
+
+        /**
+         * TODO:31-07-2024
+         * *รับค่า recid เพื่อส่งค่า recid ไปหาข้อมูลและแก้ไขข้อมูล
+         * **/
+
+        function getQueryParam(param) {
+            let urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        $('#updatedata').hide();
+
+        // Function to handle button click
+        function btnUpdateData() {
+            // Extract 'recid' from URL
+            let recid = getQueryParam('recid');
+            if (recid) {
+
+                $('#updatedata').show();
+            } else {
+                $('#updatedata').hide();
+            }
+
+            getDatapb(recid)
+
+
+        }
+
+        function getDatapb(id) {
+
+            console.log(id);
+            axios.get('{{ route('get_editform1') }}', {
+                    params: {
+                        id: id
+                    }
+                })
+
+                .then(function(response) {
+                    console.log(response);
+                    response.data.dataformfirst.map((first) => {
+                        $('#section_rec').val(first.LNCL_HREC_SECTION)
+                        $('#empid').val(first.LNCL_HREC_EMPID)
+                        $('#line').val(first.LNCL_HREC_LINE)
+                        $('#customer').val(first.LNCL_HREC_CUS)
+                        $('#won').val(first.LNCL_HREC_WON)
+                        $('#mdlcd').val(first.LNCL_HREC_MDLCD)
+                        $('#mdlnm').val(first.LNCL_HREC_MDLNM)
+                        $('#ng_code').val(first.LNCL_HREC_NGCD)
+                        $('#ng_prc').val(first.LNCL_HREC_NGPRCS)
+                        $('#qty').val(first.LNCL_HREC_QTY)
+                        $('#defict').val(first.LNCL_HREC_DEFICT)
+                        $('#percent').val(first.LNCL_HREC_PERCENT)
+                        $('#type').val(first.LNCL_HREC_RANKTYPE)
+                        $('#serial').val(first.LNCL_HREC_SERIAL)
+                        $('#ng_pst').val(first.LNCL_HREC_NGPST)
+                        $('#doc').val(first.LNCL_HREC_REFDOC)
+                        $('#problem').val(first.LNCL_HREC_PROBLEM)
+                        $('#cause').val(first.LNCL_HREC_CAUSE)
+                        $('#action').val(first.LNCL_HREC_ACTION)
+
+                    }) // Clear existing images
+                })
+        }
+
+        function update() {
+            let recid = getQueryParam('recid');
+            var formUpdate = $('#gen_record').serialize();
+
+            //console.log(formUpdate);
+            axios.post('{{ route('updateData') }}', {
+                    data: formUpdate,
+                    id: recid
+                })
+                .then(function(response) {
+                    console.log(response);
+                    if (response.data.update === true) {
+                        Swal.fire({
+                            title: 'อัพเดทข้อมูลสำเร็จ',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 1000
+                        });
+
+                    }
+
+                })
+
+
+        }
     </script>
 @endpush

@@ -1,8 +1,8 @@
 @extends('template.template')
 @section('title', 'บันทึกฟอร์ม 2')
 @section('content')
-    <h3 class="text-center mb-4" id="textheader"><i
-            class="fa-solid fa-file-medical fa-lg mx-4"></i>แบบฟอร์มบันทึกข้อมูลปัญหาและการหลุดรอย</h3>
+    <h3 class="text-center mb-4" id="textheader"><i class="fa-solid fa-file-medical fa-lg mx-4"></i>แบบฟอร์มบันทึกข้อมูล 5 Why
+        Leak and Root</h3>
     <div class="p-2">
         <table class="table table-bordered" id="data_rec01">
             <thead class="table-dark">
@@ -12,6 +12,7 @@
                     <th>NG Code</th>
                     <th>NG Position</th>
                     <th>Show Form 5 Why </th>
+
                 </tr>
             </thead>
             <tbody style="font-weight: bold; font-size: 22px">
@@ -22,6 +23,7 @@
     </div>
 
     <p id="text_id" style="font-size: 24px; font-weight: 700; color: #3a5a40; background: #fff;"></p>
+
     <form method="post" id="leak_rec" class="needs-validation" enctype=
         "multipart/form-data" novalidate>
 
@@ -45,6 +47,7 @@
                 </select>
             </div>
         </div>
+        <button type="button" class="btn btnviewdata mt-3" onclick="viewleak()">แสดงข้อมูล 5 why of leak</button>
         <div class="card mt-3">
             <div class="p-2">
                 <table class="table table-bordered mt-2">
@@ -117,6 +120,7 @@
 
         <div class="d-flex justify-content-center mt-3">
             <input type="submit" value="บันทึก Leak" class="btn savebtn p-2">
+            <input type="button" value="อัพเดท Leak" class="btn btnedit p-2" id="UpdateLeak" onclick="updateleak()">
         </div>
 
 
@@ -124,7 +128,7 @@
 
     <form method="post" id="Root_rec" class="needs-validation" enctype=
         "multipart/form-data" novalidate>
-
+        <button type="button" class="btn btnviewdata mt-3" onclick="viewRoot()">แสดงข้อมูล 5 why of Root</button>
         <div class="card mt-3">
             <div class="p-2">
                 <table class="table table-bordered mt-2">
@@ -196,6 +200,7 @@
         </div>
         <div class="d-flex justify-content-center mt-3">
             <input type="submit" value="บันทึก Root" class="btn savebtn p-2">
+            <input type="button" value="อัพเดท Root" class="btn btnedit p-2" id="UpdateRoot" onclick="updateDataRt()">
         </div>
     </form>
 @endsection
@@ -227,6 +232,7 @@
                         html += '<td><button class="btn btnview" onclick=\'btnview("' + list
                             .LNCL_HREC_ID + '","' + list.LNCL_HREC_SECTION +
                             '")\'><i class="fa-solid fa-eye fa-lg mx-2"></i>View Form</button></td>'
+
                         html += '<tr>'
                     })
                     $('#data_rec01 tbody').html(html);
@@ -287,7 +293,7 @@
                                     }
                                     formData1.append('Leakdata', $('#leak_rec').serialize());
                                     var _token = $('meta[name="csrf-token"]').attr(
-                                    'content'); // Get CSRF token from meta tag
+                                        'content'); // Get CSRF token from meta tag
                                     formData1.append("_token", _token);
                                     formData1.append("id", currentId);
                                     $.ajax({
@@ -340,7 +346,7 @@
                                     }
                                     formData2.append('Rootdata', $('#Root_rec').serialize());
                                     var _token = $('meta[name="csrf-token"]').attr(
-                                    'content'); // Get CSRF token from meta tag
+                                        'content'); // Get CSRF token from meta tag
                                     formData2.append("_token", _token);
                                     formData2.append("id", currentId);
                                     //$('#Root_rec').hide();
@@ -513,6 +519,108 @@
                 };
                 reader.readAsDataURL(file);
             });
+        }
+
+        $('#UpdateLeak').hide();
+        $('#UpdateRoot').hide();
+
+        viewleak = () => {
+            $('#UpdateLeak').show();
+
+            let recid = getQueryParam('recid');
+
+            //alert(recid)
+            axios.get('{{ route('get_editform2') }}', {
+                    params: {
+                        recid: recid
+                    }
+                })
+                .then(function(response) {
+                    console.log(response);
+                    response.data.dataformsecond.map((second) => {
+                        $('#rec_empid').val(second.LNCL_LEAKANDROOT_EMPID)
+                        $('#rec_name').val(second.LNCL_LEAKANDROOT_NAME)
+                        $('#section_rec').val(second.LNCL_LEAKANDROOT_SECTION)
+                        $('#l_why1').val(second.LNCL_LEAK_WHY1)
+                        $('#l_why2').val(second.LNCL_LEAK_WHY2)
+                        $('#l_why3').val(second.LNCL_LEAK_WHY3)
+                        $('#l_why4').val(second.LNCL_LEAK_WHY4)
+                        $('#l_why5').val(second.LNCL_LEAK_WHY5)
+                        $('#action_l').val(second.LNCL_LEAK_ACTION)
+
+                    })
+                })
+        }
+
+        function getQueryParam(param) {
+            let urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        function updateleak() {
+            let recid = getQueryParam('recid');
+            let lform = $('#leak_rec').serialize();
+
+            axios.post('{{ route('updateLeak') }}', {
+                    recid: recid,
+                    lform: lform
+                })
+                .then(function(response) {
+                    if (response.data.success) {
+                        Swal.fire({
+                            title: 'อัพเดทข้อมูลเสร็จสิ้น',
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1000
+                        });
+                    }
+                })
+
+        }
+
+        viewRoot = () => {
+            $('#UpdateRoot').show();
+
+            let recid = getQueryParam('recid');
+
+            //alert(recid)
+            axios.get('{{ route('get_editform2') }}', {
+                    params: {
+                        recid: recid
+                    }
+                })
+                .then(function(response) {
+                    console.log(response);
+                    response.data.dataformsecond.map((second) => {
+
+                        $('#r_why1').val(second.LNCL_ESC_WHY1)
+                        $('#r_why2').val(second.LNCL_ESC_WHY2)
+                        $('#r_why3').val(second.LNCL_ESC_WHY3)
+                        $('#r_why4').val(second.LNCL_ESC_WHY4)
+                        $('#r_why5').val(second.LNCL_ESC_WHY5)
+                        $('#action_r').val(second.LNCL_ESC_ACTION)
+                    })
+                })
+        }
+
+        updateDataRt = () => {
+            let recid = getQueryParam('recid');
+            let rform = $('#Root_rec').serialize();
+            //alert(recid)
+            axios.post('{{ route('updateRoot') }}', {
+                    recid: recid,
+                    rform: rform
+                })
+                .then(function(response) {
+                    if (response.data.up) {
+                        Swal.fire({
+                            title: 'อัพเดทข้อมูลเสร็จสิ้น',
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1000
+                        });
+                    }
+                })
         }
     </script>
 @endpush

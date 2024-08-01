@@ -323,7 +323,7 @@ table thead th{
 .zoomed {
     position: fixed;
     top: 50%;
-    left: 60%;
+    left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1000;
     width: 1000px;
@@ -384,7 +384,74 @@ table thead th{
     font-weight: 600 ;
     color: #fff;
 }
+#textheader3{
+    background: #D4F6CC;
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: 600 ;
+    color: #141E46;
+}
 
+#text1{
+    font-size: 22px;
+    font-weight: 700 ;
+    color: #434982;
+
+}
+
+.btn.btnapprove{
+    background: #27AA80;
+    color: #fff;
+    font-weight: 700;
+
+}
+.btn.btnapprove:hover{
+    background: #fff;
+    color: #27AA80;
+}
+.btn.btnedit{
+    background: #FF8400;
+    color: #000;
+    font-weight: 700;
+    margin-left: 5px;
+
+}
+.btn.btnedit:hover{
+    background: #fff;
+    color: #FF8400;
+}
+.btn.btndelete{
+    background: #FF204E;
+    color: #fff;
+    font-weight: 700;
+    margin-left: 5px;
+
+}
+.btn.btndelete:hover{
+    background: #fff;
+    color: #FF204E;
+}
+
+.btn.btngo{
+    background: #FFA500;
+    color: #000;
+    font-weight: 700;
+}
+.btn.btngo:hover{
+    background: #fff;
+    color: #FFA500;
+}
+
+.btn.btnviewdata{
+    background: #e71d36;
+    color: #ffeeee;
+    font-weight: 700;
+}
+.btn.btnviewdata:hover{
+    background: #fff;
+    color: #e71d36;
+}
 
 
 
