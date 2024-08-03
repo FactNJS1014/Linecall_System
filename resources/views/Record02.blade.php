@@ -47,7 +47,7 @@
                 </select>
             </div>
         </div>
-        <button type="button" class="btn btnviewdata mt-3" onclick="viewleak()">แสดงข้อมูล 5 why of leak</button>
+
         <div class="card mt-3">
             <div class="p-2">
                 <table class="table table-bordered mt-2">
@@ -120,7 +120,7 @@
 
         <div class="d-flex justify-content-center mt-3">
             <input type="submit" value="บันทึก Leak" class="btn savebtn p-2">
-            <input type="button" value="อัพเดท Leak" class="btn btnedit p-2" id="UpdateLeak" onclick="updateleak()">
+
         </div>
 
 
@@ -128,7 +128,7 @@
 
     <form method="post" id="Root_rec" class="needs-validation" enctype=
         "multipart/form-data" novalidate>
-        <button type="button" class="btn btnviewdata mt-3" onclick="viewRoot()">แสดงข้อมูล 5 why of Root</button>
+
         <div class="card mt-3">
             <div class="p-2">
                 <table class="table table-bordered mt-2">
@@ -200,7 +200,7 @@
         </div>
         <div class="d-flex justify-content-center mt-3">
             <input type="submit" value="บันทึก Root" class="btn savebtn p-2">
-            <input type="button" value="อัพเดท Root" class="btn btnedit p-2" id="UpdateRoot" onclick="updateDataRt()">
+
         </div>
     </form>
 @endsection
@@ -275,6 +275,11 @@
                         if (!form.checkValidity()) {
                             event.preventDefault()
                             event.stopPropagation()
+                            Swal.fire({
+                                title: "กรุณากรอกข้อมูลให้ครบถ้วน",
+                                icon: "error",
+                                confirmButtonText: "ตกลง",
+                            })
                         } else {
                             event.preventDefault();
                             event.stopPropagation();
@@ -414,12 +419,11 @@
 
             if (files.length > 3) {
                 alert('You can only upload a maximum of 3 images');
-                document.getElementById('l_upload').value = ''; // Clear the input
+                document.getElementById('imageInput').value = ''; // Clear the input
                 return;
             }
 
-
-            var container = document.getElementById('imagePreview1');
+            var container = document.getElementById('imageContainer');
             container.innerHTML = ''; // Clear previous images
 
             Array.from(files).forEach(file => {
@@ -430,8 +434,8 @@
                     img.onload = function() {
                         var canvas = document.createElement('canvas');
                         var ctx = canvas.getContext('2d');
-                        var maxWidth = 520; // Set the max width or height for the resized image
-                        var maxHeight = 520;
+                        var maxWidth = 1600; // Set the max width or height for the resized image
+                        var maxHeight = 1600;
                         var width = img.width;
                         var height = img.height;
 
@@ -449,6 +453,8 @@
 
                         canvas.width = width;
                         canvas.height = height;
+                        ctx.imageSmoothingEnabled = true;
+                        ctx.imageSmoothingQuality = 'high';
                         ctx.drawImage(img, 0, 0, width, height);
 
                         var resizedImg = new Image();
@@ -457,26 +463,31 @@
                         resizedImg.addEventListener('click', function() {
                             this.classList.toggle('zoomed');
                         });
-                        container.appendChild(resizedImg);
 
+                        // Style adjustments
+                        resizedImg.style.width = 'auto'; // Ensure width is auto
+                        resizedImg.style.height = 'auto'; // Ensure height is auto
+                        resizedImg.style.maxWidth = '100%'; // Optional: scale to container width
+
+                        container.appendChild(resizedImg);
                     }
                 };
                 reader.readAsDataURL(file);
             });
         }
 
+
         function previewImages2(event) {
             var files = event.target.files;
 
             if (files.length > 3) {
                 alert('You can only upload a maximum of 3 images');
-                document.getElementById('r_upload').value = ''; // Clear the input
+                document.getElementById('imageInput').value = ''; // Clear the input
                 return;
             }
 
-
-            var container2 = document.getElementById('imagePreview2');
-            container2.innerHTML = ''; // Clear previous images
+            var container = document.getElementById('imageContainer');
+            container.innerHTML = ''; // Clear previous images
 
             Array.from(files).forEach(file => {
                 var reader = new FileReader();
@@ -486,8 +497,8 @@
                     img.onload = function() {
                         var canvas = document.createElement('canvas');
                         var ctx = canvas.getContext('2d');
-                        var maxWidth = 520; // Set the max width or height for the resized image
-                        var maxHeight = 520;
+                        var maxWidth = 1600; // Set the max width or height for the resized image
+                        var maxHeight = 1600;
                         var width = img.width;
                         var height = img.height;
 
@@ -505,6 +516,8 @@
 
                         canvas.width = width;
                         canvas.height = height;
+                        ctx.imageSmoothingEnabled = true;
+                        ctx.imageSmoothingQuality = 'high';
                         ctx.drawImage(img, 0, 0, width, height);
 
                         var resizedImg = new Image();
@@ -513,114 +526,17 @@
                         resizedImg.addEventListener('click', function() {
                             this.classList.toggle('zoomed');
                         });
-                        container2.appendChild(resizedImg);
 
+                        // Style adjustments
+                        resizedImg.style.width = 'auto'; // Ensure width is auto
+                        resizedImg.style.height = 'auto'; // Ensure height is auto
+                        resizedImg.style.maxWidth = '100%'; // Optional: scale to container width
+
+                        container.appendChild(resizedImg);
                     }
                 };
                 reader.readAsDataURL(file);
             });
-        }
-
-        $('#UpdateLeak').hide();
-        $('#UpdateRoot').hide();
-
-        viewleak = () => {
-            $('#UpdateLeak').show();
-
-            let recid = getQueryParam('recid');
-
-            //alert(recid)
-            axios.get('{{ route('get_editform2') }}', {
-                    params: {
-                        recid: recid
-                    }
-                })
-                .then(function(response) {
-                    console.log(response);
-                    response.data.dataformsecond.map((second) => {
-                        $('#rec_empid').val(second.LNCL_LEAKANDROOT_EMPID)
-                        $('#rec_name').val(second.LNCL_LEAKANDROOT_NAME)
-                        $('#section_rec').val(second.LNCL_LEAKANDROOT_SECTION)
-                        $('#l_why1').val(second.LNCL_LEAK_WHY1)
-                        $('#l_why2').val(second.LNCL_LEAK_WHY2)
-                        $('#l_why3').val(second.LNCL_LEAK_WHY3)
-                        $('#l_why4').val(second.LNCL_LEAK_WHY4)
-                        $('#l_why5').val(second.LNCL_LEAK_WHY5)
-                        $('#action_l').val(second.LNCL_LEAK_ACTION)
-
-                    })
-                })
-        }
-
-        function getQueryParam(param) {
-            let urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(param);
-        }
-
-        function updateleak() {
-            let recid = getQueryParam('recid');
-            let lform = $('#leak_rec').serialize();
-
-            axios.post('{{ route('updateLeak') }}', {
-                    recid: recid,
-                    lform: lform
-                })
-                .then(function(response) {
-                    if (response.data.success) {
-                        Swal.fire({
-                            title: 'อัพเดทข้อมูลเสร็จสิ้น',
-                            icon: "success",
-                            showConfirmButton: false,
-                            timer: 1000
-                        });
-                    }
-                })
-
-        }
-
-        viewRoot = () => {
-            $('#UpdateRoot').show();
-
-            let recid = getQueryParam('recid');
-
-            //alert(recid)
-            axios.get('{{ route('get_editform2') }}', {
-                    params: {
-                        recid: recid
-                    }
-                })
-                .then(function(response) {
-                    console.log(response);
-                    response.data.dataformsecond.map((second) => {
-
-                        $('#r_why1').val(second.LNCL_ESC_WHY1)
-                        $('#r_why2').val(second.LNCL_ESC_WHY2)
-                        $('#r_why3').val(second.LNCL_ESC_WHY3)
-                        $('#r_why4').val(second.LNCL_ESC_WHY4)
-                        $('#r_why5').val(second.LNCL_ESC_WHY5)
-                        $('#action_r').val(second.LNCL_ESC_ACTION)
-                    })
-                })
-        }
-
-        updateDataRt = () => {
-            let recid = getQueryParam('recid');
-            let rform = $('#Root_rec').serialize();
-            //alert(recid)
-            axios.post('{{ route('updateRoot') }}', {
-                    recid: recid,
-                    rform: rform
-                })
-                .then(function(response) {
-                    if (response.data.up) {
-                        Swal.fire({
-                            title: 'อัพเดทข้อมูลเสร็จสิ้น',
-                            icon: "success",
-                            showConfirmButton: false,
-                            timer: 1000
-                        });
-                    }
-                })
         }
     </script>
 @endpush

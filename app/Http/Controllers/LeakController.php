@@ -95,7 +95,7 @@ class LeakController extends Controller
     {
         $data = $request->input('lform');
         parse_str($data, $formdata);
-        $id = $request->input('recid');
+        $id = $request->input('id');
 
         $currentDate = date('Y-m-d H:i:s');
 
@@ -114,6 +114,41 @@ class LeakController extends Controller
             ->where('LNCL_HREC_ID', $id)
             ->update($leakUpdate);
 
+
+        $YM = date('Ym');
+        $imagesType = 'Leak';
+        $files = $request->file('filesup01');
+        if ($request->hasFile('filesup01')) {
+
+            foreach ($files as $file) {
+                $extension = $file->getClientOriginalExtension();
+                $fileName = 'IMG-' . $YM . '-' . rand(000, 999) . '.' . $extension;
+                $destinationPath = 'public/images/';
+                $file->move($destinationPath, $fileName);
+
+
+                $findPreviousMaxID = DB::table('LNCL_IMAGES')
+                    ->select('LNCL_IMAGES_ID')
+                    ->orderBy('LNCL_IMAGES_ID', 'DESC')
+                    ->first();
+
+                if (empty($findPreviousMaxID)) {
+                    $LNCL_IMAGES_ID = 'IMGID-' . $YM . '-000001';
+                } else {
+                    $LNCL_IMAGES_ID = AutogenerateKey('IMGID', $findPreviousMaxID->LNCL_IMAGES_ID);
+                }
+                $imageIns = [
+                    'LNCL_IMAGES_ID' => $LNCL_IMAGES_ID,
+                    'LNCL_HREC_ID' => $id,
+                    'LNCL_IMAGES_FILES' => $fileName,
+                    'LNCL_IMAGES_TYPE' => $imagesType,
+                    'LNCL_IMAGES_LSTDT' => $currentDate,
+                ];
+
+
+                DB::table('LNCL_IMAGES')->insert($imageIns);
+            }
+        }
 
         return response()->json(['success' => $leakUpdate]);
     }

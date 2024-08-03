@@ -1,15 +1,36 @@
-@extends('template.template')
-@section('title', 'บันทึกฟอร์ม 1')
-@section('content')
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>หน้าแก้ไขข้อมูล Problem</title>
+    <link rel="stylesheet" href="{{ asset('public/css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/css/styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/css/icons.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/css/fonts.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/css/fonts/vendor/boxicons') }}">
+    <link rel="stylesheet" href="{{ asset('public/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/css/boxicons.min.css') }}">
+    <link rel="shortcut icon" href="{{ asset('public/images/pcbboard.png') }}" type="image/x-icon">
+</head>
+
+<body>
     <div class="container mt-3">
-        <h3 class="text-center mb-2" id="textheader"><i class="fa-solid fa-file-medical fa-lg mx-4"></i>แบบฟอร์มบันทึกข้อมูล
+        <h3 class="text-center mb-2" id="textheader"><i
+                class="fa-solid fa-file-medical fa-lg mx-4"></i>แบบฟอร์มแก้ไขข้อมูล
             Line-call Production</h3>
         <form method="post" class="needs-validation" id="gen_record" enctype=
-            "multipart/form-data" novalidate>
+            "multipart/form-data"
+            novalidate>
 
             <div class="card border-dark active" id="card1">
                 <div class="card-header">
-                    <p class="fs-5 mt-2">ส่วนบันทึกข้อมูลทั่วไป </p>
+                    <p class="fs-5 mt-2">ส่วนบันทึกข้อมูลทั่วไป &nbsp;<span><button type="button" class="btn btnedit"
+                                onclick="btnUpdateData()" id="editbtndata"><i
+                                    class="fa-solid fa-database mx-2"></i>แสดงข้อมูลการแก้ไขเพิ่มเติม</button></span>
+                    </p>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -151,6 +172,15 @@
                             <input type="text" name="percent" id="percent" class="form-control"
                                 placeholder="คิดเป็น %">
                         </div>
+                        <div class="col-md-4">
+                            <label class="h5" style="color: #003f88;">Choose Rank</label>
+                            <select name="type" id="type" class="form-select form-control" required>
+                                <option value="" selected disabled>เลือก Rank</option>
+                                <option value="A">Rank A</option>
+                                <option value="B">Rank B</option>
+
+                            </select>
+                        </div>
 
                     </div>
                     <div class="row mt-2">
@@ -214,9 +244,8 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-center">
-
-                        <input type="submit" class="btn submitbtn mt-3" value="บันทึก">
-
+                        <input type="button" class="btn btnedit mt-3" id="updatedata" value="อัพเดทข้อมูล"
+                            onclick="update()">
                         <input type="hidden" name="token" id="token" value="{{ csrf_token() }}">
                     </div>
 
@@ -227,97 +256,12 @@
 
     </div>
 
-@endsection
 
-@push('script_content')
-    <script !src="">
-        $(document).ready(function() {
-            $('#li-record').addClass('active')
-
-
-
-            'use strict'
-
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            const forms = document.querySelectorAll('.needs-validation')
-
-            // Loop over them and prevent submission
-            Array.from(forms).forEach(form => {
-                form.addEventListener('submit', event => {
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
-
-                        Swal.fire({
-                            title: "กรุณากรอกข้อมูลให้ครบถ้วน",
-                            icon: "error",
-                            confirmButtonText: "ตกลง",
-                        })
-                    } else {
-                        event.preventDefault()
-                        console.log('Ready')
-                        var images = $('#images').prop('files');
-                        console.log(images)
-
-                        var formData = new FormData();
-
-                        for (let i = 0; i < images.length; i++) {
-                            console.log(i);
-                            formData.append("files[]", $('#images').prop('files')[i]);
-                        }
-                        formData.append('data', $('#gen_record').serialize());
-                        var _token = $('meta[name="csrf-token"]').attr(
-                            'content'); // Get CSRF token from meta tag
-                        formData.append("_token", _token);
-
-
-                        $.ajax({
-                            url: '{{ route('recordData') }}',
-                            method: "post",
-                            data: formData,
-                            contentType: false,
-                            processData: false,
-                            cache: false,
-                            beforeSend: function() {
-                                Swal.fire({
-                                    title: "กำลังบันทึกข้อมูล",
-                                    icon: "info",
-                                    showConfirmButton: false,
-                                    willOpen: () => {
-                                        Swal.showLoading();
-                                    },
-                                });
-                            },
-                            success: function(data) {
-                                console.log(data);
-                                if (data.recdata && data.images) {
-                                    Swal.fire({
-                                        title: 'บันทึกข้อมูลเสร็จสิ้น',
-                                        icon: "success",
-                                        showConfirmButton: false,
-                                        timer: 1000
-                                    })
-                                } else {
-                                    Swal.fire({
-                                        title: 'ไม่สามารถบันทึกได้',
-                                        icon: "error",
-                                        showConfirmButton: false,
-                                        timer: 1000
-                                    })
-                                }
-                            }
-                        });
-
-                    }
-
-
-                    form.classList.add('was-validated')
-                }, false)
-            })
-
-
-        });
-
+    <script src="{{ asset('public/js/app.js') }}"></script>
+    <script src="{{ asset('public/js/jquery-3.7.1.min.js') }}"></script>
+    <script src="{{ asset('public/js/datatables.min.js') }}"></script>
+    <script src="{{ asset('public/js/all.min.js') }}"></script>
+    <script>
         /**
          * TODO: 12-07-2024
          * * show Preview Image
@@ -342,8 +286,8 @@
                     img.onload = function() {
                         var canvas = document.createElement('canvas');
                         var ctx = canvas.getContext('2d');
-                        var maxWidth = 1600; // Set the max width or height for the resized image
-                        var maxHeight = 1600;
+                        var maxWidth = 520; // Set the max width or height for the resized image
+                        var maxHeight = 520;
                         var width = img.width;
                         var height = img.height;
 
@@ -361,8 +305,6 @@
 
                         canvas.width = width;
                         canvas.height = height;
-                        ctx.imageSmoothingEnabled = true;
-                        ctx.imageSmoothingQuality = 'high';
                         ctx.drawImage(img, 0, 0, width, height);
 
                         var resizedImg = new Image();
@@ -371,19 +313,12 @@
                         resizedImg.addEventListener('click', function() {
                             this.classList.toggle('zoomed');
                         });
-
-                        // Style adjustments
-                        resizedImg.style.width = 'auto'; // Ensure width is auto
-                        resizedImg.style.height = 'auto'; // Ensure height is auto
-                        resizedImg.style.maxWidth = '100%'; // Optional: scale to container width
-
                         container.appendChild(resizedImg);
                     }
                 };
                 reader.readAsDataURL(file);
             });
         }
-
 
         /**
          * TODO: 16-07-2024
@@ -420,5 +355,96 @@
             (day < 10 ? "0" + day : day);
 
         document.getElementById("datenow").value = formattedDate;
+
+        /**
+         * TODO:31-07-2024
+         * *รับค่า recid เพื่อส่งค่า recid ไปหาข้อมูลและแก้ไขข้อมูล
+         * **/
+
+        function getQueryParam(param) {
+            let urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+
+
+        // Function to handle button click
+        function btnUpdateData() {
+            // Extract 'recid' from URL
+            let recid = getQueryParam('recid');
+
+            getDatapb(recid)
+
+
+        }
+
+        function getDatapb(id) {
+
+            console.log(id);
+            axios.get('{{ route('get_editform1') }}', {
+                    params: {
+                        id: id
+                    }
+                })
+
+                .then(function(response) {
+                    console.log(response);
+                    response.data.dataformfirst.map((first) => {
+                        $('#section_rec').val(first.LNCL_HREC_SECTION)
+                        $('#empid').val(first.LNCL_HREC_EMPID)
+                        $('#line').val(first.LNCL_HREC_LINE)
+                        $('#customer').val(first.LNCL_HREC_CUS)
+                        $('#won').val(first.LNCL_HREC_WON)
+                        $('#mdlcd').val(first.LNCL_HREC_MDLCD)
+                        $('#mdlnm').val(first.LNCL_HREC_MDLNM)
+                        $('#ng_code').val(first.LNCL_HREC_NGCD)
+                        $('#ng_prc').val(first.LNCL_HREC_NGPRCS)
+                        $('#qty').val(first.LNCL_HREC_QTY)
+                        $('#defict').val(first.LNCL_HREC_DEFICT)
+                        $('#percent').val(first.LNCL_HREC_PERCENT)
+                        $('#type').val(first.LNCL_HREC_RANKTYPE)
+                        $('#serial').val(first.LNCL_HREC_SERIAL)
+                        $('#ng_pst').val(first.LNCL_HREC_NGPST)
+                        $('#doc').val(first.LNCL_HREC_REFDOC)
+                        $('#problem').val(first.LNCL_HREC_PROBLEM)
+                        $('#cause').val(first.LNCL_HREC_CAUSE)
+                        $('#action').val(first.LNCL_HREC_ACTION)
+
+                    }) // Clear existing images
+                })
+        }
+
+        function update() {
+            let recid = getQueryParam('recid');
+            var images = $('#images').prop('files');
+            var formUpdate = new FormData();
+            formUpdate.append('data', $('#gen_record').serialize());
+            formUpdate.append('_token', '{{ csrf_token() }}');
+            formUpdate.append('id', recid);
+            for (let i = 0; i < images.length; i++) {
+                formUpdate.append("files[]", $('#images').prop('files')[i]);
+            }
+            //console.log(formUpdate);
+            axios.post('{{ route('updateData') }}', formUpdate)
+                .then(function(response) {
+                    console.log(response);
+                    if (response.data.update === true) {
+                        Swal.fire({
+                            title: 'อัพเดทข้อมูลสำเร็จ',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 1000
+                        }).then(function() {
+                            window.close()
+                        })
+
+                    }
+
+                })
+
+
+        }
     </script>
-@endpush
+</body>
+
+</html>

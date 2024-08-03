@@ -55,24 +55,26 @@ class ProblemController extends Controller
             'LNCL_HREC_QTY' => $formdata[10],
             'LNCL_HREC_DEFICT' => $formdata[11],
             'LNCL_HREC_PERCENT' => $formdata[12],
-            'LNCL_HREC_RANKTYPE' => $formdata[13],
-            'LNCL_HREC_NGPST' => $formdata[14],
-            'LNCL_HREC_SERIAL' => $formdata[15],
-            'LNCL_HREC_REFDOC' => $formdata[16],
-            'LNCL_HREC_PROBLEM' => $formdata[17],
-            'LNCL_HREC_CAUSE' => $formdata[18],
-            'LNCL_HREC_ACTION' => $formdata[19],
+            'LNCL_HREC_NGPST' => $formdata[13],
+            'LNCL_HREC_SERIAL' => $formdata[14],
+            'LNCL_HREC_REFDOC' => $formdata[15],
+            'LNCL_HREC_PROBLEM' => $formdata[16],
+            'LNCL_HREC_CAUSE' => $formdata[17],
+            'LNCL_HREC_ACTION' => $formdata[18],
             'LNCL_HREC_STD' => 1,
             'LNCL_HREC_DATE' => $formdata[0],
             'LNCL_HREC_LSTDT' => $currentDate,
         ];
 
+
+
         DB::table('LNCL_HREC_TBL')->insert($recPrb);
 
 
 
+
         $imagesType = 'Problem';
-        $files = file('files');
+        $files = $request->file('files');
         if ($request->hasFile('files')) {
 
             foreach ($files as $file) {
@@ -203,13 +205,13 @@ class ProblemController extends Controller
             'LNCL_HREC_QTY' => $formdata[10],
             'LNCL_HREC_DEFICT' => $formdata[11],
             'LNCL_HREC_PERCENT' => $formdata[12],
-            'LNCL_HREC_RANKTYPE' => $formdata[13],
-            'LNCL_HREC_NGPST' => $formdata[14],
-            'LNCL_HREC_SERIAL' => $formdata[15],
-            'LNCL_HREC_REFDOC' => $formdata[16],
-            'LNCL_HREC_PROBLEM' => $formdata[17],
-            'LNCL_HREC_CAUSE' => $formdata[18],
-            'LNCL_HREC_ACTION' => $formdata[19],
+
+            'LNCL_HREC_NGPST' => $formdata[13],
+            'LNCL_HREC_SERIAL' => $formdata[14],
+            'LNCL_HREC_REFDOC' => $formdata[15],
+            'LNCL_HREC_PROBLEM' => $formdata[16],
+            'LNCL_HREC_CAUSE' => $formdata[17],
+            'LNCL_HREC_ACTION' => $formdata[18],
             'LNCL_UPDATE_LSTDT' => $currentDate,
             'LNCL_UPDATE_STD' => 1,
         ];
@@ -218,6 +220,40 @@ class ProblemController extends Controller
         $updatedRows = DB::table('LNCL_HREC_TBL')
             ->where('LNCL_HREC_ID', $id)
             ->update($updatePrb);
+
+        $YM = date('Ym');
+        $imagesType = 'Problem';
+        $files = $request->file('files');
+        if ($request->hasFile('files')) {
+
+            foreach ($files as $file) {
+                $extension = $file->getClientOriginalExtension();
+                $fileName = 'IMG-' . $YM . '-' . rand(000, 999) . '.' . $extension;
+                $destinationPath = 'public/images/';
+                $file->move($destinationPath, $fileName);
+
+                $findPreviousMaxID = DB::table('LNCL_IMAGES')
+                    ->select('LNCL_IMAGES_ID')
+                    ->orderBy('LNCL_IMAGES_ID', 'DESC')
+                    ->first();
+
+                if (empty($findPreviousMaxID)) {
+                    $LNCL_IMAGES_ID = 'IMGID-' . $YM . '-000001';
+                } else {
+                    $LNCL_IMAGES_ID = AutogenerateKey('IMGID', $findPreviousMaxID->LNCL_IMAGES_ID);
+                }
+                $imageIns = [
+                    'LNCL_IMAGES_ID' => $LNCL_IMAGES_ID,
+                    'LNCL_HREC_ID' => $id,
+                    'LNCL_IMAGES_FILES' => $fileName,
+                    'LNCL_IMAGES_TYPE' => $imagesType,
+                    'LNCL_IMAGES_LSTDT' => $currentDate,
+                ];
+
+                DB::table('LNCL_IMAGES')->insert($imageIns);
+            }
+        }
+
 
         //return response()->json($updatedRows);
 

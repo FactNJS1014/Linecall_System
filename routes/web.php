@@ -5,7 +5,7 @@ use App\Http\Controllers\LeakController;
 use App\Http\Controllers\RootController;
 use App\Http\Controllers\ProblemController;
 use App\Http\Controllers\DataformController;
-
+use App\Http\Controllers\MasterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,15 +38,25 @@ Route::get('/reports', function () {
     return view('reports');
 })->name('reports');
 
+Route::get('/ProblemUpdate', function () {
+    return view('Updatedata.ProblemUpdate');
+})->name('PrbUpdate');
+
+Route::get('/WhyUpdate', function () {
+    return view('Updatedata.fiveWhy');
+})->name('whyUpdate');
+
 
 //Route::get('/images_upload',[ImageController::class , 'index'])->name('images-upload');
 
 //บันทึกข้อมูล Leak and Root 5 Why
 Route::post('/LeakRecord', [LeakController::class, 'recordLeak'])->name('recordLeak');
-Route::post('/Leak/update', [LeakController::class, 'updateLeak'])->name('updateLeak');
 Route::post('/record/data', [ProblemController::class, 'recordData'])->name('recordData');
-Route::post('/update/data', [ProblemController::class, 'updateData'])->name('updateData');
 Route::post('/Root/data', [RootController::class, 'recordRoot'])->name('recordRoot');
+Route::post('/master/data', [MasterController::class, 'insertmaster'])->name('master');
+//update data
+Route::post('/Leak/update', [LeakController::class, 'updateLeak'])->name('updateLeak');
+Route::post('/update/data', [ProblemController::class, 'updateData'])->name('updateData');
 Route::post('/Root/update', [RootController::class, 'updateRoot'])->name('updateRoot');
 
 
@@ -57,4 +67,9 @@ Route::get('/showform02', [DataformController::class, 'fetchDataRec02'])->name('
 Route::get('/showdata/record', [DataformController::class, 'fetchDataRecord'])->name('data_record');
 Route::get('/showdata/getedit1', [DataformController::class, 'getDataEditForm1'])->name('get_editform1');
 Route::get('/showdata/getedit2', [DataformController::class, 'getDataEditForm2'])->name('get_editform2');
-//Route::get('/approve' , [LeakController::class , 'fetchDataLeak'])->name('approve');
+Route::get('/showdata/report', [DataformController::class, 'fetchDataReport'])->name('data.report');
+Route::get('/masterdata', [MasterController::class, 'fetchDataMaster'])->name('data.master');
+
+//Delete data linecall
+Route::get('/delete/data', [DataformController::class, 'DeleteData'])->name('deletedata');
+Route::post('/delete/img', [DataformController::class, 'DeleteImg'])->name('deleteimg');

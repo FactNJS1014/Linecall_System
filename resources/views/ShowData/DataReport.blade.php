@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>หน้าแสดงตรวจสอบข้อมูล</title>
+    <title>หน้าแสดงรายงานข้อมูล</title>
     <link rel="stylesheet" href="{{ asset('public/css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('public/css/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('public/css/icons.css') }}">
@@ -19,7 +19,7 @@
 <body>
 
     <div class="container mt-2">
-        <h4 class="mt-3 text-center" id="textheader2">ตรวจสอบข้อมูลที่บันทึก linecall</h4>
+        <h4 class="mt-3 text-center" id="textheader2">รายงานข้อมูลแสดงผล linecall</h4>
         {{-- <div class="clock">
             <span id="day"></span>
             <span>,</span>
@@ -31,102 +31,78 @@
             <span id="sec">00</span>
         </div> --}}
 
-        <div style="background: #FFDA76;" class="p-3 mt-3 mb-3">
+        <div style="background: #EEEEEE;" class="p-3 mt-3 mb-3">
             <p class="mt-1 text-center" id="textheader3">ข้อมูลหลัก Line Call</p>
             @foreach ($documents as $document)
                 <div class="row">
-                    <div class="col-sm-4">
-                        <p style="color: #021526; font-size: 20px; font-weight: bold;">เลขที่เอกสาร:
-                            <span>{{ $document->LNCL_HREC_REFDOC }}</span>
-                        </p>
-                        <!-- Display other document fields -->
-                    </div>
-                    <div class="col-sm-4">
-                        <p style="color: #021526; font-size: 20px; font-weight: bold;">แผนก:
+
+                    <div class="col-sm-2">
+                        <p style="color: #0f4c5c; font-size: 20px; font-weight: bold;">แผนก:
                             <span>{{ $document->LNCL_HREC_SECTION }}</span>
                         </p>
                         <!-- Display other document fields -->
                     </div>
                     <div class="col-sm-4">
-                        <p style="color: #021526; font-size: 20px; font-weight: bold;">รหัสพนักงาน:
+                        <p style="color: #0f4c5c; font-size: 20px; font-weight: bold;">รหัสพนักงาน:
                             <span>{{ $document->LNCL_HREC_EMPID }}</span>
                         </p>
                         <!-- Display other document fields -->
                     </div>
                 </div>
-                <table class="table table-bordered">
+                <table class="table table-bordered nowrap" id="table-report">
                     <thead>
                         <tr>
+
+                            <th style="background: #2e363e; color: #ffee;" width="50px">เลขที่เอกสาร</th>
                             <th style="background: #2e363e; color: #ffee;">Line</th>
                             <th style="background: #2e363e; color: #ffee;">Customer</th>
                             <th style="background: #2e363e; color: #ffee;">Work Order</th>
                             <th style="background: #2e363e; color: #ffee;">Model Code</th>
                             <th style="background: #2e363e; color: #ffee;">Model Name</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #F9F3CC;">
-                                {{ $document->LNCL_HREC_LINE }}</td>
-                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #F9F3CC;">
-                                {{ $document->LNCL_HREC_CUS }}</td>
-                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #F9F3CC;">
-                                {{ $document->LNCL_HREC_WON }}</td>
-                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #F9F3CC;">
-                                {{ $document->LNCL_HREC_MDLCD }}</td>
-                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #F9F3CC;">
-                                {{ $document->LNCL_HREC_MDLNM }}</td>
-                        </tr>
-                    </tbody>
-
-
-                </table>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
                             <th style="background: #2e363e; color: #ffee;">NG Code</th>
                             <th style="background: #2e363e; color: #ffee;">NG Process</th>
                             <th style="background: #2e363e; color: #ffee;">Qty</th>
                             <th style="background: #2e363e; color: #ffee;">Defict</th>
                             <th style="background: #2e363e; color: #ffee;">Percent</th>
+                            <th style="background: #2e363e; color: #ffee;">NG Position</th>
+                            <th style="background: #2e363e; color: #ffee;">Serial Number</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #F9F3CC;">
+                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
+                                {{ $document->LNCL_HREC_REFDOC }}</td>
+                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
+                                {{ $document->LNCL_HREC_LINE }}</td>
+                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
+                                {{ $document->LNCL_HREC_CUS }}</td>
+                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
+                                {{ $document->LNCL_HREC_WON }}</td>
+                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
+                                {{ $document->LNCL_HREC_MDLCD }}</td>
+                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
+                                {{ $document->LNCL_HREC_MDLNM }}</td>
+                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
                                 {{ $document->LNCL_HREC_NGCD }}</td>
-                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #F9F3CC;">
+                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
                                 {{ $document->LNCL_HREC_NGPRCS }}</td>
-                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #F9F3CC;">
+                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
                                 {{ $document->LNCL_HREC_QTY }}</td>
-                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #F9F3CC;">
+                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
                                 {{ $document->LNCL_HREC_DEFICT }}</td>
-                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #F9F3CC;">
+                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
                                 {{ $document->LNCL_HREC_PERCENT }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th style="background: #2e363e; color: #ffee;" colspan="3">NG Position</th>
-                            <th style="background: #2e363e; color: #ffee;" colspan="2">Serial Number</th>
-
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #F9F3CC;"
-                                colspan="3">
+                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
                                 {{ $document->LNCL_HREC_NGPST }}</td>
-                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #F9F3CC;"
-                                colspan="2">
+                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
                                 {{ $document->LNCL_HREC_SERIAL }}</td>
 
                         </tr>
                     </tbody>
+
+
                 </table>
+
                 <div class="row">
                     <div class="col-md-6">
                         <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;"
@@ -246,25 +222,16 @@
                 </div>
             @endforeach
 
-            <div class="d-flex justify-content-center mt-3">
-                <button type="button" class="btn btnapprove"><i
-                        class="fa-solid fa-check-double mx-2"></i>ยืนยันการส่งอนุมัติ</button>
-                <button type="button" class="btn btnedit" onclick="gotoEdit('{{ $recid }}')"><i
-                        class="fa-solid fa-pen mx-2"></i>แก้ไขข้อมูลการบันทึก</button>
-                <button type="button" class="btn btndelete" onclick="DeleteData('{{ $recid }}')"><i
-                        class="fa-solid fa-trash mx-2"></i>ลบข้อมูลการบันทึก</button>
-                <button type="button" class="btn btndelete2" onclick="DeleteImage('{{ $recid }}')"><i
-                        class="fa-solid fa-trash mx-2"></i>ลบข้อมูลรูปภาพ</button>
-            </div>
+
         </div>
 
 
     </div>
 
     <script src="{{ asset('public/js/app.js') }}"></script>
-    <script src="{{ asset('public/js/jquery-3.7.1.min.js') }}"></script>
     <script src="{{ asset('public/js/datatables.min.js') }}"></script>
     <script src="{{ asset('public/js/all.min.js') }}"></script>
+    <script src="{{ asset('public/js/moment.js') }}"></script>
     <script>
         function ViewImage(images) {
 
@@ -285,145 +252,62 @@
 
         }
 
-        /**
-         * TODO:31-07-2024
-         * *ส่งค่า recid ไปยังหน้าที่จะแก้ไขข้อมูล
-         * **/
+        $(document).ready(function() {
+            /**
+             * TODO:02-08-2024
+             * *DataTable of table-report
+             */
 
-        function gotoEdit(id) {
-            //alert(id)
-            let html = '';
-            html +=
-                '<button class="btn btngo" onclick=\'gotoPageForm1("' + id +
-                '")\'> Go to แก้ไขฟอร์ม 1 (ข้อมูลหลัก)</button>'
-            html += '<button class="btn btngo mt-3" onclick=\'gotoPageForm2("' + id +
-                '")\'> Go to แก้ไขฟอร์ม 2 (5 Why)</button>'
+            if ($.fn.DataTable.isDataTable('table#table-report')) {
+                $('#table-report').DataTable().destroy();
+                $('#table-report tbody').empty();
+            }
+            $('#table-report').DataTable({
 
-            Swal.fire({
-                title: 'เลือกหน้าที่ต้องการแก้ไข',
-                html: html,
-                showCancelButton: true,
-                showConfirmButton: false,
+                scrollCollapse: true,
+                responsive: true,
+                info: false,
+                paging: false,
+                searching: false,
+                scrollX: true,
+                layout: {
+                    topStart: {
+                        buttons: [{
+                                extend: 'copyHtml5',
+                                text: 'Copy',
+                                className: 'btn-success',
+                                exportOptions: {
+                                    charset: 'UTF-8',
+                                    bom: true // Byte Order Mark for UTF-8
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                text: 'Excel',
+                                className: 'btn-success',
+                                exportOptions: {
+                                    charset: 'UTF-8',
+                                    bom: true // Byte Order Mark for UTF-8
+                                },
+                                title: function() {
+                                    const date = new Date();
+                                    const formattedDate = date.toISOString().slice(0,
+                                        10); // Format as YYYY-MM-DD
+                                    const dateFormat = moment(formattedDate).format('DD-MM-YYYY');
+                                    return 'รายงาน Linecall ' + dateFormat;
+                                }
+
+
+                            },
+
+                        ]
+                    }
+                },
+
+
 
             })
-        }
-
-        function gotoPageForm1(recid) {
-            axios.get('{{ route('PrbUpdate') }}?recid=' + recid)
-                .then(response => {
-                    // Handle the response
-                    window.location.href = response.request.responseURL;
-                })
-                .catch(error => {
-                    // Handle the error
-                    console.error('There was an error!', error);
-                });
-
-        }
-
-        function gotoPageForm2(recid2) {
-            axios.get('{{ route('whyUpdate') }}?recid=' + recid2)
-                .then(response => {
-                    // Handle the response
-                    window.location.href = response.request.responseURL;
-                })
-                .catch(error => {
-                    // Handle the error
-                    console.error('There was an error!', error);
-                });
-
-
-        }
-
-        DeleteData = (id) => {
-            Swal.fire({
-                    title: 'คุณต้องการลบข้อมูลใช่หรือไม่?',
-                    icon: 'warning',
-                    width: '50%',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'ยืนยัน'
-                })
-                .then((result) => {
-
-                    axios.get('{{ route('deletedata') }}', {
-                            params: {
-                                id: id
-                            }
-                        })
-                        .then(function(response) {
-
-                            Swal.fire({
-                                title: 'ลบข้อมูลสำเร็จ',
-                                icon: 'success',
-                                timer: 1500
-                            }).then(function() {
-
-                                window.close()
-
-                            })
-                        })
-
-
-
-                })
-                .catch(error => {
-                    // Handle the error
-                    Swal.fire('ไม่สามารถลบข้อมูลได้', '', 'error')
-
-                });
-
-
-
-
-
-        }
-
-        DeleteImage = (id) => {
-            let html = '';
-            html += '<form id="formtype" method="post">';
-            html += '@csrf';
-            html += '<input type="hidden" value="' + id + '" name="id" id="recid">';
-            html += '<select class="form-select form-control" id="Imgtype" name="Imgtype">';
-            html += '<option value="" selected disabled>เลือกลบรูปภาพของฟอร์มที่อยากจะลบ</option>';
-            html += '<option value="Problem">Problem</option>';
-            html += '<option value="Leak">Leak (5 why)</option>';
-            html += '<option value="Root">Root (5 why)</option>';
-            html += '</select>';
-            html += '</form>';
-
-            Swal.fire({
-                title: 'เลือกประเภทรูปภาพที่ต้องการลบ',
-                html: html,
-                showCancelButton: true,
-                showConfirmButton: true,
-                width: '50%',
-                confirmButtonText: 'ยืนยัน',
-                cancelButtonText: 'ยกเลิก',
-                preConfirm: () => {
-
-                    let select = new FormData();
-                    select.append('selectImg', $('#formtype').serialize());
-                    let type = $('#Imgtype').val();
-                    axios.post('{{ route('deleteimg') }}', select)
-                        .then(function(response) {
-                            //console.log(response);
-                            Swal.fire({
-                                title: 'ลบรูปภาพของฟอร์ม ' + type + ' สำเร็จ',
-                                icon: 'success',
-                                timer: 1500
-                            }).then(function() {
-                                location.reload()
-                            })
-                        })
-
-
-                }
-            })
-
-
-        }
+        });
     </script>
 </body>
 

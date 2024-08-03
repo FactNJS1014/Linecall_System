@@ -1,5 +1,5 @@
 @extends('template.template')
-@section('title', 'Approve Data')
+@section('title', 'Check list of Data')
 @section('content')
     <h4 id="textheader" class="text-center"><i class="fa-solid fa-check-to-slot fa-lg mx-4"></i>ส่วนอนุมัติข้อมูล Linecall</h4>
 
@@ -22,7 +22,7 @@
                 res.data.datafirst.map((show) => {
                     //console.log(show)
                     card +=
-                        '<div class="card mt-3" style="background:#8d99ae; border-color: #335c67; border-width: 3px;">';
+                        '<div class="card mt-3" style="background:#f1cb71; border-color: #335c67; border-width: 3px;">';
                     card += '<div class="p-2">'
                     card += '<table class="table table-bordered">'
                     card += '<thead>'
@@ -57,8 +57,8 @@
                     card += '</tbody>'
                     card += '</table>'
                     card += '</div>';
-                    card += '<button class="btn btnview ms-1 mb-1" onclick=\'btnviewdata("' + show
-                        .LNCL_HREC_ID + '")\'><i class="fa-solid fa-eye fa-lg mx-2"></i>ดูข้อมูล</button>';
+                    card += '<button class="btn btnviewdata ms-1 mb-1" onclick=\'btnviewdata("' + show
+                        .LNCL_HREC_ID + '")\'><i class="fa-solid fa-eye fa-lg mx-2"></i>ตรวจสอบข้อมูล</button>';
                     card += '</div>';
                 })
 

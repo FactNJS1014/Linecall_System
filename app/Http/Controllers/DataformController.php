@@ -11,15 +11,24 @@ class DataformController extends Controller
     {
         $data_01 = DB::table('LNCL_HREC_TBL')
             ->select(
+                'LNCL_HREC_EMPID',
                 'LNCL_HREC_SECTION',
-                'LNCL_HREC_MDLCD',
-                'LNCL_HREC_NGCD',
-                'LNCL_HREC_ID',
-                'LNCL_HREC_NGPST',
-                'LNCL_HREC_REFDOC',
-                'LNCL_HREC_PROBLEM',
+                'LNCL_HREC_LINE',
                 'LNCL_HREC_CUS',
                 'LNCL_HREC_WON',
+                'LNCL_HREC_MDLNM',
+                'LNCL_HREC_MDLCD',
+                'LNCL_HREC_NGCD',
+                'LNCL_HREC_NGPRCS',
+                'LNCL_HREC_NGPST',
+                'LNCL_HREC_QTY',
+                'LNCL_HREC_DEFICT',
+                'LNCL_HREC_PERCENT',
+                'LNCL_HREC_SERIAL',
+                'LNCL_HREC_REFDOC',
+                'LNCL_HREC_PROBLEM',
+                'LNCL_HREC_RANKTYPE',
+                'LNCL_HREC_ID'
             )
             ->get();
         return response()->json(['datafirst' => $data_01]);
@@ -118,5 +127,76 @@ class DataformController extends Controller
             'dataformsecond' => $data,
 
         ]);
+    }
+
+    public function DeleteData(Request $request)
+    {
+        $id = $request->input('id');
+        // Delete records from TableOne
+        DB::table('LNCL_IMAGES')
+            ->where('LNCL_HREC_ID', $id)
+            ->delete();
+        DB::table('LNCL_LEAKANDROOT_TBL')
+            ->where('LNCL_HREC_ID', $id)
+            ->delete();
+        DB::table('LNCL_HREC_TBL')
+            ->where('LNCL_HREC_ID', $id)
+            ->delete();
+    }
+    public function fetchDataReport(Request $request)
+    {
+        $recid = $request->query('rec_id');
+
+        // Fetch images with type 'Problem' and group by LNCL_HREC_ID
+        $images = DB::table('LNCL_IMAGES')
+            ->join('LNCL_HREC_TBL', 'LNCL_HREC_TBL.LNCL_HREC_ID', '=', 'LNCL_IMAGES.LNCL_HREC_ID')
+            ->select('LNCL_IMAGES.*')
+            ->where('LNCL_IMAGES.LNCL_IMAGES_TYPE', 'Problem')
+            ->where('LNCL_IMAGES.LNCL_HREC_ID', $recid)
+            ->get()
+            ->groupBy('LNCL_HREC_ID');
+
+        // Fetch documents for the specific recid
+        $documents = DB::table('LNCL_HREC_TBL')
+            ->where('LNCL_HREC_ID', $recid)
+            ->get();
+
+        $leakdoc = DB::table('LNCL_LEAKANDROOT_TBL')
+            ->where('LNCL_HREC_ID', $recid)
+            ->get();
+
+        // Fetch images with type 'Leak' and group by LNCL_HREC_ID
+        $imagesleak = DB::table('LNCL_IMAGES')
+            ->join('LNCL_HREC_TBL', 'LNCL_HREC_TBL.LNCL_HREC_ID', '=', 'LNCL_IMAGES.LNCL_HREC_ID')
+            ->select('LNCL_IMAGES.*')
+            ->where('LNCL_IMAGES.LNCL_IMAGES_TYPE', 'Leak')
+            ->where('LNCL_IMAGES.LNCL_HREC_ID', $recid)
+            ->get()
+            ->groupBy('LNCL_HREC_ID');
+
+        // Fetch images with type 'Root' and group by LNCL_HREC_ID
+        $imagesroot = DB::table('LNCL_IMAGES')
+            ->join('LNCL_HREC_TBL', 'LNCL_HREC_TBL.LNCL_HREC_ID', '=', 'LNCL_IMAGES.LNCL_HREC_ID')
+            ->select('LNCL_IMAGES.*')
+            ->where('LNCL_IMAGES.LNCL_IMAGES_TYPE', 'Root')
+            ->where('LNCL_IMAGES.LNCL_HREC_ID', $recid)
+            ->get()
+            ->groupBy('LNCL_HREC_ID');
+
+        // Pass grouped data to the view
+        return view('ShowData.DataReport', compact('images', 'documents', 'leakdoc', 'imagesleak', 'imagesroot', 'recid'));
+    }
+
+    public function DeleteImg(Request $request)
+    {
+        $formselect = $request->input('selectImg');
+        parse_str($formselect, $images);
+
+        $id = $images['id'];
+        $type = $images['Imgtype'];
+        DB::table('LNCL_IMAGES')
+            ->where('LNCL_HREC_ID', $id)
+            ->where('LNCL_IMAGES_TYPE', $type)
+            ->delete();
     }
 }

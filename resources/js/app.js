@@ -3,5 +3,6 @@ window.$ = jQuery;
 import "bootstrap";
 import Swal from "sweetalert2";
 window.Swal = Swal;
-import axios from 'axios';
+import axios from "axios";
 window.axios = axios;
+import DataTable from "datatables.net-bs5";
