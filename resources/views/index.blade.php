@@ -99,26 +99,27 @@
                         </div>
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">Customer:</label>
-                            <input type="text" name="customer" id="customer" class="form-control"
-                                placeholder="เลือกลูกค้า" required>
+                            <select name="customer" id="customer" class="form-select form-control"
+                                onchange="completeCus()" required></select>
+
                         </div>
 
                     </div>
                     <div class="row mt-2">
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">Work Order:</label>
-                            <input type="text" name="won" id="won" class="form-control"
-                                placeholder="กรอก Work-Order" required>
+                            <select name="won" id="won" class="form-select form-control" required></select>
+
                         </div>
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">Model Code:</label>
                             <input type="text" name="mdlcd" id="mdlcd" class="form-control"
-                                placeholder="กรอก Model Code" required>
+                                placeholder="กรอก Model Code" required readonly>
                         </div>
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">Model Name:</label>
                             <input type="text" name="mdlnm" id="mdlnm" class="form-control"
-                                placeholder="Model Name" required>
+                                placeholder="Model Name" required readonly>
                         </div>
 
                     </div>
@@ -130,8 +131,8 @@
                         </div>
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">NG Process:</label>
-                            <input type="text" name="ng_prc" id="ng_prc" class="form-control"
-                                placeholder="กรอก NG Process" required>
+                            <select name="ng_prc" id="ng_prc" class="form-select form-control" required></select>
+
                         </div>
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">Qty (จำนวนงานที่ผลิตทั้งหมด):</label>
@@ -150,6 +151,16 @@
                             <label class="h5" style="color: #003f88;">Percentage (%):</label>
                             <input type="text" name="percent" id="percent" class="form-control"
                                 placeholder="คิดเป็น %">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="h5" style="color: #003f88;">Rank Type:</label>
+                            <select name="rank" id="rank" class="form-select form-control" required>
+                                <option value="" selected disabled>เลือก Rank</option>
+                                <option value="A">Rank A-Special major</option>
+                                <option value="B">Rank B-Major</option>
+                                <option value="C">Rank C-Minor</option>
+
+                            </select>
                         </div>
 
                     </div>
@@ -269,7 +280,9 @@
                         var _token = $('meta[name="csrf-token"]').attr(
                             'content'); // Get CSRF token from meta tag
                         formData.append("_token", _token);
-
+                        for (var pair of formData.entries()) {
+                            console.log(pair);
+                        }
 
                         $.ajax({
                             url: '{{ route('recordData') }}',
@@ -420,5 +433,109 @@
             (day < 10 ? "0" + day : day);
 
         document.getElementById("datenow").value = formattedDate;
+
+        /**
+         * TODO:05-08-2024
+         * *แสดงข้อมูลลูกค้าจากฐานข้อมูลบน dropdown list
+         */
+
+        customer_name();
+
+        function customer_name() {
+            axios.get('{{ route('getCustomer') }}')
+                .then(function(response) {
+                    var select = $("#customer");
+                    select.empty();
+                    select.append('<option value="" selected disabled>-- เลือกลูกค้า --</option>');
+                    response.data.cus.forEach(function(customer) {
+                        // Trim spaces and ensure proper encoding
+                        var cleanedValue = customer.BGCD.trim();
+                        select.append(
+                            `<option value="${encodeURIComponent(cleanedValue)}">${cleanedValue}</option>`);
+                    });
+                })
+                .catch(function(error) {
+                    console.error(error);
+                });
+        }
+
+        /**
+         * TODO:05-08-2024
+         * *แสดงข้อมูล Process จากฐานข้อมูลบน dropdown list
+         */
+        getProcess();
+
+        function getProcess() {
+            axios.get('{{ route('getProcess') }}')
+                .then(function(response) {
+                    var select = $("#ng_prc");
+                    select.empty();
+                    select.append('<option value="" selected disabled>-- เลือก Process --</option>');
+                    response.data.processes.forEach(function(process) {
+                        // Trim spaces and ensure proper encoding
+                        var cleanedValue = process.PRO_NAME.trim();
+                        select.append(
+                            `<option value="${encodeURIComponent(cleanedValue)}">${cleanedValue}</option>`
+                        );
+                    });
+                })
+                .catch(function(error) {
+                    console.error(error);
+                });
+        }
+
+
+        /**
+         * TODO:05-08-2024
+         * *Auto dropdown after choose customer
+         */
+
+        async function completeCus() {
+            var customer = $('#customer').val();
+            var selectWon = $("#won");
+            $('#mdlcd').val('');
+            $('#mdlnm').val('');
+
+            // Fetch work orders
+            await $.ajax({
+                url: "{{ route('getWorkOrder') }}",
+                type: "GET",
+                data: {
+                    customer: customer
+                },
+                success: function(data) {
+                    selectWon.empty();
+                    selectWon.append('<option value="" selected disabled>-- เลือก Work Order --</option>');
+                    data.wo.forEach(function(work) {
+                        var cleanedWork = work.WON.trim();
+                        selectWon.append(
+                            `<option value="${encodeURIComponent(cleanedWork)}">${cleanedWork}</option>`
+                        );
+                    });
+                }
+            });
+
+            // Add change event listener to the work order dropdown
+            selectWon.on('change', function() {
+                var won = $(this).val();
+                fetchModelData(won);
+            });
+        }
+
+        async function fetchModelData(won) {
+            await $.ajax({
+                url: "{{ route('getModel') }}",
+                type: "GET",
+                data: {
+                    won: won
+                },
+                success: function(data) {
+                    if (data.models.length > 0) {
+                        $('#mdlcd').val(data.models[0].MDLCD.trim());
+                        $('#mdlnm').val(data.models[0].MDLNM.trim());
+                    }
+                }
+            });
+        }
     </script>
 @endpush

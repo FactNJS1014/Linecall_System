@@ -172,11 +172,11 @@
 
                         html += '<tr>';
                         html +=
-                            `<td style="background: #F6E96B; font-size: 20px; font-weight: 700;">${section}</td>`;
+                            `<td style="background: #f0f2ef; font-size: 20px; font-weight: 700;">${section}</td>`;
                         // Add each EMPID as a single string in its own column
                         for (let i = 0; i < maxEmpColumns; i++) {
                             html +=
-                                `<td style="background: #F6E96B; font-size: 20px; font-weight: 700;">${empIds[i] || ''}</td>`;
+                                `<td style="background: #f0f2ef; font-size: 20px; font-weight: 700;">${empIds[i] || ''}</td>`;
                         }
                         html += '</tr>';
                     });

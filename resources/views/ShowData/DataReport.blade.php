@@ -53,7 +53,7 @@
                     <thead>
                         <tr>
 
-                            <th style="background: #2e363e; color: #ffee;" width="50px">เลขที่เอกสาร</th>
+                            <th style="background: #2e363e; color: #ffee;">เลขที่เอกสาร</th>
                             <th style="background: #2e363e; color: #ffee;">Line</th>
                             <th style="background: #2e363e; color: #ffee;">Customer</th>
                             <th style="background: #2e363e; color: #ffee;">Work Order</th>
@@ -91,7 +91,7 @@
                             <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
                                 {{ $document->LNCL_HREC_DEFICT }}</td>
                             <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
-                                {{ $document->LNCL_HREC_PERCENT }}</td>
+                                {{ number_format($document->LNCL_HREC_PERCENT, 2) }}</td>
                             <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
                                 {{ $document->LNCL_HREC_NGPST }}</td>
                             <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">

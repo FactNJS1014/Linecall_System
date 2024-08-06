@@ -69,6 +69,10 @@ Route::get('/showdata/getedit1', [DataformController::class, 'getDataEditForm1']
 Route::get('/showdata/getedit2', [DataformController::class, 'getDataEditForm2'])->name('get_editform2');
 Route::get('/showdata/report', [DataformController::class, 'fetchDataReport'])->name('data.report');
 Route::get('/masterdata', [MasterController::class, 'fetchDataMaster'])->name('data.master');
+Route::get('/get/customer', [DataformController::class, 'getCustomer'])->name('getCustomer');
+Route::get('/get/workorder', [DataformController::class, 'getWorkOrder'])->name('getWorkOrder');
+Route::get('/get/model', [DataformController::class, 'getModel'])->name('getModel');
+Route::get('/get/process', [DataformController::class, 'getProcess'])->name('getProcess');
 
 //Delete data linecall
 Route::get('/delete/data', [DataformController::class, 'DeleteData'])->name('deletedata');

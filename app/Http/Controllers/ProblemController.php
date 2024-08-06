@@ -15,13 +15,15 @@ class ProblemController extends Controller
         $data =  $request->input('data');
         parse_str($data, $formdata); // Parse the serialized string into an array
 
+
+
         $explodedData = explode('&',  $data);
         $formdata = [];
         foreach ($explodedData as $value) {
             $value = explode('=', $value);
             array_push($formdata, $value[1]);
         }
-
+        //return response()->json($formdata);
 
         $YM = date('Ym');
         $LNCL_HREC_ID = '';
@@ -37,6 +39,11 @@ class ProblemController extends Controller
         } else {
             $LNCL_HREC_ID = AutogenerateKey('LNCLREC', $findPreviousMaxID->LNCL_HREC_ID);
         }
+
+        $position = rawurldecode($formdata[14]);
+        $serial = rawurldecode($formdata[15]);
+        //return response()->json($decodedData);
+        // $position = trim($formdata[13]);
 
 
         //return response()->json($fileNames);
@@ -55,12 +62,13 @@ class ProblemController extends Controller
             'LNCL_HREC_QTY' => $formdata[10],
             'LNCL_HREC_DEFICT' => $formdata[11],
             'LNCL_HREC_PERCENT' => $formdata[12],
-            'LNCL_HREC_NGPST' => $formdata[13],
-            'LNCL_HREC_SERIAL' => $formdata[14],
-            'LNCL_HREC_REFDOC' => $formdata[15],
-            'LNCL_HREC_PROBLEM' => $formdata[16],
-            'LNCL_HREC_CAUSE' => $formdata[17],
-            'LNCL_HREC_ACTION' => $formdata[18],
+            'LNCL_HREC_RANKTYPE' => $formdata[13],
+            'LNCL_HREC_NGPST' =>   $position,
+            'LNCL_HREC_SERIAL' => $serial,
+            'LNCL_HREC_REFDOC' => $formdata[16],
+            'LNCL_HREC_PROBLEM' => $formdata[17],
+            'LNCL_HREC_CAUSE' => $formdata[18],
+            'LNCL_HREC_ACTION' => $formdata[19],
             'LNCL_HREC_STD' => 1,
             'LNCL_HREC_DATE' => $formdata[0],
             'LNCL_HREC_LSTDT' => $currentDate,

@@ -199,4 +199,41 @@ class DataformController extends Controller
             ->where('LNCL_IMAGES_TYPE', $type)
             ->delete();
     }
+
+    public function getCustomer()
+    {
+        $customers = DB::table('LNCL_CUSTOMER')
+            ->select('BGCD')
+            ->get();
+        return response()->json(['cus' => $customers]);
+    }
+
+    public function getWorkOrder(Request $request)
+    {
+        $customer = urldecode($request->input('customer', ''));
+        $customer = trim($customer);
+        $workorders = DB::table('VWORKLIST2')
+            ->where('BGCD', $customer)
+            ->get();
+        return response()->json(['wo' => $workorders]);
+    }
+
+    public function getModel(Request $request)
+    {
+        $won = urldecode($request->input('won', ''));
+        $won = trim($won);
+        $models = DB::table('VWORKLIST2')
+            ->select('MDLCD', 'MDLNM')
+            ->where('WON', $won)
+            ->get();
+        return response()->json(['models' => $models]);
+    }
+
+    public function getProcess()
+    {
+        $processes = DB::table('LNCL_PROCESS')
+            ->select('PRO_NAME')
+            ->get();
+        return response()->json(['processes' => $processes]);
+    }
 }

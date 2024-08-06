@@ -102,7 +102,7 @@
                             <td style="color: #001233; font-size: 20px; font-weight: bold; background: #F9F3CC;">
                                 {{ $document->LNCL_HREC_DEFICT }}</td>
                             <td style="color: #001233; font-size: 20px; font-weight: bold; background: #F9F3CC;">
-                                {{ $document->LNCL_HREC_PERCENT }}</td>
+                                {{ number_format($document->LNCL_HREC_PERCENT, 2) }}</td>
                         </tr>
                     </tbody>
                 </table>
