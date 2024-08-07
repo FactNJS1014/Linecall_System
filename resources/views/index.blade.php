@@ -126,8 +126,7 @@
                     <div class="row mt-2">
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">NG Code:</label>
-                            <input type="text" name="ng_code" id="ng_code" class="form-control"
-                                placeholder="กรอก NG Code" required>
+                            <select name="ng_code" id="ng_code" class="form-select form-control" required></select>
                         </div>
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">NG Process:</label>
@@ -303,12 +302,14 @@
                             },
                             success: function(data) {
                                 console.log(data);
-                                if (data.recdata && data.images) {
+                                if (data.recdata && data.images && data.data) {
                                     Swal.fire({
                                         title: 'บันทึกข้อมูลเสร็จสิ้น',
                                         icon: "success",
                                         showConfirmButton: false,
                                         timer: 1000
+                                    }).then(function() {
+                                        location.reload();
                                     })
                                 } else {
                                     Swal.fire({
@@ -476,6 +477,32 @@
                         var cleanedValue = process.PRO_NAME.trim();
                         select.append(
                             `<option value="${encodeURIComponent(cleanedValue)}">${cleanedValue}</option>`
+                        );
+                    });
+                })
+                .catch(function(error) {
+                    console.error(error);
+                });
+        }
+
+        /**
+         * TODO:05-08-2024
+         * *แสดงข้อมูล ng code จากฐานข้อมูลบน dropdown list
+         */
+        getNgCode()
+
+        function getNgCode() {
+            axios.get('{{ route('getNgCode') }}')
+                .then(function(response) {
+                    var select = $("#ng_code");
+                    select.empty();
+                    select.append('<option value="" selected disabled>-- เลือก NG Codes --</option>');
+                    response.data.ngcodes.forEach(function(ng_code) {
+                        // Trim spaces and ensure proper encoding
+                        var cleanedValue = ng_code.NGCD_NAME.trim();
+                        var cleanedValue2 = ng_code.NGCD_DESC.trim();
+                        select.append(
+                            `<option value="${encodeURIComponent(cleanedValue)}">${cleanedValue}-(${cleanedValue2})</option>`
                         );
                     });
                 })

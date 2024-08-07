@@ -28,6 +28,7 @@ class ProblemController extends Controller
         $YM = date('Ym');
         $LNCL_HREC_ID = '';
         $LNCL_IMAGES_ID = '';
+        $LNCL_RECAPP = '';
 
         $findPreviousMaxID = DB::table('LNCL_HREC_TBL')
             ->select('LNCL_HREC_ID')
@@ -113,24 +114,43 @@ class ProblemController extends Controller
             }
         }
 
-        //        $fileNames = '';
-        //        if (hasFile('files')) {
-        //            $files = file('files');
-        //
-        //            foreach ($files as $file) {
-        //                $extension = $file->getClientOriginalExtension();
-        //                $fileName = 'IMG-'.$YM.'-'.rand(000,999).'.'.$extension;
-        //                $destinationPath = 'public/images/';
-        //                $file->move($destinationPath, $fileName);
-        //                $fileNames = $fileNames.$fileName.",";
-        //            }
-        //        }
-        //        $imagedb = $fileNames;
+        $master = DB::table('LNCL_APPROVE_TBL')
+            ->select('LNCL_APP_SECTION', 'LNCL_EMP_LEVEL', 'LNCL_APP_EMPID', 'LNCL_APP_ID')
+            ->where('LNCL_APP_SECTION', $formdata[1])
+            ->get();
+
+        foreach ($master as $recapp) {
+            $findPreviousMaxID = DB::table('LNCL_HREC_APP')
+                ->select('LNCL_RECAPP_ID')
+                ->orderBy('LNCL_RECAPP_ID', 'DESC')
+                ->first();
+
+            if (empty($findPreviousMaxID)) {
+                $LNCL_RECAPP = 'HAPP-' . $YM . '-000001';
+            } else {
+                $LNCL_RECAPP = AutogenerateKey('HAPP', $findPreviousMaxID->LNCL_RECAPP_ID);
+            }
+
+            $insertrecapp = [
+                'LNCL_RECAPP_ID' => $LNCL_RECAPP,
+                'LNCL_HREC_ID' => $LNCL_HREC_ID,
+                'LNCL_APP_ID' => $recapp->LNCL_APP_ID,
+                'LNCL_EMPID_RECAPP' => $recapp->LNCL_APP_EMPID,
+                'LNCL_RECAPP_EMPLV' => $recapp->LNCL_EMP_LEVEL,
+                'LNCL_RECAPP_STD' => 0,
+                'LNCL_RECAPP_LSTDT' => $currentDate,
+
+            ];
+
+            DB::table('LNCL_HREC_APP')->insert($insertrecapp);
+        }
+
 
 
         return response()->json([
             'recdata' => $recPrb,
-            'images' => $imageIns
+            'images' => $imageIns,
+            'data' => $insertrecapp
         ]);
     }
 
@@ -146,7 +166,8 @@ class ProblemController extends Controller
 
         // Fetch documents
         $documents = DB::table('LNCL_HREC_TBL')
-            ->select('LNCL_HREC_TBL.*')
+            ->join('LNCL_NGCODE', 'LNCL_HREC_TBL.LNCL_HREC_NGCD', '=', 'LNCL_NGCODE.NGCD_NAME')
+            ->select('LNCL_HREC_TBL.*', 'LNCL_NGCODE.NGCD_DESC')
             ->get();
         $leakdoc = DB::table('LNCL_LEAKANDROOT_TBL')
             ->select('LNCL_LEAKANDROOT_TBL.*')
@@ -165,13 +186,18 @@ class ProblemController extends Controller
             ->get()
             ->groupBy('LNCL_HREC_ID');
 
+        $ngcodes = DB::table('LNCL_NGCODE')
+            ->join('LNCL_HREC_TBL', 'LNCL_NGCODE.NGCD_NAME', '=', 'LNCL_HREC_TBL.LNCL_HREC_NGCD')
+            ->select('LNCL_NGCODE.NGCD_DESC')
+            ->get();
         // Pass grouped data to the view
         return view('apr_linecall', compact(
             'images',
             'documents',
             'leakdoc',
             'imagesleak',
-            'imagesroot'
+            'imagesroot',
+            'ngcodes'
         ));
     }
 

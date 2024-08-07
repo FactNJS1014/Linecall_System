@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\MUSR_TBL;
 
 class DataformController extends Controller
 {
@@ -136,6 +137,9 @@ class DataformController extends Controller
         DB::table('LNCL_IMAGES')
             ->where('LNCL_HREC_ID', $id)
             ->delete();
+        DB::table('LNCL_HREC_APP')
+            ->where('LNCL_HREC_ID', $id)
+            ->delete();
         DB::table('LNCL_LEAKANDROOT_TBL')
             ->where('LNCL_HREC_ID', $id)
             ->delete();
@@ -235,5 +239,38 @@ class DataformController extends Controller
             ->select('PRO_NAME')
             ->get();
         return response()->json(['processes' => $processes]);
+    }
+
+    public function getNgCode()
+    {
+        $ngcodes = DB::table('LNCL_NGCODE')
+            ->select('NGCD_NAME', 'NGCD_DESC')
+            ->get();
+        return response()->json(['ngcodes' => $ngcodes]);
+    }
+
+    public function getNgCode2()
+    {
+        $ngcodes = DB::table('LNCL_NGCODE')
+            ->join('LNCL_HREC_TBL', 'LNCL_NGCODE.NGCD_NAME', '=', 'LNCL_HREC_TBL.LNCL_HREC_NGCD')
+            ->select('LNCL_NGCODE.NGCD_DESC')
+            ->get();
+        return response()->json($ngcodes);
+    }
+
+    public function getMaster()
+    {
+        $masters = DB::table('LNCL_APPROVE_TBL')
+
+            ->where('LNCL_APP_SECTION', 'MT')
+            ->get();
+        return response()->json($masters);
+    }
+
+    public function getUserWeb(Request $request)
+    {
+        $empIds = $request->query('empIds', []);
+        $names = MUSR_TBL::whereIn('MUSR_ID', $empIds)->pluck('MUSR_NAME', 'MUSR_ID');
+        return response()->json($names);
     }
 }

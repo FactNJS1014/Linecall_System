@@ -30,7 +30,7 @@
             <span>:</span>
             <span id="sec">00</span>
         </div> --}}
-
+        <button class="btn btnreturn" onclick="btnback()"><i class="fa-solid fa-arrow-left mx-2"></i>Back</button>
         <div style="background: #FFDA76;" class="p-3 mt-3 mb-3">
             <p class="mt-1 text-center" id="textheader3">ข้อมูลหลัก Line Call</p>
             @foreach ($documents as $document)
@@ -253,8 +253,10 @@
                         class="fa-solid fa-pen mx-2"></i>แก้ไขข้อมูลการบันทึก</button>
                 <button type="button" class="btn btndelete" onclick="DeleteData('{{ $recid }}')"><i
                         class="fa-solid fa-trash mx-2"></i>ลบข้อมูลการบันทึก</button>
-                <button type="button" class="btn btndelete2" onclick="DeleteImage('{{ $recid }}')"><i
-                        class="fa-solid fa-trash mx-2"></i>ลบข้อมูลรูปภาพ</button>
+                {{-- <button type="button" class="btn btndelete2" onclick="DeleteImage('{{ $recid }}')"><i
+                        class="fa-solid fa-image mx-2"></i>ลบข้อมูลรูปภาพ</button> --}}
+                <button type="button" class="btn btnrej" onclick="btnrejected('{{ $recid }}')"><i
+                        class="fa-solid fa-right-left mx-2"></i>ส่งกลับไปแก้ไขใหม่</button>
             </div>
         </div>
 
@@ -298,7 +300,8 @@
                 '")\'> Go to แก้ไขฟอร์ม 1 (ข้อมูลหลัก)</button>'
             html += '<button class="btn btngo mt-3" onclick=\'gotoPageForm2("' + id +
                 '")\'> Go to แก้ไขฟอร์ม 2 (5 Why)</button>'
-
+            html += '<button class="btn btndelete2 mt-3" onclick=\'DeleteImage("' + id +
+                '")\'><i class="fa-solid fa-image mx-2"></i> ลบรูปภาพที่จะแก้ไข</button>'
             Swal.fire({
                 title: 'เลือกหน้าที่ต้องการแก้ไข',
                 html: html,
@@ -423,6 +426,38 @@
             })
 
 
+        }
+
+        btnrejected = (id) => {
+            let form = '';
+
+            form += '<form id="formtype" method="post">';
+            form += '@csrf';
+            form += '<input type="hidden" value="' + id + '" name="id" id="recid">';
+            form += '<textarea rows="2" class="form-control" placeholder="ใส่ Comment" id="comment"></textarea>';
+            form += '</form>';
+            Swal.fire({
+                title: 'กรุณาใส่ Comment',
+                html: form,
+                showCancelButton: true,
+                showConfirmButton: true,
+                width: '50%',
+                confirmButtonText: 'ยืนยันการส่งกลับ',
+                cancelButtonText: 'ยกเลิก',
+            })
+        }
+
+        btnback = () => {
+            // Redirect to the route and reload the page
+            window.location.href = '{{ route('approve') }}';
+
+            // Reload the page and then close it
+            window.location.reload();
+
+            // Close the window after reloading
+            setTimeout(() => {
+                window.close();
+            }, 100); // Adjust the timeout if needed
         }
     </script>
 </body>

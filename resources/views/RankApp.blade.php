@@ -17,50 +17,25 @@
                         <option value="" selected disabled>Choose Section</option>
                         <option value="MT">MT</option>
                         <option value="AM">AM</option>
+                        <option value="AM">QA</option>
 
                     </select>
 
 
-                    <label for="" class="h5 mt-2" style="color: #003f88;">ผู้ตรวจสอบในแผนก:</label>
-                    <select name="lv[1][]" id="lv1_app" class="form-select form-control p-2 " multiple
-                        aria-label="Multiple select example" required>
-                        <option value="" selected disabled>เลือกผู้ตรวจสอบในแผนก</option>
-                        <option value="H0001">John</option>
-                        <option value="H0002">Rock</option>
-                        <option value="H0003">Amy</option>
-                        <option value="H0004">Baller</option>
-                        <option value="H0005">Milla</option>
-                        <option value="H0006">Soona</option>
-                        <option value="H0007">Joe</option>
+                    <label for="" class="h5 mt-2" style="color: #003f88;">ผู้ตรวจสอบในแผนก:</label><br>
+                    <select name="lv[1][]" id="lv1_app" class="form-select form-control" multiple required>
+                    </select><br>
 
-                    </select>
+                    <label for="" class="h5 mt-2" style="color: #003f88;">ผู้อนุมัติในแผนก:</label><br>
+                    <select name="lv[2][]" id="lv2_app" class="form-select form-control" multiple required>
+                    </select><br>
+                    <label for="" class="h5 mt-2" style="color: #003f88;">QC Manager:</label><br>
+                    <select name="lv[3][]" id="lv3_app" class="form-select form-control " multiple required>
+                    </select><br>
 
-                    <label for="" class="h5 mt-2" style="color: #003f88;">ผู้อนุมัติในแผนก:</label>
-                    <select name="lv[2][]" id="lv1_app" class="form-select form-control p-2 " multiple
-                        aria-label="Multiple select example" required>
-                        <option value="" selected disabled>เลือกผู้อนุมัติในแผนก:</option>
-                        <option value="K0001">Koii</option>
-                        <option value="K0002">Lion</option>
-                        <option value="K0003">Tiger</option>
-                        <option value="K0004">Piglet</option>
-
-
-                    </select>
-                    <label for="" class="h5 mt-2" style="color: #003f88;">QC Manager:</label>
-                    <select name="lv[3][]" id="lv1_app" class="form-select form-control p-2 " required>
-
-                        <option value="1000222">P'Eak</option>
-
-
-                    </select>
-
-                    <label for="" class="h5 mt-2" style="color: #003f88;">QC Executive</label>
-                    <select name="lv[4][]" id="lv1_app" class="form-select form-control p-2 " required>
-
-                        <option value="1660006">P'Keng</option>
-
-
-                    </select>
+                    <label for="" class="h5 mt-2" style="color: #003f88;">QC Executive</label><br>
+                    <select name="lv[4][]" id="lv4_app" class="form-select form-control" required>
+                    </select><br>
 
 
 
@@ -86,7 +61,7 @@
                         <th style="background: #FFAF00; font-weight: 700;">Section</th>
                         <th style="background: #FFAF00; font-weight: 700;">ผู้ตรวจสอบในแผนก</th>
                         <th style="background: #FFAF00; font-weight: 700;">ผู้อนุมัติในแผนก</th>
-                        <th style="background: #FFAF00; font-weight: 700;">ผู้อนุมัติคนที่ 4</th>
+                        <th style="background: #FFAF00; font-weight: 700;">ผู้อนุมัติก่อน Final</th>
                         <th style="background: #FFAF00; font-weight: 700;">Final Approve</th>
                     </tr>
                 </thead>
@@ -127,7 +102,7 @@
                                 console.log(response)
                                 if (response.data.success) {
                                     Swal.fire({
-                                        title: 'สร้าสายอนุมัติสำเร็จ',
+                                        title: 'สร้างสายอนุมัติสำเร็จ',
                                         icon: 'success',
                                         showConfirmButton: false,
                                         timer: 1500
@@ -143,46 +118,158 @@
                 }, false)
             })
 
+            $('#lv1_app').select2({
+                dropdownCssClass: 'custom-select2'
+            })
+            $('#lv2_app').select2()
+            $('#lv3_app').select2()
+            $('#lv4_app').select2()
+
         })
         loadData();
 
         function loadData() {
             axios.get('{{ route('data.master') }}')
                 .then(function(response) {
-                    console.log(response.data.data)
                     const data = response.data.data;
 
-                    // Group data by `LNCL_APP_SECTION` and combine all `LNCL_APP_EMPID` values
+                    // Group data by LNCL_APP_SECTION and collect all LNCL_APP_EMPID values
                     const groupedData = data.reduce((acc, item) => {
                         if (!acc[item.LNCL_APP_SECTION]) {
                             acc[item.LNCL_APP_SECTION] = [];
                         }
-                        // Append EMPID values to the section
                         acc[item.LNCL_APP_SECTION].push(item.LNCL_APP_EMPID);
                         return acc;
                     }, {});
 
-                    // Determine the maximum number of EMPID columns needed
-                    const maxEmpColumns = Math.max(...Object.values(groupedData).map(ids => ids.length));
+                    // Collect all unique EMPID values
+                    const allEmpIds = [...new Set(data.flatMap(item => item.LNCL_APP_EMPID.split(',')))];
 
-                    // Prepare table rows
-                    let html = '';
-                    Object.keys(groupedData).forEach(section => {
-                        const empIds = groupedData[section];
-
-                        html += '<tr>';
-                        html +=
-                            `<td style="background: #f0f2ef; font-size: 20px; font-weight: 700;">${section}</td>`;
-                        // Add each EMPID as a single string in its own column
-                        for (let i = 0; i < maxEmpColumns; i++) {
-                            html +=
-                                `<td style="background: #f0f2ef; font-size: 20px; font-weight: 700;">${empIds[i] || ''}</td>`;
+                    // Fetch names for all EMPID values
+                    axios.get('{{ route('getUserWeb') }}', {
+                        params: {
+                            empIds: allEmpIds
                         }
-                        html += '</tr>';
+                    }).then(function(nameResponse) {
+                        const names = nameResponse.data;
+
+                        // Prepare table rows
+                        let html = '';
+                        for (const section in groupedData) {
+                            if (groupedData.hasOwnProperty(section)) {
+                                const empIds = groupedData[section];
+                                html += '<tr>';
+                                html +=
+                                    `<td style="background: #f0f2ef; font-size: 20px; font-weight: 700;">${section}</td>`;
+
+                                // Add names for each EMPID in a column
+                                empIds.forEach(empId => {
+                                    const empIdArray = empId.split(',');
+                                    const empNames = empIdArray.map(id => names[id.trim()] || id).join(
+                                        ', ');
+                                    html +=
+                                        `<td style="background: #f0f2ef; font-size: 20px; font-weight: 700;">${empNames}</td>`;
+                                });
+
+                                html += '</tr>';
+                            }
+                        }
+
+                        // Update the table body with the generated HTML
+                        $('#master_db tbody').html(html);
+                        $('#master_db').DataTable({
+                            scrollX: true,
+
+                        });
+                    }).catch(function(error) {
+                        console.error('Error fetching names:', error);
                     });
 
-                    $('#master_db tbody').html(html)
                 })
+                .catch(function(error) {
+                    console.error('Error loading data:', error);
+                });
+        }
+
+
+
+
+
+        userApp1();
+        userApp2();
+        userApp3();
+        userApp4();
+
+        function userApp1() {
+            axios.get('{{ route('getUserWeb') }}')
+                .then(function(response) {
+                    var select = $("#lv1_app");
+                    select.empty();
+                    select.append('<option value="" selected disabled>-- เลือกผู้ตรวจสอบ --</option>');
+                    response.data.users.forEach(function(user) {
+                        // Trim spaces and ensure proper encoding
+
+                        select.append(
+                            `<option value="${user.MUSR_ID}">${user.MUSR_ID} ${user.MUSR_NAME}</option>`);
+                    });
+                })
+                .catch(function(error) {
+                    console.error(error);
+                });
+        }
+
+        function userApp2() {
+            axios.get('{{ route('getUserWeb') }}')
+                .then(function(response) {
+                    var select = $("#lv2_app");
+                    select.empty();
+                    select.append('<option value="" selected disabled>-- เลือกผู้อนุมัติในแผนก --</option>');
+                    response.data.users.forEach(function(user) {
+                        // Trim spaces and ensure proper encoding
+
+                        select.append(
+                            `<option value="${user.MUSR_ID}">${user.MUSR_ID} ${user.MUSR_NAME}</option>`);
+                    });
+                })
+                .catch(function(error) {
+                    console.error(error);
+                });
+        }
+
+        function userApp3() {
+            axios.get('{{ route('getUserWeb') }}')
+                .then(function(response) {
+                    var select = $("#lv3_app");
+                    select.empty();
+                    select.append('<option value="" selected disabled>-- เลือกผู้อนุมัติ Semi-final --</option>');
+                    response.data.users.forEach(function(user) {
+                        // Trim spaces and ensure proper encoding
+
+                        select.append(
+                            `<option value="${user.MUSR_ID}">${user.MUSR_ID} ${user.MUSR_NAME}</option>`);
+                    });
+                })
+                .catch(function(error) {
+                    console.error(error);
+                });
+        }
+
+        function userApp4() {
+            axios.get('{{ route('getUserWeb') }}')
+                .then(function(response) {
+                    var select = $("#lv4_app");
+                    select.empty();
+                    select.append('<option value="" selected disabled>-- เลือกผู้อนุมัติ Final --</option>');
+                    response.data.users.forEach(function(user) {
+                        // Trim spaces and ensure proper encoding
+
+                        select.append(
+                            `<option value="${user.MUSR_ID}">${user.MUSR_ID} ${user.MUSR_NAME}</option>`);
+                    });
+                })
+                .catch(function(error) {
+                    console.error(error);
+                });
         }
     </script>
 @endpush

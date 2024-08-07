@@ -91,6 +91,21 @@ return [
             'prefix_indexes' => true,
         ],
 
+        'second_sqlsrv' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DATABASE_URL'),
+            'host' => env('SECOND_DB_HOST', '172.22.64.11'),
+            'port' => env('SECOND_DB_PORT', '1433'),
+            'database' => env('SECOND_DB_DATABASE', 'WEBSERVER'),
+            'username' => env('SECOND_DB_USERNAME', 'sa'),
+            'password' => env('SECOND_DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
+
+
+
     ],
 
     /*
@@ -123,7 +138,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
+            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_') . '_database_'),
         ],
 
         'default' => [

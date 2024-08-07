@@ -8,9 +8,9 @@
             <thead class="table-dark">
                 <tr>
                     <th>Section</th>
+                    <th>เลขที่เอกสาร</th>
                     <th>Model Code</th>
                     <th>NG Code</th>
-                    <th>NG Position</th>
                     <th>Show Form 5 Why </th>
 
                 </tr>
@@ -219,16 +219,15 @@
 
             axios.get('{{ route('data_first') }}')
                 .then(function(show) {
-                    $('#leak_rec').hide()
-                    $('#Root_rec').hide()
+
                     let html = '';
                     show.data.datafirst.map((list) => {
                         console.log(list)
                         html += '<tr id="row-' + list.LNCL_HREC_ID + '">'
                         html += '<td>' + list.LNCL_HREC_SECTION + '</td>'
+                        html += '<td>' + list.LNCL_HREC_REFDOC + '</td>'
                         html += '<td>' + list.LNCL_HREC_MDLCD + '</td>'
                         html += '<td>' + list.LNCL_HREC_NGCD + '</td>'
-                        html += '<td>' + list.LNCL_HREC_NGPST + '</td>'
                         html += '<td><button class="btn btnview" onclick=\'btnview("' + list
                             .LNCL_HREC_ID + '","' + list.LNCL_HREC_SECTION +
                             '")\'><i class="fa-solid fa-eye fa-lg mx-2"></i>View Form</button></td>'

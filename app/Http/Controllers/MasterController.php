@@ -51,6 +51,8 @@ class MasterController extends Controller
         return response()->json(['success' => $insertmst]);
     }
 
+
+
     public function fetchDataMaster()
     {
         $data_master = DB::table('LNCL_APPROVE_TBL')

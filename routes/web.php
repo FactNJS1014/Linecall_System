@@ -73,6 +73,11 @@ Route::get('/get/customer', [DataformController::class, 'getCustomer'])->name('g
 Route::get('/get/workorder', [DataformController::class, 'getWorkOrder'])->name('getWorkOrder');
 Route::get('/get/model', [DataformController::class, 'getModel'])->name('getModel');
 Route::get('/get/process', [DataformController::class, 'getProcess'])->name('getProcess');
+Route::get('/get/ngcode', [DataformController::class, 'getNgCode'])->name('getNgCode');
+Route::get('/get/ngcode2', [DataformController::class, 'getNgCode2']);
+Route::get('/get/master', [DataformController::class, 'getMaster']);
+Route::get('/get/user', [DataformController::class, 'getUserWeb'])->name('getUserWeb');
+
 
 //Delete data linecall
 Route::get('/delete/data', [DataformController::class, 'DeleteData'])->name('deletedata');

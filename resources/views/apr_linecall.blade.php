@@ -22,42 +22,32 @@
                 res.data.datafirst.map((show) => {
                     //console.log(show)
                     card +=
-                        '<div class="card mt-3" style="background:#f1cb71; border-color: #335c67; border-width: 3px;">';
+                        '<div class="card mt-3" style="background:#fcf6bd; border-color: #335c67; border-width: 3px;">';
                     card += '<div class="p-2">'
-                    card += '<table class="table table-bordered">'
-                    card += '<thead>'
-                    card += '<tr>'
-                    card +=
-                        '<th style="background: #2b2d42; color: #fff; font-size: 22px; font-weight: bold;">เลขที่เอกสาร</th>'
-                    card +=
-                        '<th style="background: #2b2d42; color: #fff; font-size: 22px; font-weight: bold;">Model Code</th>'
-                    card +=
-                        '<th style="background: #2b2d42; color: #fff; font-size: 22px; font-weight: bold;">Customer</th>'
-                    card += '</tr>'
-                    card += '</thead>'
-                    card += '<tbody>'
-                    card += '<tr>'
-                    card += '<td style="font-size: 22px; font-weight: bold;">' + show.LNCL_HREC_REFDOC + '</td>'
-                    card += '<td style="font-size: 22px; font-weight: bold;">' + show.LNCL_HREC_MDLCD + '</td>'
-                    card += '<td style="font-size: 22px; font-weight: bold;">' + show.LNCL_HREC_CUS + '</td>'
-                    card += '</tr>'
-                    card += '</tbody>'
-                    card += '<thead>'
-                    card += '<tr>'
-                    card +=
-                        '<th colspan="3" style="background: #2b2d42; color: #fff; font-size: 22px; font-weight: bold;">Problem</th>'
-                    card += '</tr>'
-                    card += '</thead>'
-                    card += '<tbody>'
-                    card += '<tr>'
-                    card +=
-                        '<td colspan="3"><textarea class="form-control" rows="3" style="font-size: 22px; font-weight: bold;">' +
-                        show.LNCL_HREC_PROBLEM + '</textarea></td>'
-                    card += '</tr>'
-                    card += '</tbody>'
-                    card += '</table>'
+                    card += '<div class="card-body" style="background:#fff;">'
+                    card += '<div class="row" >'
+                    card += '<div class="col-md-4">'
+                    card += '<p class="textdata">เลขที่เอกสาร: <span class="data">' + show.LNCL_HREC_REFDOC +
+                        '</span></p>'
                     card += '</div>';
-                    card += '<button class="btn btnviewdata ms-1 mb-1" onclick=\'btnviewdata("' + show
+                    card += '<div class="col-md-4">'
+                    card += '<p class="textdata">Model Code: <span class="data">' + show.LNCL_HREC_MDLCD +
+                        '</span></p>'
+                    card += '</div>';
+                    card += '<div class="col-md-4">'
+                    card += '<p class="textdata">NG Code: <span class="data">' + show.LNCL_HREC_NGCD +
+                        '</span></p>'
+                    card += '</div>';
+                    card += '</div>';
+                    card += '<div class="row" >'
+                    card += '<div class="col">'
+                    card += '<p class="textdata">ปัญหาที่พบ: <span class="data">' + show.LNCL_HREC_PROBLEM +
+                        '</span></p>'
+                    card += '</div>';
+                    card += '</div>';
+                    card += '</div>';
+                    card += '</div>';
+                    card += '<button class="btn btnview ms-2 mb-2" onclick=\'btnviewdata("' + show
                         .LNCL_HREC_ID + '")\'><i class="fa-solid fa-eye fa-lg mx-2"></i>ตรวจสอบข้อมูล</button>';
                     card += '</div>';
                 })
@@ -69,7 +59,7 @@
             console.log(rec_id)
             const url = `{{ route('data_record') }}?rec_id=${rec_id}`;
             window.open(url, '_blank');
-
+            location.reload()
         }
     </script>
 @endpush

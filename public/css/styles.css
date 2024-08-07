@@ -10,12 +10,13 @@ body {
     background: #dfe6e9;
     list-style-type: none;
 }
-#textheader{
+
+#textheader {
     background: #2e363e;
     padding: 20px;
     border-radius: 5px;
     font-size: 20px;
-    font-weight: 600 ;
+    font-weight: 600;
     color: #fff;
 }
 
@@ -46,7 +47,7 @@ li {
     transition: all 0.35s ease-in-out;
     box-shadow: 0 0 35px 0 rgba(49, 57, 66, 0.5);
     z-index: 1111;
-    background: #FCDC94;
+    background: #f1cb71;
 
 
 
@@ -70,7 +71,7 @@ li {
 
 
 
-hr{
+hr {
     color: #000;
     padding: 5px;
 }
@@ -82,7 +83,7 @@ hr{
 
 .sidebar-logo a {
     color: #1d3557;
-    font-size: 1.35rem;
+    font-size: 19px;
     font-weight: 800;
     font-family: "Mali", cursive;
 }
@@ -107,13 +108,14 @@ a.sidebar-link {
 
 }
 
-a.sidebar-link:hover{
+a.sidebar-link:hover {
     background: #fff;
     color: #ffb703;
 }
-.sidebar-link.active{
+
+.sidebar-link.active {
     background: #fff;
-    color: #0a9396;
+    color: #06D001;
 
 }
 
@@ -150,10 +152,12 @@ a.sidebar-link:hover{
     }
 
 }
-.navbar-toggler-icon{
+
+.navbar-toggler-icon {
     color: #031D44;
 }
-.card{
+
+.card {
     background: #f1cb71;
 
 }
@@ -167,88 +171,104 @@ a.sidebar-link:hover{
 /*    display: block;*/
 /*}*/
 
-.card-header{
+.card-header {
     font-weight: 600;
     background: #2e363e;
     color: #fff;
 }
 
-.btn.nextbtn{
+.btn.nextbtn {
     color: #00509d;
     font-weight: bold;
 }
-.btn.nextbtn:hover{
+
+.btn.nextbtn:hover {
     background: #0582ca;
     color: #fff;
 }
-.btn.backbtn{
+
+.btn.backbtn {
     color: #22223b;
     font-weight: bold;
 }
+
 .h5 {
     font-weight: 800;
     border-radius: 5px;
     width: auto;
     padding: 5px;
 }
-.btn.submitbtn{
+
+.btn.submitbtn {
     color: #d8f3dc;
     background: #081c15;
-    font-weight: 600 ;
+    font-weight: 600;
     width: 200px;
+    font-size: 16px;
 }
-.btn.submitbtn:hover{
+
+.btn.submitbtn:hover {
     color: #081c15;
     background: #d8f3dc;
 }
 
-select,option{
-    font-weight: 600 ;
+select,
+option {
+    font-weight: 600;
 }
 
-.form-select{
+.form-select {
     font-size: 20px;
-    font-weight: 600 ;
+    font-weight: 600;
 }
 
-input[type=text],input[type=number]{
+input[type=text],
+input[type=number] {
     font-size: 20px;
-    font-weight: 600 ;
+    font-weight: 600;
 
 
 }
 
-table thead th{
+table thead th {
     font-size: 22px;
-    font-weight: 600 ;
+    font-weight: 600;
     padding: 5px;
     background: #22577a;
     color: #fff;
 }
 
-.text-header{
+.text-header {
     font-size: 22px;
-    font-weight: 600 ;
+    font-weight: 600;
 }
 
 #imagePreview {
     display: none;
     max-width: 200px;
     max-height: 200px;
-    cursor: pointer; /* Indicate that the image is clickable */
-    transition: transform 0.25s ease, top 0.25s ease, left 0.25s ease; /* Smooth zoom transition */
-    position: relative; /* Needed for absolute positioning when zoomed */
+    cursor: pointer;
+    /* Indicate that the image is clickable */
+    transition: transform 0.25s ease, top 0.25s ease, left 0.25s ease;
+    /* Smooth zoom transition */
+    position: relative;
+    /* Needed for absolute positioning when zoomed */
     margin-top: 10px;
 }
 
 #imagePreview.zoomed {
-    transform: scale(2); /* Scale up the image */
+    transform: scale(2);
+    /* Scale up the image */
     top: 50%;
     left: 60%;
-    transform: translate(-50%, -50%) scale(2); /* Center the image and zoom */
-    position: fixed; /* Overlay on the entire screen */
-    z-index: 1000; /* Ensure it is on top */
+    transform: translate(-50%, -50%) scale(2);
+    /* Center the image and zoom */
+    position: fixed;
+    /* Overlay on the entire screen */
+    z-index: 1000;
+    /* Ensure it is on top */
 }
+
 .image-container {
     display: flex;
     flex-wrap: wrap;
@@ -257,41 +277,52 @@ table thead th{
     width: 300px;
 }
 
-#section_master , #lv1_app , #emp_last{
-    width: 150%;
+#section_master,
+#lv1_app,
+#lv2_app,
+#lv3_app,
+#lv4_app,
+#emp_last {
+    width: 500px;
+
+
 }
 
-#form-content{
+#form-content {
     margin-left: 30%;
 }
 
-.btn.savebtn{
+.btn.savebtn {
     background: #2e363e;
     color: #fff;
     font-weight: 700;
     width: 200px;
+    font-size: 16px;
 }
 
-.btn.savebtn:hover{
+.btn.savebtn:hover {
     background: #eda836;
     color: #000;
 }
 
-.input-check{
+.input-check {
     padding: 10px;
 }
 
-.form-check{
+.form-check {
     font-weight: 600;
 }
 
 
 
-.btn.masterbtn{
+.btn.masterbtn {
     background: #2e363e;
     color: #fff;
+    font-weight: 700;
+    font-size: 16px;
 }
-.btn.masterbtn:hover{
+
+.btn.masterbtn:hover {
     background: #0582ca;
     color: #fff;
 }
@@ -308,6 +339,7 @@ table thead th{
     max-height: 90%;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
+
 .overlay {
     position: fixed;
     top: 0;
@@ -318,118 +350,138 @@ table thead th{
     z-index: 999;
 }
 
-.btnsuccess{
+.btnsuccess {
     padding: 10px;
     width: 120px;
     background: #2e8b57;
     font-weight: 700;
     color: #fff;
+    font-size: 16px;
 }
-.btnsuccess:hover{
+
+.btnsuccess:hover {
     background: #fff;
     color: #2e8b57;
 }
-.btnreject{
+
+.btnreject {
     padding: 10px;
     width: 200px;
     background: #e63946;
     font-weight: 700;
     color: #fff;
+    font-size: 16px;
 }
-.btnreject:hover{
+
+.btnreject:hover {
     background: #fff;
     color: #e63946;
 }
 
-.btnview{
+.btnview {
     padding: 10px;
     width: 200px;
     background: #014f86;
     font-weight: 700;
     color: #fff;
+    font-size: 16px;
 }
-.btnview:hover{
+
+.btnview:hover {
     background: #fff;
     color: #014f86;
 }
-#textheader2{
+
+#textheader2 {
     background: #2e363e;
     padding: 20px;
     border-radius: 5px;
     font-size: 20px;
-    font-weight: 700 ;
+    font-weight: 700;
     color: #ffee;
 }
-#textheader3{
+
+#textheader3 {
     background: #ffbf69;
     padding: 15px;
     border-radius: 5px;
     font-size: 20px;
-    font-weight: 700 ;
+    font-weight: 700;
     color: #000;
 }
 
-#text1{
+#text1 {
     font-size: 22px;
-    font-weight: 700 ;
+    font-weight: 700;
     color: #021526;
 
 }
 
-.btn.btnapprove{
+.btn.btnapprove {
     background: #27AA80;
     color: #fff;
     font-weight: 700;
+    font-size: 16px;
 
 }
-.btn.btnapprove:hover{
+
+.btn.btnapprove:hover {
     background: #fff;
     color: #27AA80;
 }
-.btn.btnedit{
+
+.btn.btnedit {
     background: #FF8400;
     color: #000;
     font-weight: 700;
     margin-left: 5px;
+    font-size: 16px;
 
 }
-.btn.btnedit:hover{
+
+.btn.btnedit:hover {
     background: #fff;
     color: #FF8400;
 }
-.btn.btndelete{
+
+.btn.btndelete {
     background: #FF204E;
     color: #fff;
     font-weight: 700;
     margin-left: 5px;
+    font-size: 16px;
 
 }
-.btn.btndelete:hover{
+
+.btn.btndelete:hover {
     background: #fff;
     color: #FF204E;
 }
 
-.btn.btngo{
+.btn.btngo {
     background: #FFA500;
     color: #000;
     font-weight: 700;
+    font-size: 16px;
 }
-.btn.btngo:hover{
+
+.btn.btngo:hover {
     background: #fff;
     color: #FFA500;
 }
 
-.btn.btnviewdata{
+.btn.btnviewdata {
     background: #e71d36;
     color: #ffeeee;
     font-weight: 700;
 }
-.btn.btnviewdata:hover{
+
+.btn.btnviewdata:hover {
     background: #fff;
     color: #e71d36;
 }
 
-.clock{
+.clock {
     font-size: 40px;
     font-weight: 700;
     color: #fff;
@@ -440,44 +492,65 @@ table thead th{
     text-align: center;
 }
 
-.btnviewdata{
+.btnviewdata {
     padding: 10px;
     width: 200px;
-    background: #E71414;
+    background: #118ab2;
     font-weight: 700;
     color: #fff;
-}
-.btnviewdata:hover{
-    background: #fff;
-    color: #E71414;
+    font-size: 16px;
 }
 
-.btnviewrep{
+.btnviewdata:hover {
+    background: #fff;
+    color: #118ab2;
+}
+
+.btnrej {
+    padding: 10px;
+    width: 250px;
+    background: #a4161a;
+    font-weight: 700;
+    color: #fff;
+    font-size: 16px;
+    margin-left: 5px;
+}
+
+.btnrej:hover {
+    background: #fff;
+    color: #a4161a;
+}
+
+.btnviewrep {
     padding: 10px;
     width: 200px;
     background: #172774;
     font-weight: 700;
     color: #fff;
+    font-size: 16px;
 }
-.btnviewrep:hover{
+
+.btnviewrep:hover {
     background: #fff;
     color: #172774;
 }
-#card-data{
+
+#card-data {
     background: #fff;
 
 }
 
-.textdata{
+.textdata {
     font-size: 22px !important;
     font-weight: 600 !important;
 }
 
-.data{
+.data {
     font-size: 20px !important;
     font-weight: 700 !important;
     color: #0f4c5c;
 }
+
 .btn-success {
     --bs-btn-color: #000;
     --bs-btn-bg: #f8f9fa;
@@ -495,34 +568,65 @@ table thead th{
     --bs-btn-disabled-border-color: #198754;
 }
 
-.btnviewData{
+.btnviewData {
     padding: 10px;
     width: 300px;
     background: #007bff;
     color: #fff;
     font-weight: 700;
+    font-size: 16px;
 }
-.btnviewData:hover{
+
+.btnviewData:hover {
     background: #fff;
     color: #007bff;
 }
 
-.btn.btndelete2{
+.btn.btndelete2 {
     background: #d00000;
     color: #fff;
     font-weight: 700;
     margin-left: 5px;
+    font-size: 18px;
 
 }
-.btn.btndelete2:hover{
+
+.btn.btndelete2:hover {
     background: #fff;
     color: #d00000;
 }
 
+#leak_rec {
+    display: none;
+}
 
+#Root_rec {
+    display: none;
+}
 
+#comment {
+    font-size: 20px;
+    font-weight: 700;
+    color: #000;
+}
 
+.btnreturn {
+    padding: 10px;
+    width: 100px;
+    background: #007bff;
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+}
 
+#master_db,
+thead {
+    width: 100%;
+}
 
-
-
+.custom-select2 .select2-selection {
+    font-size: 16px;
+    /* Adjust the font size as needed */
+    padding: 10px;
+    /* Adjust the padding as needed */
+}

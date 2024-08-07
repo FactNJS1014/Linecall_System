@@ -27,3 +27,6 @@ Route::get('/showdata/record', [DataformController::class, 'fetchDataRecord'])->
 Route::get('/showdata/getedit1', [DataformController::class, 'getDataEditForm1'])->name('get_editform1');
 Route::get('/delete/image', [DataformController::class, 'DeleteData'])->name('deletedata');
 Route::get('/delete/leak', [DataformController::class, 'DeleteData2'])->name('deletedata2');
+Route::get('/get/ngcode2', [DataformController::class, 'getNgCode2']);
+Route::get('/get/master', [DataformController::class, 'getMaster']);
+Route::get('/get/user', [DataformController::class, 'getUserWeb'])->name('getUserWeb');
