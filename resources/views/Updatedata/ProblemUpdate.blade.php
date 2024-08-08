@@ -45,7 +45,7 @@
                                 <option value="" selected disabled>เลือกแผนก</option>
                                 <option value="MT">MT</option>
                                 <option value="AM">AM</option>
-
+                                <option value="QA">QA</option>
                             </select>
                         </div>
 
@@ -172,11 +172,12 @@
                                 placeholder="คิดเป็น %">
                         </div>
                         <div class="col-md-4">
-                            <label class="h5" style="color: #003f88;">Choose Rank</label>
-                            <select name="type" id="type" class="form-select form-control" required>
+                            <label class="h5" style="color: #003f88;">Rank NG Code Type:</label>
+                            <select name="rank" id="rank" class="form-select form-control">
                                 <option value="" selected disabled>เลือก Rank</option>
-                                <option value="A">Rank A</option>
-                                <option value="B">Rank B</option>
+                                <option value="A">Rank A-Special major</option>
+                                <option value="B">Rank B-Major</option>
+                                <option value="C">Rank C-Minor</option>
 
                             </select>
                         </div>
@@ -408,7 +409,7 @@
                         $('#problem').val(first.LNCL_HREC_PROBLEM)
                         $('#cause').val(first.LNCL_HREC_CAUSE)
                         $('#action').val(first.LNCL_HREC_ACTION)
-
+                        $('#rank').val(first.LNCL_HREC_RANKTYPE)
                     }) // Clear existing images
                 })
         }

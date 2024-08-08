@@ -24,6 +24,7 @@
                                 <option value="" selected disabled>เลือกแผนก</option>
                                 <option value="MT">MT</option>
                                 <option value="AM">AM</option>
+                                <option value="QA">QA</option>
 
                             </select>
                         </div>
@@ -152,8 +153,8 @@
                                 placeholder="คิดเป็น %">
                         </div>
                         <div class="col-md-4">
-                            <label class="h5" style="color: #003f88;">Rank Type:</label>
-                            <select name="rank" id="rank" class="form-select form-control" required>
+                            <label class="h5" style="color: #003f88;">Rank NG Code Type:</label>
+                            <select name="rank" id="rank" class="form-select form-control">
                                 <option value="" selected disabled>เลือก Rank</option>
                                 <option value="A">Rank A-Special major</option>
                                 <option value="B">Rank B-Major</option>

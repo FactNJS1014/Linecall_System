@@ -17,7 +17,7 @@
                         <option value="" selected disabled>Choose Section</option>
                         <option value="MT">MT</option>
                         <option value="AM">AM</option>
-                        <option value="AM">QA</option>
+                        <option value="QA">QA</option>
 
                     </select>
 
@@ -72,6 +72,8 @@
 
             </table>
         </div>
+
+
     </div>
 @endsection
 
@@ -118,9 +120,7 @@
                 }, false)
             })
 
-            $('#lv1_app').select2({
-                dropdownCssClass: 'custom-select2'
-            })
+            $('#lv1_app').select2()
             $('#lv2_app').select2()
             $('#lv3_app').select2()
             $('#lv4_app').select2()
@@ -146,7 +146,7 @@
                     const allEmpIds = [...new Set(data.flatMap(item => item.LNCL_APP_EMPID.split(',')))];
 
                     // Fetch names for all EMPID values
-                    axios.get('{{ route('getUserWeb') }}', {
+                    axios.get('{{ route('getUsershow') }}', {
                         params: {
                             empIds: allEmpIds
                         }
@@ -206,7 +206,7 @@
                     var select = $("#lv1_app");
                     select.empty();
                     select.append('<option value="" selected disabled>-- เลือกผู้ตรวจสอบ --</option>');
-                    response.data.users.forEach(function(user) {
+                    response.data.us.forEach(function(user) {
                         // Trim spaces and ensure proper encoding
 
                         select.append(
@@ -224,7 +224,7 @@
                     var select = $("#lv2_app");
                     select.empty();
                     select.append('<option value="" selected disabled>-- เลือกผู้อนุมัติในแผนก --</option>');
-                    response.data.users.forEach(function(user) {
+                    response.data.us.forEach(function(user) {
                         // Trim spaces and ensure proper encoding
 
                         select.append(
@@ -242,7 +242,7 @@
                     var select = $("#lv3_app");
                     select.empty();
                     select.append('<option value="" selected disabled>-- เลือกผู้อนุมัติ Semi-final --</option>');
-                    response.data.users.forEach(function(user) {
+                    response.data.us.forEach(function(user) {
                         // Trim spaces and ensure proper encoding
 
                         select.append(
@@ -260,7 +260,7 @@
                     var select = $("#lv4_app");
                     select.empty();
                     select.append('<option value="" selected disabled>-- เลือกผู้อนุมัติ Final --</option>');
-                    response.data.users.forEach(function(user) {
+                    response.data.us.forEach(function(user) {
                         // Trim spaces and ensure proper encoding
 
                         select.append(

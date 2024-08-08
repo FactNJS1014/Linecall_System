@@ -23,6 +23,8 @@ class ProblemController extends Controller
             $value = explode('=', $value);
             array_push($formdata, $value[1]);
         }
+
+
         //return response()->json($formdata);
 
         $YM = date('Ym');
@@ -43,6 +45,10 @@ class ProblemController extends Controller
 
         $position = rawurldecode($formdata[14]);
         $serial = rawurldecode($formdata[15]);
+        $refdoc = rawurldecode($formdata[16]);
+        $problem = rawurldecode($formdata[17]);
+        $cause = rawurldecode($formdata[18]);
+        $action = rawurldecode($formdata[19]);
         //return response()->json($decodedData);
         // $position = trim($formdata[13]);
 
@@ -66,13 +72,14 @@ class ProblemController extends Controller
             'LNCL_HREC_RANKTYPE' => $formdata[13],
             'LNCL_HREC_NGPST' =>   $position,
             'LNCL_HREC_SERIAL' => $serial,
-            'LNCL_HREC_REFDOC' => $formdata[16],
-            'LNCL_HREC_PROBLEM' => $formdata[17],
-            'LNCL_HREC_CAUSE' => $formdata[18],
-            'LNCL_HREC_ACTION' => $formdata[19],
+            'LNCL_HREC_REFDOC' => $refdoc,
+            'LNCL_HREC_PROBLEM' => $problem,
+            'LNCL_HREC_CAUSE' => $cause,
+            'LNCL_HREC_ACTION' => $action,
             'LNCL_HREC_STD' => 1,
             'LNCL_HREC_DATE' => $formdata[0],
             'LNCL_HREC_LSTDT' => $currentDate,
+            'LNCL_HREC_TRACKING' => 0
         ];
 
 
@@ -226,7 +233,20 @@ class ProblemController extends Controller
         // }
         //return response()->json($formdata);
         // Prepare the data for update
+        $position = rawurldecode($formdata[14]);
+        $serial = rawurldecode($formdata[15]);
+        $problem = rawurldecode($formdata[17]);
+        $cause = rawurldecode($formdata[18]);
+        $action = rawurldecode($formdata[19]);
+        $refdoc = rawurldecode($formdata[16]);
+        //return response()->json($decodedData);
+        // $position = trim($formdata[13]);
+
+
+        //return response()->json($fileNames);
+
         $updatePrb = [
+            'LNCL_HREC_ID' => $id,
             'LNCL_HREC_SECTION' => $formdata[1],
             'LNCL_HREC_EMPID' => $formdata[2],
             'LNCL_HREC_LINE' => $formdata[3],
@@ -239,15 +259,15 @@ class ProblemController extends Controller
             'LNCL_HREC_QTY' => $formdata[10],
             'LNCL_HREC_DEFICT' => $formdata[11],
             'LNCL_HREC_PERCENT' => $formdata[12],
-
-            'LNCL_HREC_NGPST' => $formdata[13],
-            'LNCL_HREC_SERIAL' => $formdata[14],
-            'LNCL_HREC_REFDOC' => $formdata[15],
-            'LNCL_HREC_PROBLEM' => $formdata[16],
-            'LNCL_HREC_CAUSE' => $formdata[17],
-            'LNCL_HREC_ACTION' => $formdata[18],
-            'LNCL_UPDATE_LSTDT' => $currentDate,
+            'LNCL_HREC_RANKTYPE' => $formdata[13],
+            'LNCL_HREC_NGPST' =>   $position,
+            'LNCL_HREC_SERIAL' => $serial,
+            'LNCL_HREC_REFDOC' => $refdoc,
+            'LNCL_HREC_PROBLEM' => $problem,
+            'LNCL_HREC_CAUSE' => $cause,
+            'LNCL_HREC_ACTION' => $action,
             'LNCL_UPDATE_STD' => 1,
+            'LNCL_UPDATE_LSTDT' => $currentDate,
         ];
 
         // Perform the update operation

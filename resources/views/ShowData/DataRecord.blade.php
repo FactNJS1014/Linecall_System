@@ -32,7 +32,7 @@
         </div> --}}
         <button class="btn btnreturn" onclick="btnback()"><i class="fa-solid fa-arrow-left mx-2"></i>Back</button>
         <div style="background: #FFDA76;" class="p-3 mt-3 mb-3">
-            <p class="mt-1 text-center" id="textheader3">ข้อมูลหลัก Line Call</p>
+            <p class="mt-1 text-center" id="textheader3">ตรวจสอบข้อมูลหลัก Line Call</p>
             @foreach ($documents as $document)
                 <div class="row">
                     <div class="col-sm-4">
@@ -109,6 +109,7 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
+
                             <th style="background: #2e363e; color: #ffee;" colspan="3">NG Position</th>
                             <th style="background: #2e363e; color: #ffee;" colspan="2">Serial Number</th>
 
@@ -166,7 +167,7 @@
                 </div>
             @endforeach
 
-            <p class="mt-3 text-center" id="textheader3">ข้อมูลปัญหา 5 Why ของ Leak Problem</p>
+            <p class="mt-3 text-center" id="textheader3">ตรวจสอบข้อมูลปัญหา 5 Why ของ Leak Problem</p>
             @foreach ($leakdoc as $leak)
                 <div class="row">
                     <div class="col-md-4">

@@ -267,7 +267,13 @@ class DataformController extends Controller
         return response()->json($masters);
     }
 
-    public function getUserWeb(Request $request)
+    public function getUserWeb()
+    {
+        $users = MUSR_TBL::all();
+        return response()->json(['us' => $users]);
+    }
+
+    public function showUsername(Request $request)
     {
         $empIds = $request->query('empIds', []);
         $names = MUSR_TBL::whereIn('MUSR_ID', $empIds)->pluck('MUSR_NAME', 'MUSR_ID');

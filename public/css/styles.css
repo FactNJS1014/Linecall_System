@@ -524,15 +524,22 @@ table thead th {
 .btnviewrep {
     padding: 10px;
     width: 200px;
-    background: #172774;
+    background: none;
     font-weight: 700;
-    color: #fff;
+    color: #172774;
     font-size: 16px;
 }
 
 .btnviewrep:hover {
-    background: #fff;
-    color: #172774;
+    background-image: linear-gradient(90deg, #53cbef 0%, #dcc66c 50%, #ffa3b6 75%, #53cbef 100%);
+    animation: slidernbw 5s linear infinite;
+    color: #000;
+}
+
+@keyframes slidernbw {
+    to {
+        background-position: 20vw;
+    }
 }
 
 #card-data {
@@ -624,9 +631,22 @@ thead {
     width: 100%;
 }
 
-.custom-select2 .select2-selection {
-    font-size: 16px;
-    /* Adjust the font size as needed */
-    padding: 10px;
-    /* Adjust the padding as needed */
+.card {
+    border-radius: 5px !important;
+}
+
+.text-head {
+    color: #172774;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: #EDEDED;
+    padding: 5px;
+}
+
+.text-content {
+    font-size: 18px;
+    font-weight: bold;
+    color: #172774;
+    padding: 5px;
+
 }

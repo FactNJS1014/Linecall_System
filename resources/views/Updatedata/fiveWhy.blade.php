@@ -41,7 +41,7 @@
                         <option value="" selected disabled>เลือกแผนก</option>
                         <option value="MT">MT</option>
                         <option value="AM">AM</option>
-
+                        <option value="QA">QA</option>
                     </select>
                 </div>
             </div>

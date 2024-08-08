@@ -77,6 +77,7 @@ Route::get('/get/ngcode', [DataformController::class, 'getNgCode'])->name('getNg
 Route::get('/get/ngcode2', [DataformController::class, 'getNgCode2']);
 Route::get('/get/master', [DataformController::class, 'getMaster']);
 Route::get('/get/user', [DataformController::class, 'getUserWeb'])->name('getUserWeb');
+Route::get('/get/showuser', [DataformController::class, 'showUsername'])->name('getUsershow');
 
 
 //Delete data linecall
