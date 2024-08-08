@@ -38,6 +38,7 @@ class MasterController extends Controller
                 $insertmst = [
                     'LNCL_APP_ID' => $LNCL_APP,  // Sequence based on input number
                     'LNCL_APP_SECTION' => $master['section_master'],
+                    'LNCL_RANKTYPE' => $master['rank'],
                     'LNCL_EMP_LEVEL' => $sequence,
                     'LNCL_APP_EMPID' => $ids,
                     'LNCL_CREATE_STD' => 1,
@@ -56,7 +57,7 @@ class MasterController extends Controller
     public function fetchDataMaster()
     {
         $data_master = DB::table('LNCL_APPROVE_TBL')
-            ->select('LNCL_APP_SECTION', 'LNCL_EMP_LEVEL', 'LNCL_APP_EMPID')
+            ->select('LNCL_APP_SECTION', 'LNCL_EMP_LEVEL', 'LNCL_APP_EMPID', 'LNCL_RANKTYPE')
             ->get();
         return response()->json(['data' => $data_master]);
     }

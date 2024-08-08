@@ -153,12 +153,12 @@
                                 placeholder="คิดเป็น %">
                         </div>
                         <div class="col-md-4">
-                            <label class="h5" style="color: #003f88;">Rank NG Code Type:</label>
+                            <label class="h5" style="color: #003f88;">Rank Approve:</label>
                             <select name="rank" id="rank" class="form-select form-control">
                                 <option value="" selected disabled>เลือก Rank</option>
-                                <option value="A">Rank A-Special major</option>
-                                <option value="B">Rank B-Major</option>
-                                <option value="C">Rank C-Minor</option>
+                                <option value="A">Rank A</option>
+                                <option value="B">Rank B</option>
+
 
                             </select>
                         </div>

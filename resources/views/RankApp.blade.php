@@ -21,6 +21,14 @@
 
                     </select>
 
+                    <label for="" class="h5" style="color: #003f88;">Rank Approve:</label>
+                    <select name="rank" id="rank" class="form-select form-control" required>
+                        <option value="" selected disabled>Choose Rank</option>
+                        <option value="A">Rank Approve A</option>
+                        <option value="B">Rank Approve B</option>
+
+
+                    </select>
 
                     <label for="" class="h5 mt-2" style="color: #003f88;">ผู้ตรวจสอบในแผนก:</label><br>
                     <select name="lv[1][]" id="lv1_app" class="form-select form-control" multiple required>
@@ -59,6 +67,7 @@
                 <thead>
                     <tr>
                         <th style="background: #FFAF00; font-weight: 700;">Section</th>
+                        <th style="background: #FFAF00; font-weight: 700;">Rank</th>
                         <th style="background: #FFAF00; font-weight: 700;">ผู้ตรวจสอบในแผนก</th>
                         <th style="background: #FFAF00; font-weight: 700;">ผู้อนุมัติในแผนก</th>
                         <th style="background: #FFAF00; font-weight: 700;">ผู้อนุมัติก่อน Final</th>
@@ -133,12 +142,17 @@
                 .then(function(response) {
                     const data = response.data.data;
 
-                    // Group data by LNCL_APP_SECTION and collect all LNCL_APP_EMPID values
+                    // Group data by LNCL_APP_SECTION and LNCL_RANKTYPE, and collect all LNCL_APP_EMPID values
                     const groupedData = data.reduce((acc, item) => {
-                        if (!acc[item.LNCL_APP_SECTION]) {
-                            acc[item.LNCL_APP_SECTION] = [];
+                        const section = item.LNCL_APP_SECTION;
+                        const rank = item.LNCL_RANKTYPE;
+                        if (!acc[section]) {
+                            acc[section] = {
+                                A: [],
+                                B: []
+                            };
                         }
-                        acc[item.LNCL_APP_SECTION].push(item.LNCL_APP_EMPID);
+                        acc[section][rank].push(item.LNCL_APP_EMPID);
                         return acc;
                     }, {});
 
@@ -157,29 +171,35 @@
                         let html = '';
                         for (const section in groupedData) {
                             if (groupedData.hasOwnProperty(section)) {
-                                const empIds = groupedData[section];
-                                html += '<tr>';
-                                html +=
-                                    `<td style="background: #f0f2ef; font-size: 20px; font-weight: 700;">${section}</td>`;
+                                ['A', 'B'].forEach(rank => {
+                                    if (groupedData[section][rank].length > 0) {
+                                        const empIds = groupedData[section][rank];
+                                        html += '<tr>';
+                                        html +=
+                                            `<td style="background: #f0f2ef; font-size: 20px; font-weight: 700;">${section}</td>`;
+                                        html +=
+                                            `<td style="background: #f0f2ef; font-size: 20px; font-weight: 700;">${rank}</td>`;
 
-                                // Add names for each EMPID in a column
-                                empIds.forEach(empId => {
-                                    const empIdArray = empId.split(',');
-                                    const empNames = empIdArray.map(id => names[id.trim()] || id).join(
-                                        ', ');
-                                    html +=
-                                        `<td style="background: #f0f2ef; font-size: 20px; font-weight: 700;">${empNames}</td>`;
+                                        // Add names for each EMPID in a column
+                                        empIds.forEach(empId => {
+                                            const empIdArray = empId.split(',');
+                                            const empNames = empIdArray.map(id => names[id
+                                                .trim()] || id).join(', ');
+                                            html +=
+                                                `<td style="background: #f0f2ef; font-size: 20px; font-weight: 700;">${empNames}</td>`;
+                                        });
+
+                                        html += '</tr>';
+                                    }
                                 });
-
-                                html += '</tr>';
                             }
                         }
 
                         // Update the table body with the generated HTML
+
                         $('#master_db tbody').html(html);
                         $('#master_db').DataTable({
                             scrollX: true,
-
                         });
                     }).catch(function(error) {
                         console.error('Error fetching names:', error);
@@ -190,6 +210,8 @@
                     console.error('Error loading data:', error);
                 });
         }
+
+
 
 
 

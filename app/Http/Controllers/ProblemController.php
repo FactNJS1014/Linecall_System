@@ -122,8 +122,9 @@ class ProblemController extends Controller
         }
 
         $master = DB::table('LNCL_APPROVE_TBL')
-            ->select('LNCL_APP_SECTION', 'LNCL_EMP_LEVEL', 'LNCL_APP_EMPID', 'LNCL_APP_ID')
+            ->select('LNCL_APP_SECTION', 'LNCL_EMP_LEVEL', 'LNCL_APP_EMPID', 'LNCL_APP_ID', 'LNCL_RANKTYPE')
             ->where('LNCL_APP_SECTION', $formdata[1])
+            ->where('LNCL_RANKTYPE', $formdata[13])
             ->get();
 
         foreach ($master as $recapp) {
@@ -149,7 +150,8 @@ class ProblemController extends Controller
 
             ];
 
-            DB::table('LNCL_HREC_APP')->insert($insertrecapp);
+            DB::table('LNCL_HREC_APP')
+                ->insert($insertrecapp);
         }
 
 
