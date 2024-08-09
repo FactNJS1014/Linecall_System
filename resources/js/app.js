@@ -8,3 +8,4 @@ window.axios = axios;
 import DataTable from "datatables.net-bs5";
 import * as mdb from "mdb-ui-kit"; // lib
 window.mdb = mdb;
+import "jquery-ui";

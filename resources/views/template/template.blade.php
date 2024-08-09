@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="{{ asset('public/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('public/css/boxicons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('public/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/css/jquery-ui.css') }}">
+
     <link rel="shortcut icon" href="{{ asset('public/images/pcbboard.png') }}" type="image/x-icon">
 
 </head>
@@ -95,11 +97,13 @@
         </div>
     </div>
 
-    <script src="{{ asset('public/js/app.js') }}"></script>
     <script src="{{ asset('public/js/jquery-3.7.1.min.js') }}"></script>
+    <script src="{{ asset('public/js/app.js') }}"></script>
     <script src="{{ asset('public/js/datatables.min.js') }}"></script>
     <script src="{{ asset('public/js/all.min.js') }}"></script>
     <script src="{{ asset('public/js/select2.min.js') }}"></script>
+    <script src="{{ asset('public/js/jquery.ui.autocomplete.scroll.min.js') }}"></script>
+    <script src="{{ asset('public/js/jquery-ui.min.js') }}"></script>
     <script>
         const toggler = document.querySelector(".btn");
         toggler.addEventListener("click", function() {

@@ -101,7 +101,7 @@
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">Customer:</label>
                             <select name="customer" id="customer" class="form-select form-control"
-                                onchange="completeCus()" required></select>
+                                onchange="completeCus(this)" required></select>
 
                         </div>
 
@@ -109,7 +109,7 @@
                     <div class="row mt-2">
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">Work Order:</label>
-                            <select name="won" id="won" class="form-select form-control" required></select>
+                            <input type="text" name="won" id="won" class="form-control" required>
 
                         </div>
                         <div class="col-md-4">
@@ -127,11 +127,11 @@
                     <div class="row mt-2">
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">NG Code:</label>
-                            <select name="ng_code" id="ng_code" class="form-select form-control" required></select>
+                            <select name="ng_code" id="ng_code" class="form-select" required></select>
                         </div>
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">NG Process:</label>
-                            <select name="ng_prc" id="ng_prc" class="form-select form-control" required></select>
+                            <select name="ng_prc" id="ng_prc" class="form-select" required></select>
 
                         </div>
                         <div class="col-md-4">
@@ -518,52 +518,60 @@
          * *Auto dropdown after choose customer
          */
 
-        async function completeCus() {
-            var customer = $('#customer').val();
-            var selectWon = $("#won");
-            $('#mdlcd').val('');
-            $('#mdlnm').val('');
+        async function completeCus(e) {
+            let cus = e.value;
+            $('#won').focus();
 
             // Fetch work orders
             await $.ajax({
                 url: "{{ route('getWorkOrder') }}",
                 type: "GET",
                 data: {
-                    customer: customer
+                    customer: cus
                 },
-                success: function(data) {
-                    selectWon.empty();
-                    selectWon.append('<option value="" selected disabled>-- เลือก Work Order --</option>');
-                    data.wo.forEach(function(work) {
-                        var cleanedWork = work.WON.trim();
-                        selectWon.append(
-                            `<option value="${encodeURIComponent(cleanedWork)}">${cleanedWork}</option>`
-                        );
-                    });
-                }
-            });
+                success: function(res) {
+                    console.log(cus)
+                    console.log(res);
+                    if (res.wo) {
 
-            // Add change event listener to the work order dropdown
-            selectWon.on('change', function() {
-                var won = $(this).val();
-                fetchModelData(won);
-            });
-        }
+                        let arr_won = [];
+                        let mdlcd = {};
+                        let mdlnm = {};
 
-        async function fetchModelData(won) {
-            await $.ajax({
-                url: "{{ route('getModel') }}",
-                type: "GET",
-                data: {
-                    won: won
-                },
-                success: function(data) {
-                    if (data.models.length > 0) {
-                        $('#mdlcd').val(data.models[0].MDLCD.trim());
-                        $('#mdlnm').val(data.models[0].MDLNM.trim());
+                        for (let i = 0; i < res.wo.length; i++) {
+                            //console.log(res.wo[i]['WON']);
+                            arr_won.push(res.wo[i]['WON']);
+                            mdlcd[res.wo[i]['WON']] = res.wo[i]['MDLCD'];
+                            mdlnm[res.wo[i]['WON']] = res.wo[i]['MDLNM'];
+
+                        }
+
+                        console.log(arr_won);
+                        $('#won').autocomplete({
+                            source: arr_won,
+                            minLength: 3,
+                            maxShowItems: 10,
+                            select: function(event, ui) {
+                                console.log(ui.item.value)
+                                $('#mdlcd').val(mdlcd[ui.item.value]);
+                                $('#mdlnm').val(mdlnm[ui.item.value]);
+                            }
+                        });
+                    } else {
+
+                        $('#won').val('');
+                        $('#mdlcd').val('');
+                        $('#mdlnm').val('');
+                        Swal.fire({
+                            title: "NO DATA",
+                            icon: "error",
+                            timer: 3000,
+                        });
                     }
+
                 }
-            });
+            })
+
         }
     </script>
 @endpush
