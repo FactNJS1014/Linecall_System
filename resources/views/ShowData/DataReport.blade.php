@@ -80,7 +80,7 @@
                             <th style="background: #2e363e; color: #ffee;">Serial Number</th>
                             @foreach ($recapp as $app)
                                 <th style="background: #2e363e; color: #ffee;">
-                                    ผู้อนุมัติลำดับที่&nbsp;{{ $app->LNCL_RECAPP_EMPLV }}</th>
+                                    ผู้อนุมัติลำดับที่&nbsp;{{ $app->LNCL_RECAPP_EMPLV }}
                             @endforeach
                         </tr>
                     </thead>
@@ -292,7 +292,7 @@
 
                 scrollX: true,
                 scrollCollapse: true,
-                responsive: true,
+                responsive: false,
                 fixedHeader: true,
                 fixedColumns: {
                     leftColumns: 1 // ปรับค่า 1 เป็นจำนวนคอลัมน์ที่คุณต้องการให้คงที่ทางด้านซ้าย
