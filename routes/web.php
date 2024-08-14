@@ -6,6 +6,7 @@ use App\Http\Controllers\RootController;
 use App\Http\Controllers\ProblemController;
 use App\Http\Controllers\DataformController;
 use App\Http\Controllers\MasterController;
+use App\Http\Controllers\PDFController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,8 +79,18 @@ Route::get('/get/ngcode2', [DataformController::class, 'getNgCode2']);
 Route::get('/get/master', [DataformController::class, 'getMaster']);
 Route::get('/get/user', [DataformController::class, 'getUserWeb'])->name('getUserWeb');
 Route::get('/get/showuser', [DataformController::class, 'showUsername'])->name('getUsershow');
+Route::get('/get/approve', [ProblemController::class, 'ApproveData'])->name('getApprove');
+Route::get('/get/lvapp', [ProblemController::class, 'ApproveOfLevel'])->name('getlevelapp');
+Route::get('/get/compare', [DataformController::class, 'compareLevel'])->name('compareLevel');
+Route::get('/get/report', [DataformController::class, 'DataReport'])->name('datareport');
 
 
 //Delete data linecall
 Route::get('/delete/data', [DataformController::class, 'DeleteData'])->name('deletedata');
 Route::post('/delete/img', [DataformController::class, 'DeleteImg'])->name('deleteimg');
+//reject data
+Route::post('/get/reject', [DataformController::class, 'getRejected'])->name('get.reject');
+
+
+//Show PDF Document
+Route::get('/show/pdf/{filename}', [PDFController::class, 'ShowDocumentFile'])->name('show.pdf');

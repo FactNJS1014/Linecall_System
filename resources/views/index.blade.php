@@ -333,6 +333,12 @@
 
         });
 
+        let emp_rec = empno;
+        let section_rec = sec;
+        console.log(sec)
+        $('#empid').val(emp_rec)
+        //$('#section_rec').val(section_rec)
+        //console.log(emp_rec)
         /**
          * TODO: 12-07-2024
          * * show Preview Image
@@ -549,7 +555,7 @@
                         console.log(arr_won);
                         $('#won').autocomplete({
                             source: arr_won,
-                            minLength: 3,
+                            minLength: 4,
                             maxShowItems: 10,
                             select: function(event, ui) {
                                 console.log(ui.item.value)

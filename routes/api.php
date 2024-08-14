@@ -30,3 +30,4 @@ Route::get('/delete/leak', [DataformController::class, 'DeleteData2'])->name('de
 Route::get('/get/ngcode2', [DataformController::class, 'getNgCode2']);
 Route::get('/get/master', [DataformController::class, 'getMaster']);
 Route::get('/get/user', [DataformController::class, 'getUserWeb'])->name('getUserWeb');
+Route::get('/get/compare', [DataformController::class, 'compareLevel'])->name('compareLevel');

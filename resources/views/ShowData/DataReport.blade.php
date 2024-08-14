@@ -30,7 +30,7 @@
             <span>:</span>
             <span id="sec">00</span>
         </div> --}}
-
+        <button class="btn btnreturn" onclick="btnback()"><i class="fa-solid fa-arrow-left mx-2"></i>Back</button>
         <div style="background: #EEEEEE;" class="p-3 mt-3 mb-3">
             <p class="mt-1 text-center" id="textheader3">ข้อมูลหลัก Line Call</p>
             @foreach ($documents as $document)
@@ -46,6 +46,18 @@
                         <p style="color: #0f4c5c; font-size: 20px; font-weight: bold;">รหัสพนักงาน:
                             <span>{{ $document->LNCL_HREC_EMPID }}</span>
                         </p>
+                        <!-- Display other document fields -->
+                    </div>
+                    <div class="col-sm-4">
+                        @foreach ($dataname as $name)
+                            @if ($document->LNCL_HREC_EMPID == $name->MUSR_ID)
+                                <p style="color: #0f4c5c; font-size: 20px; font-weight: bold;">ชื่อผู้บันทึก:
+                                    <span>{{ $name->MUSR_NAME }}</span>
+                                </p>
+                            @endif
+                        @endforeach
+
+
                         <!-- Display other document fields -->
                     </div>
                 </div>
@@ -66,6 +78,10 @@
                             <th style="background: #2e363e; color: #ffee;">Percent</th>
                             <th style="background: #2e363e; color: #ffee;">NG Position</th>
                             <th style="background: #2e363e; color: #ffee;">Serial Number</th>
+                            @foreach ($recapp as $app)
+                                <th style="background: #2e363e; color: #ffee;">
+                                    ผู้อนุมัติลำดับที่&nbsp;{{ $app->LNCL_RECAPP_EMPLV }}</th>
+                            @endforeach
                         </tr>
                     </thead>
                     <tbody>
@@ -96,9 +112,19 @@
                                 {{ $document->LNCL_HREC_NGPST }}</td>
                             <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
                                 {{ $document->LNCL_HREC_SERIAL }}</td>
+                            @foreach ($recapp as $app)
+                                @foreach ($dataname as $name)
+                                    @if ($app->LNCL_EMPID_APPR == $name->MUSR_ID)
+                                        <td
+                                            style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
+                                            {{ $name->MUSR_NAME }}</td>
+                                    @endif
+                                @endforeach
+                            @endforeach
 
                         </tr>
                     </tbody>
+
 
 
                 </table>
@@ -264,12 +290,13 @@
             }
             $('#table-report').DataTable({
 
+                scrollX: true,
                 scrollCollapse: true,
                 responsive: true,
-                info: false,
-                paging: false,
-                searching: false,
-                scrollX: true,
+                fixedHeader: true,
+                fixedColumns: {
+                    leftColumns: 1 // ปรับค่า 1 เป็นจำนวนคอลัมน์ที่คุณต้องการให้คงที่ทางด้านซ้าย
+                },
                 layout: {
                     topStart: {
                         buttons: [{
@@ -308,6 +335,18 @@
 
             })
         });
+        btnback = () => {
+            // Redirect to the route and reload the page
+
+            window.close();
+            // Adjust the timeout if needed
+        }
+
+        window.onbeforeunload = function() {
+            if (window.opener) {
+                window.opener.location.reload(); // รีโหลดหน้าหลักเมื่อหน้าต่างนี้ถูกปิด
+            }
+        };
     </script>
 </body>
 

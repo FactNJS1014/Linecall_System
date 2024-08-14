@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\MUSR_TBL;
+use Illuminate\Support\Collection;
 
 class DataformController extends Controller
 {
@@ -29,11 +30,34 @@ class DataformController extends Controller
                 'LNCL_HREC_REFDOC',
                 'LNCL_HREC_PROBLEM',
                 'LNCL_HREC_RANKTYPE',
-                'LNCL_HREC_ID'
+                'LNCL_HREC_ID',
+                'LNCL_HREC_TRACKING',
+                'LNCL_HREC_RJSTD',
+                'LNCL_HREC_RJREMARK',
+                'LNCL_FINAL_STD'
             )
+            ->where('LNCL_FINAL_STD', 0)
             ->get();
-        return response()->json(['datafirst' => $data_01]);
+
+        $level2 = DB::table('LNCL_HREC_APP')
+            ->select('LNCL_RECAPP_EMPLV', 'LNCL_EMPID_RECAPP')
+            ->whereIn('LNCL_HREC_ID', $data_01->pluck('LNCL_HREC_ID')) // กรองตาม LNCL_HREC_ID ที่อยู่ใน data_01
+            ->get();
+
+        $match = [];
+
+        foreach ($data_01 as $lv1) {
+            foreach ($level2 as $lv2) {
+                if ($lv1->LNCL_HREC_TRACKING == $lv2->LNCL_RECAPP_EMPLV) {
+                    $match[] = $lv2->LNCL_EMPID_RECAPP; // ใช้ array เพื่อเก็บค่าหลายค่า
+                }
+            }
+        }
+
+        return response()->json(['datafirst' => $data_01, 'match' => $match]);
     }
+
+
     public function fetchDataRec02()
     {
         $data_02 = DB::table('LNCL_LEAKANDROOT_TBL')
@@ -187,8 +211,14 @@ class DataformController extends Controller
             ->get()
             ->groupBy('LNCL_HREC_ID');
 
+        $recapp = DB::table('LNCL_HREC_APP')
+            ->where('LNCL_HREC_ID', $recid)
+            ->get();
+
+        $dataname = MUSR_TBL::all();
+
         // Pass grouped data to the view
-        return view('ShowData.DataReport', compact('images', 'documents', 'leakdoc', 'imagesleak', 'imagesroot', 'recid'));
+        return view('ShowData.DataReport', compact('images', 'documents', 'leakdoc', 'imagesleak', 'imagesroot', 'recid', 'recapp', 'dataname'));
     }
 
     public function DeleteImg(Request $request)
@@ -216,7 +246,7 @@ class DataformController extends Controller
     {
         $customer = urldecode($request->input('customer', ''));
         $customer = trim($customer);
-        $workorders = DB::table('VWORKLIST2')
+        $workorders = DB::table('VWORLIST2')
             ->where('BGCD', $customer)
             ->get();
         return response()->json(['wo' => $workorders]);
@@ -278,5 +308,106 @@ class DataformController extends Controller
         $empIds = $request->query('empIds', []);
         $names = MUSR_TBL::whereIn('MUSR_ID', $empIds)->pluck('MUSR_NAME', 'MUSR_ID');
         return response()->json($names);
+    }
+
+    public function compareLevel()
+    {
+        $level1 = DB::table('LNCL_HREC_TBL')
+            ->select('LNCL_HREC_TRACKING')
+            ->get();
+
+        $level2 = DB::table('LNCL_HREC_APP')
+            ->select('LNCL_RECAPP_EMPLV', 'LNCL_EMPID_RECAPP')
+            ->get();
+
+        $match = [];
+        foreach ($level1 as $lv1) {
+            foreach ($level2 as $lv2) {
+                if ($lv1->LNCL_HREC_TRACKING == $lv2->LNCL_RECAPP_EMPLV) {
+                    $match = $lv2->LNCL_EMPID_RECAPP;
+                }
+            }
+        }
+
+        return response()->json(['match' => $match]);
+    }
+
+    public function getRejected(Request $request)
+    {
+        $comment = $request->input('comment');
+
+        parse_str($comment, $txt);
+        //return response()->json($txt['id']);
+
+        $level1 = DB::table('LNCL_HREC_TBL')
+            ->select('LNCL_HREC_TRACKING')
+            ->get();
+
+        $level2 = DB::table('LNCL_HREC_APP')
+            ->select('LNCL_RECAPP_EMPLV', 'LNCL_EMPID_RECAPP')
+            ->get();
+
+        $match = [];
+        foreach ($level1 as $lv1) {
+            foreach ($level2 as $lv2) {
+                if ($lv1->LNCL_HREC_TRACKING == $lv2->LNCL_RECAPP_EMPLV) {
+                    $match = $lv2->LNCL_RECAPP_EMPLV;
+                }
+            }
+        }
+
+        $turn_tracking = $match - 1;
+
+        $update_comment = [
+            'LNCL_HREC_RJREMARK' => $txt['comment'],
+            'LNCL_HREC_RJSTD' => 1,
+            'LNCL_HREC_TRACKING' => $turn_tracking
+        ];
+
+        DB::table('LNCL_HREC_TBL')
+            ->where('LNCL_HREC_ID', $txt['id'])
+            ->update($update_comment);
+
+        $update_std_rj = [
+            'LNCL_RECAPP_STD' => 0
+        ];
+
+        DB::table('LNCL_HREC_APP')
+            ->where('LNCL_RECAPP_EMPLV', $match)
+            ->where('LNCL_HREC_ID', $txt['id'])
+            ->update($update_std_rj);
+
+        return response()->json(['update' => $update_comment]);
+    }
+
+    public function DataReport()
+    {
+        $data_01 = DB::table('LNCL_HREC_TBL')
+            ->select(
+                'LNCL_HREC_EMPID',
+                'LNCL_HREC_SECTION',
+                'LNCL_HREC_LINE',
+                'LNCL_HREC_CUS',
+                'LNCL_HREC_WON',
+                'LNCL_HREC_MDLNM',
+                'LNCL_HREC_MDLCD',
+                'LNCL_HREC_NGCD',
+                'LNCL_HREC_NGPRCS',
+                'LNCL_HREC_NGPST',
+                'LNCL_HREC_QTY',
+                'LNCL_HREC_DEFICT',
+                'LNCL_HREC_PERCENT',
+                'LNCL_HREC_SERIAL',
+                'LNCL_HREC_REFDOC',
+                'LNCL_HREC_PROBLEM',
+                'LNCL_HREC_RANKTYPE',
+                'LNCL_HREC_ID',
+                'LNCL_HREC_TRACKING',
+                'LNCL_HREC_RJSTD',
+                'LNCL_HREC_RJREMARK'
+            )
+
+            ->get();
+        return response()->json(['datafirst' => $data_01]);
     }
 }

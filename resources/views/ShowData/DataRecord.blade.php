@@ -1,3 +1,25 @@
+<?php
+session_start();
+
+if (!empty($_GET['username'])) {
+    $_SESSION['username'] = $_GET['username'];
+    $_SESSION['empno'] = $_GET['empno'];
+    $_SESSION['department'] = $_GET['department'];
+    $_SESSION['USE_PERMISSION'] = $_GET['USE_PERMISSION'];
+    $_SESSION['sec'] = $_GET['sec'];
+    $_SESSION['MSECT_ID'] = $_GET['MSECT_ID'];
+    $per = $_GET['USE_PERMISSION'];
+?>
+<script>
+    window.location.replace("http://web-server/37_linecall/index.php");
+</script>
+<?php
+}
+if (empty($_SESSION['empno'])) {
+    header('Location: http://web-server/menu.php');
+    exit(0);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -247,18 +269,28 @@
                 </div>
             @endforeach
 
-            <div class="d-flex justify-content-center mt-3">
-                <button type="button" class="btn btnapprove"><i
-                        class="fa-solid fa-check-double mx-2"></i>ยืนยันการส่งอนุมัติ</button>
-                <button type="button" class="btn btnedit" onclick="gotoEdit('{{ $recid }}')"><i
-                        class="fa-solid fa-pen mx-2"></i>แก้ไขข้อมูลการบันทึก</button>
-                <button type="button" class="btn btndelete" onclick="DeleteData('{{ $recid }}')"><i
-                        class="fa-solid fa-trash mx-2"></i>ลบข้อมูลการบันทึก</button>
-                {{-- <button type="button" class="btn btndelete2" onclick="DeleteImage('{{ $recid }}')"><i
+            @if ($_SESSION['USE_PERMISSION'] == 8)
+                <div class="d-flex justify-content-center mt-3">
+                    <button type="button" class="btn btnapprove" onclick="LevelApprove('{{ $recid }}')"><i
+                            class="fa-solid fa-check-double mx-2"></i>ยืนยันอนุมัติ</button>
+
+                    <button type="button" class="btn btnrej" onclick="btnrejected('{{ $recid }}')"><i
+                            class="fa-solid fa-right-left mx-2"></i>ส่งกลับไปแก้ไขใหม่</button>
+                </div>
+            @else
+                <div class="d-flex justify-content-center mt-3">
+                    <button type="button" class="btn btnapprove" onclick="submitApprove('{{ $recid }}')"><i
+                            class="fa-solid fa-check-double mx-2"></i>ยืนยันการส่งอนุมัติ</button>
+                    <button type="button" class="btn btnedit" onclick="gotoEdit('{{ $recid }}')"><i
+                            class="fa-solid fa-pen mx-2"></i>แก้ไขข้อมูลการบันทึก</button>
+                    <button type="button" class="btn btndelete" onclick="DeleteData('{{ $recid }}')"><i
+                            class="fa-solid fa-trash mx-2"></i>ลบข้อมูลการบันทึก</button>
+                    {{-- <button type="button" class="btn btndelete2" onclick="DeleteImage('{{ $recid }}')"><i
                         class="fa-solid fa-image mx-2"></i>ลบข้อมูลรูปภาพ</button> --}}
-                <button type="button" class="btn btnrej" onclick="btnrejected('{{ $recid }}')"><i
-                        class="fa-solid fa-right-left mx-2"></i>ส่งกลับไปแก้ไขใหม่</button>
-            </div>
+
+                </div>
+            @endif
+
         </div>
 
 
@@ -269,6 +301,14 @@
     <script src="{{ asset('public/js/datatables.min.js') }}"></script>
     <script src="{{ asset('public/js/all.min.js') }}"></script>
     <script>
+        var empno = '<?= $_SESSION['empno'] ?>';
+        var username = '<?= $_SESSION['username'] ?>';
+        var department = '<?= $_SESSION['department'] ?>';
+        var sec = '<?= $_SESSION['sec'] ?>';
+        var permission = '<?= $_SESSION['USE_PERMISSION'] ?>';
+        var MSECT_ID = '<?= $_SESSION['MSECT_ID'] ?>';
+        var server = '<?= $_SERVER['HTTP_HOST'] ?>';
+
         function ViewImage(images) {
 
             //Createoverlay
@@ -347,27 +387,29 @@
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'ยืนยัน'
+                    confirmButtonText: 'ยืนยัน',
+                    cancelButtonText: 'ยกเลิก'
                 })
                 .then((result) => {
-
-                    axios.get('{{ route('deletedata') }}', {
-                            params: {
-                                id: id
-                            }
-                        })
-                        .then(function(response) {
-
-                            Swal.fire({
-                                title: 'ลบข้อมูลสำเร็จ',
-                                icon: 'success',
-                                timer: 1500
-                            }).then(function() {
-
-                                window.close()
-
+                    if (result.isConfirmed) {
+                        axios.get('{{ route('deletedata') }}', {
+                                params: {
+                                    id: id
+                                }
                             })
-                        })
+                            .then(function(response) {
+
+                                Swal.fire({
+                                    title: 'ลบข้อมูลสำเร็จ',
+                                    icon: 'success',
+                                    timer: 1500
+                                }).then(function() {
+
+                                    window.close()
+
+                                })
+                            })
+                    }
 
 
 
@@ -430,12 +472,13 @@
         }
 
         btnrejected = (id) => {
+            let empid = empno;
             let form = '';
-
-            form += '<form id="formtype" method="post">';
+            form += '<form id="formcomment" method="post">';
             form += '@csrf';
             form += '<input type="hidden" value="' + id + '" name="id" id="recid">';
-            form += '<textarea rows="2" class="form-control" placeholder="ใส่ Comment" id="comment"></textarea>';
+            form +=
+                '<textarea rows="2" class="form-control" placeholder="ใส่ Comment" id="comment" name="comment"></textarea>';
             form += '</form>';
             Swal.fire({
                 title: 'กรุณาใส่ Comment',
@@ -445,6 +488,23 @@
                 width: '50%',
                 confirmButtonText: 'ยืนยันการส่งกลับ',
                 cancelButtonText: 'ยกเลิก',
+                preConfirm: () => {
+                    let comm = new FormData();
+                    comm.append('comment', $('#formcomment').serialize());
+                    comm.append('empno', empno);
+                    axios.post('{{ route('get.reject') }}', comm).then(function(response) {
+                        console.log(response);
+                        if (response.data.update) {
+                            Swal.fire({
+                                title: 'ส่งกลับสำเร็จ',
+                                icon: 'success',
+                                timer: 1500
+                            }).then(function() {
+                                window.close();
+                            })
+                        }
+                    })
+                }
             })
         }
 
@@ -459,6 +519,61 @@
             setTimeout(() => {
                 window.close();
             }, 100); // Adjust the timeout if needed
+        }
+        window.onbeforeunload = function() {
+            if (window.opener) {
+                window.opener.location.reload(); // รีโหลดหน้าหลักเมื่อหน้าต่างนี้ถูกปิด
+            }
+        };
+
+        submitApprove = (id) => {
+            console.log(empno);
+            console.log(id)
+
+
+            axios.get('{{ route('getApprove') }}', {
+                params: {
+                    id: id
+                }
+            }).then(function(response) {
+                console.log(response.data.stdUpdate)
+                if (response.data.stdUpdate) {
+                    Swal.fire({
+                        title: 'ยืนยันการส่งอนุมัติสำเร็จ',
+                        icon: 'success',
+                        timer: 1500
+                    }).then(function() {
+                        window.close();
+                    })
+                }
+            })
+        }
+
+        LevelApprove = (id) => {
+            console.log(empno);
+            console.log(id)
+            const closeTime = 1000;
+            axios.get('{{ route('getlevelapp') }}', {
+                params: {
+                    id: id,
+                    empno: empno
+                }
+            }).then(function(response) {
+                console.log(response.data)
+                if (response.data.track && response.data.level) {
+                    Swal.fire({
+                        title: 'อนุมัติสำเร็จ',
+                        icon: 'success',
+                        timer: 1500
+                    }).then(function() {
+                        setTimeout(() => {
+                            window.close();
+                        }, closeTime);
+                    })
+                }
+            })
+
+
         }
     </script>
 </body>

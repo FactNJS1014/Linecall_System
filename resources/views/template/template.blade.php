@@ -1,3 +1,25 @@
+<?php
+session_start();
+
+if (!empty($_GET['username'])) {
+    $_SESSION['username'] = $_GET['username'];
+    $_SESSION['empno'] = $_GET['empno'];
+    $_SESSION['department'] = $_GET['department'];
+    $_SESSION['USE_PERMISSION'] = $_GET['USE_PERMISSION'];
+    $_SESSION['sec'] = $_GET['sec'];
+    $_SESSION['MSECT_ID'] = $_GET['MSECT_ID'];
+    $per = $_GET['USE_PERMISSION'];
+?>
+<script>
+    window.location.replace("http://web-server/37_linecall/index.php");
+</script>
+<?php
+}
+if (empty($_SESSION['empno'])) {
+    header('Location: http://web-server/menu.php');
+    exit(0);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -38,22 +60,27 @@
                 <hr>
                 <!-- Sidebar Navigation -->
                 <ul class="sidebar-nav">
+                    @if ($_SESSION['USE_PERMISSION'] == 1)
+                        <li class="sidebar-item">
+                            <a href="{{ route('index') }}" class="sidebar-link fs-5" onclick="changePage()"
+                                id="li-record">
 
-                    <li class="sidebar-item">
-                        <a href="{{ route('index') }}" class="sidebar-link fs-5" onclick="changePage()" id="li-record">
+                                <i class="fa-solid fa-notes-medical fa-lg mx-1 mt-1"></i>
+                                บันทึก Linecall-01
+                            </a>
+                        </li>
 
-                            <i class="fa-solid fa-notes-medical fa-lg mx-1 mt-1"></i>
-                            บันทึก Linecall-01
-                        </a>
-                    </li>
+                        <li class="sidebar-item">
+                            <a href="{{ route('index2') }}" class="sidebar-link  fs-5" id="li-record2"
+                                onclick="changePage()">
+                                <i class="bi bi-clipboard2-plus-fill h4 mx-1"></i>
+                                บันทึก Linecall-02
+                            </a>
+                        </li>
+                    @endif
 
-                    <li class="sidebar-item">
-                        <a href="{{ route('index2') }}" class="sidebar-link  fs-5" id="li-record2"
-                            onclick="changePage()">
-                            <i class="bi bi-clipboard2-plus-fill h4 mx-1"></i>
-                            บันทึก Linecall-02
-                        </a>
-                    </li>
+
+
                     <li class="sidebar-item">
                         <a href="{{ route('approve') }}" class="sidebar-link fs-5" id="li-approve"
                             onclick="changePage()">
@@ -62,6 +89,8 @@
                         </a>
                     </li>
 
+
+
                     <li class="sidebar-item">
                         <a href="{{ route('rankmaster') }}" class="sidebar-link  fs-5" id="li-rank"
                             onclick="changePage()">
@@ -69,7 +98,6 @@
                             สายอนุมัติ (Rank)
                         </a>
                     </li>
-
                     <li class="sidebar-item">
                         <a href="{{ route('reports') }}" class="sidebar-link  fs-5" id="li-reports"
                             onclick="changePage()">
@@ -77,6 +105,15 @@
                             Reports
                         </a>
                     </li>
+                    <li class="sidebar-item">
+                        <a href="{{ route('show.pdf',['filename' => 'linecall.pdf']) }}" class="sidebar-link  fs-5" id="li-reports"
+                            onclick="changePage()">
+                            <i class="fa-solid fa-folder fa-lg mx-1"></i>
+                            คู่มือการใช้งาน
+                        </a>
+                    </li>
+
+
 
                 </ul>
             </div>
@@ -88,6 +125,8 @@
                 <button class="btn" type="button">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                <p class="mt-3 ms-5" style="font-size: 18px; font-weight: 700;">
+                    <?php echo $_SESSION['username']; ?>&nbsp(<?php echo $_SESSION['empno']; ?>)</p>
             </nav>
 
             <main class="content px-3 py-2">
@@ -102,8 +141,8 @@
     <script src="{{ asset('public/js/datatables.min.js') }}"></script>
     <script src="{{ asset('public/js/all.min.js') }}"></script>
     <script src="{{ asset('public/js/select2.min.js') }}"></script>
-    <script src="{{ asset('public/js/jquery.ui.autocomplete.scroll.min.js') }}"></script>
     <script src="{{ asset('public/js/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('public/js/jquery.ui.autocomplete.scroll.min.js') }}"></script>
     <script>
         const toggler = document.querySelector(".btn");
         toggler.addEventListener("click", function() {
@@ -122,6 +161,14 @@
                 },
             });
         }
+
+        var empno = '<?= $_SESSION['empno'] ?>';
+        var username = '<?= $_SESSION['username'] ?>';
+        var department = '<?= $_SESSION['department'] ?>';
+        var sec = '<?= $_SESSION['sec'] ?>';
+        var permission = '<?= $_SESSION['USE_PERMISSION'] ?>';
+        var MSECT_ID = '<?= $_SESSION['MSECT_ID'] ?>';
+        var server = '<?= $_SERVER['HTTP_HOST'] ?>';
     </script>
     @stack('script_content')
 

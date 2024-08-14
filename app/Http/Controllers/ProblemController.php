@@ -43,6 +43,9 @@ class ProblemController extends Controller
             $LNCL_HREC_ID = AutogenerateKey('LNCLREC', $findPreviousMaxID->LNCL_HREC_ID);
         }
 
+        $won = rawurldecode($formdata[5]);
+        $mdlcd = rawurldecode($formdata[6]);
+        $mdlnm = rawurldecode($formdata[7]);
         $position = rawurldecode($formdata[14]);
         $serial = rawurldecode($formdata[15]);
         $refdoc = rawurldecode($formdata[16]);
@@ -61,9 +64,9 @@ class ProblemController extends Controller
             'LNCL_HREC_EMPID' => $formdata[2],
             'LNCL_HREC_LINE' => $formdata[3],
             'LNCL_HREC_CUS' => $formdata[4],
-            'LNCL_HREC_WON' => $formdata[5],
-            'LNCL_HREC_MDLCD' => $formdata[6],
-            'LNCL_HREC_MDLNM' => $formdata[7],
+            'LNCL_HREC_WON' => $won,
+            'LNCL_HREC_MDLCD' => $mdlcd,
+            'LNCL_HREC_MDLNM' => $mdlnm,
             'LNCL_HREC_NGCD' => $formdata[8],
             'LNCL_HREC_NGPRCS' => $formdata[9],
             'LNCL_HREC_QTY' => $formdata[10],
@@ -79,7 +82,9 @@ class ProblemController extends Controller
             'LNCL_HREC_STD' => 1,
             'LNCL_HREC_DATE' => $formdata[0],
             'LNCL_HREC_LSTDT' => $currentDate,
-            'LNCL_HREC_TRACKING' => 0
+            'LNCL_HREC_TRACKING' => 0,
+            'LNCL_HREC_RJSTD' => 0,
+            'LNCL_FINAL_STD' => 0,
         ];
 
 
@@ -235,12 +240,15 @@ class ProblemController extends Controller
         // }
         //return response()->json($formdata);
         // Prepare the data for update
+        $won = rawurldecode($formdata[5]);
+        $mdlcd = rawurldecode($formdata[6]);
+        $mdlnm = rawurldecode($formdata[7]);
         $position = rawurldecode($formdata[14]);
         $serial = rawurldecode($formdata[15]);
+        $refdoc = rawurldecode($formdata[16]);
         $problem = rawurldecode($formdata[17]);
         $cause = rawurldecode($formdata[18]);
         $action = rawurldecode($formdata[19]);
-        $refdoc = rawurldecode($formdata[16]);
         //return response()->json($decodedData);
         // $position = trim($formdata[13]);
 
@@ -253,9 +261,9 @@ class ProblemController extends Controller
             'LNCL_HREC_EMPID' => $formdata[2],
             'LNCL_HREC_LINE' => $formdata[3],
             'LNCL_HREC_CUS' => $formdata[4],
-            'LNCL_HREC_WON' => $formdata[5],
-            'LNCL_HREC_MDLCD' => $formdata[6],
-            'LNCL_HREC_MDLNM' => $formdata[7],
+            'LNCL_HREC_WON' => $won,
+            'LNCL_HREC_MDLCD' => $mdlcd,
+            'LNCL_HREC_MDLNM' => $mdlnm,
             'LNCL_HREC_NGCD' => $formdata[8],
             'LNCL_HREC_NGPRCS' => $formdata[9],
             'LNCL_HREC_QTY' => $formdata[10],
@@ -270,6 +278,7 @@ class ProblemController extends Controller
             'LNCL_HREC_ACTION' => $action,
             'LNCL_UPDATE_STD' => 1,
             'LNCL_UPDATE_LSTDT' => $currentDate,
+            'LNCL_FINAL_STD' => 0
         ];
 
         // Perform the update operation
@@ -319,5 +328,86 @@ class ProblemController extends Controller
         } else {
             return response()->json(['update' => false, 'msg' => 'Error updating record, please contact admin'], 500);
         }
+    }
+
+    public function ApproveData(Request $request)
+    {
+        $id = $request->input('id');
+
+        $updatestatusPrb = [
+            'LNCL_HREC_TRACKING' => 1,
+
+        ];
+
+        DB::table('LNCL_HREC_TBL')
+            ->where('LNCL_HREC_ID', $id)
+            ->update($updatestatusPrb);
+
+        return response()->json(['stdUpdate' => $updatestatusPrb]);
+
+        // if ($updatedStd > 0) {
+        //     return response()->json(['update' => true, 'data' => $updatestatusPrb]);
+        // } else {
+        //     return response()->json(['update' => false, 'msg' => 'Error updating record, please contact admin'], 500);
+        // }
+    }
+
+    public function ApproveOfLevel(Request $request)
+    {
+        $id = $request->input('id');
+        $empno = $request->input('empno');
+
+
+
+        $level1 = DB::table('LNCL_HREC_TBL')
+            ->select('LNCL_HREC_TRACKING')
+            ->get();
+
+        $level2 = DB::table('LNCL_HREC_APP')
+            ->select('LNCL_RECAPP_EMPLV', 'LNCL_EMPID_RECAPP')
+            ->get();
+
+        $match = [];
+        foreach ($level1 as $lv1) {
+            foreach ($level2 as $lv2) {
+                if ($lv1->LNCL_HREC_TRACKING == $lv2->LNCL_RECAPP_EMPLV) {
+                    $match = $lv2->LNCL_RECAPP_EMPLV;
+                }
+            }
+        }
+
+
+        $tracking_up = $match + 1;
+
+        if ($tracking_up > 4) {
+            $trackupdate = [
+                'LNCL_HREC_TRACKING' => $tracking_up,
+                'LNCL_FINAL_STD' => 1
+            ];
+        } else {
+            $trackupdate = [
+                'LNCL_HREC_TRACKING' => $tracking_up
+            ];
+        }
+
+
+
+        $emp_update = [
+            'LNCL_EMPID_APPR' => $empno,
+            'LNCL_RECAPP_STD' => 1
+        ];
+
+
+
+        DB::table('LNCL_HREC_APP')
+            ->where('LNCL_RECAPP_EMPLV', $match)
+            ->where('LNCL_HREC_ID', $id)
+            ->update($emp_update);
+
+
+        DB::table('LNCL_HREC_TBL')
+            ->where('LNCL_HREC_ID', $id)
+            ->update($trackupdate);
+        return response()->json(['track' => $trackupdate, 'level' => $emp_update]);
     }
 }

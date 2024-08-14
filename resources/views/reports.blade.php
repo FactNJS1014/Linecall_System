@@ -14,15 +14,13 @@
     </div> --}}
     <input type="text" id="searchInput" class="form-control mb-3 mt-3" onkeyup="searchTable()"
         placeholder="Search for document number..">
-    <div class="row">
-        <div class="col-lg-6 col-md-12 col-12">
-            <div class="card" style="background: #fff;">
-                <div id="data_card" class="data-card">
 
-                </div>
-            </div>
-        </div>
+
+    <div id="data_card" class="data-card mt-3">
+
     </div>
+
+
 
 @endsection
 
@@ -68,28 +66,31 @@
          */
 
 
-        axios.get('{{ route('data_first') }}')
+        axios.get('{{ route('datareport') }}')
             .then(function(res) {
-                //console.log(res)
                 let card = '';
                 res.data.datafirst.map((show) => {
-                    //console.log(show)
-
-
-                    card += '<div class="p-2">'
-                    card += '<div class="card-body" >'
+                    card += '<div class="card mt-3" style="background: #fff;">'
+                    card += '<div class="card-body">'
                     card += '<table class="table table-bordered">'
                     card += '<tr>';
                     card +=
                         '<th style="width: auto; font-size: 20px; background: #172774; color: #fff; font-weight: 600;">เลขที่เอกสาร</th>';
-                    card += '<td style="font-size: 20px; font-weight: 600; color: #172774;">' + show
-                        .LNCL_HREC_REFDOC + '</td>';
+                    card +=
+                        '<td class="doc-number" style="font-size: 20px; font-weight: 600; color: #172774;">' +
+                        show.LNCL_HREC_REFDOC + '</td>';
+                    card += '</tr>';
+                    card += '<tr>';
+                    card +=
+                        '<th style="width: auto; font-size: 20px; background: #172774; color: #fff; font-weight: 600;">แผนก</th>';
+                    card += '<td class="section" style="font-size: 20px; font-weight: 600; color: #172774;">' +
+                        show.LNCL_HREC_SECTION + '</td>';
                     card += '</tr>';
                     card += '<tr>';
                     card +=
                         '<th style="width: auto; font-size: 20px; background: #172774; color: #fff; font-weight: 600;">ลูกค้า</th>';
-                    card += '<td style="font-size: 20px; font-weight: 600; color: #172774;">' + show
-                        .LNCL_HREC_CUS + '</td>';
+                    card += '<td class="customer" style="font-size: 20px; font-weight: 600; color: #172774;">' +
+                        show.LNCL_HREC_CUS + '</td>';
                     card += '</tr>';
                     card += '<tr>';
                     card +=
@@ -97,21 +98,17 @@
                     card += '<td style="font-size: 20px; font-weight: 600; color: #172774;">' + show
                         .LNCL_HREC_NGCD + '</td>';
                     card += '</tr>';
-
                     card += '</table>';
                     card += '<button class="btn btnviewrep ms-1 mb-1 mt-2" onclick=\'btnReport("' + show
                         .LNCL_HREC_ID +
                         '")\'><i class="fa-solid fa-eye fa-lg mx-2"></i>ดูรายงานข้อมูล</button>';
                     card += '</div>';
-
-
-
-                })
-
+                    card += '</div>';
+                });
 
                 $('#data_card').html(card); // Initial display
+            });
 
-            })
 
 
 
@@ -119,11 +116,24 @@
             const input = document.getElementById('searchInput');
             const filter = input.value.toUpperCase();
             const cards = document.querySelectorAll('.card');
+
             cards.forEach(card => {
-                const txtValue = card.textContent || card.innerText;
-                card.style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? '' : 'none';
+                // Get text content of the card's table cells
+                const docNo = card.querySelector('.doc-number') ? card.querySelector('.doc-number').textContent ||
+                    '' : '';
+                const customer = card.querySelector('.customer') ? card.querySelector('.customer').textContent ||
+                    '' : '';
+                const section = card.querySelector('.section') ? card.querySelector('.section').textContent ||
+                    '' : '';
+
+                // Check if either field matches the filter
+                const isMatch = docNo.toUpperCase().indexOf(filter) > -1 || customer.toUpperCase().indexOf(filter) >
+                    -1 || section.toUpperCase().indexOf(filter) > -1;
+
+                card.style.display = isMatch ? '' : 'none';
             });
         }
+
 
         /***
          * TODO: 02-08-2024
@@ -132,7 +142,11 @@
 
         btnReport = (recid) => {
             const url = `{{ route('data.report') }}?rec_id=${recid}`;
-            window.open(url, '_blank');
+            const reports = window.open(url, '_blank');
+            reports.onbeforeunload = function() {
+
+                location.reload()
+            }
         }
     </script>
 @endpush
