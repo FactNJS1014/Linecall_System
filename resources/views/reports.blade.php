@@ -89,8 +89,18 @@
                     card += '<tr>';
                     card +=
                         '<th style="width: auto; font-size: 20px; background: #172774; color: #fff; font-weight: 600;">ลูกค้า</th>';
-                    card += '<td class="customer" style="font-size: 20px; font-weight: 600; color: #172774;">' +
-                        show.LNCL_HREC_CUS + '</td>';
+                    if (show.LNCL_HREC_CUS === 'TCTC') {
+                        card +=
+                            '<td class="customer" style="font-size: 20px; font-weight: 600; color: #172774;">CTC</td>';
+                    } else if (show.LNCL_HREC_CUS === 'TCTD') {
+                        card +=
+                            '<td class="customer" style="font-size: 20px; font-weight: 600; color: #172774;">CTD</td>';
+                    } else {
+                        card +=
+                            '<td class="customer" style="font-size: 20px; font-weight: 600; color: #172774;">' +
+                            show.LNCL_HREC_CUS + '</td>';
+                    }
+
                     card += '</tr>';
                     card += '<tr>';
                     card +=

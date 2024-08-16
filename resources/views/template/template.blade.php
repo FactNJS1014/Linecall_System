@@ -9,16 +9,25 @@ if (!empty($_GET['username'])) {
     $_SESSION['sec'] = $_GET['sec'];
     $_SESSION['MSECT_ID'] = $_GET['MSECT_ID'];
     $per = $_GET['USE_PERMISSION'];
+    if($_SESSION['USE_PERMISSION'] == 8){
+
 ?>
 <script>
-    window.location.replace("http://web-server/37_linecall/index.php");
+    // window.location.replace("http://web-server/37_linecall/index.php");
+    window.location.replace("http://web-server/37_linecall/index.php/approve");
 </script>
 <?php
+}else{
+    header('Location: http://web-server/37_linecall/index.php');
+    exit(0);
+}
 }
 if (empty($_SESSION['empno'])) {
     header('Location: http://web-server/menu.php');
     exit(0);
 }
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -106,8 +115,8 @@ if (empty($_SESSION['empno'])) {
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="{{ route('show.pdf',['filename' => 'linecall.pdf']) }}" class="sidebar-link  fs-5" id="li-reports"
-                            onclick="changePage()">
+                        <a href="{{ route('show.pdf', ['filename' => 'linecall.pdf']) }}" class="sidebar-link  fs-5"
+                            id="li-reports" onclick="changePage()">
                             <i class="fa-solid fa-folder fa-lg mx-1"></i>
                             คู่มือการใช้งาน
                         </a>
@@ -170,6 +179,7 @@ if (empty($_SESSION['empno'])) {
         var MSECT_ID = '<?= $_SESSION['MSECT_ID'] ?>';
         var server = '<?= $_SERVER['HTTP_HOST'] ?>';
     </script>
+
     @stack('script_content')
 
 

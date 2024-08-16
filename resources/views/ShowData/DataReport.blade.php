@@ -90,8 +90,17 @@
                                 {{ $document->LNCL_HREC_REFDOC }}</td>
                             <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
                                 {{ $document->LNCL_HREC_LINE }}</td>
+                            @if ($document->LNCL_HREC_CUS === 'TCTC')
+                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
+                                CTC</td>
+                            @elseif($document->LNCL_HREC_CUS === 'TCTD')
+                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
+                                CTD</td>
+                            @else
                             <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
                                 {{ $document->LNCL_HREC_CUS }}</td>
+                            @endif
+
                             <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
                                 {{ $document->LNCL_HREC_WON }}</td>
                             <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">

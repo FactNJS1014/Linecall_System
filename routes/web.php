@@ -19,6 +19,7 @@ use App\Http\Controllers\PDFController;
 |
 */
 
+
 Route::get('/', function () {
     return view('index');
 })->name('index');
@@ -34,6 +35,12 @@ Route::get('/record2', function () {
 Route::get('/rankmaster', function () {
     return view('RankApp');
 })->name('rankmaster');
+
+
+
+Route::get('/approve', function () {
+    return view('apr_linecall');
+})->name('approve');
 
 Route::get('/reports', function () {
     return view('reports');
@@ -63,7 +70,7 @@ Route::post('/Root/update', [RootController::class, 'updateRoot'])->name('update
 
 //fetch data
 Route::get('/showform01', [DataformController::class, 'fetchDataRec01'])->name('data_first');
-Route::get('/approve', [ProblemController::class, 'fetchDataProblem'])->name('approve');
+
 Route::get('/showform02', [DataformController::class, 'fetchDataRec02'])->name('data_second');
 Route::get('/showdata/record', [DataformController::class, 'fetchDataRecord'])->name('data_record');
 Route::get('/showdata/getedit1', [DataformController::class, 'getDataEditForm1'])->name('get_editform1');
@@ -94,3 +101,6 @@ Route::post('/get/reject', [DataformController::class, 'getRejected'])->name('ge
 
 //Show PDF Document
 Route::get('/show/pdf/{filename}', [PDFController::class, 'ShowDocumentFile'])->name('show.pdf');
+
+//Alarm Notification
+Route::get('/alarm/notification', [DataformController::class, 'AlarmNotification'])->name('alarm.notification');

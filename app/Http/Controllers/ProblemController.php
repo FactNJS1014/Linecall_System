@@ -6,6 +6,8 @@ use App\Models\LNCL_HREC_TBL;
 use App\Models\LNCL_IMAGES;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Mail\FinalApprove;
+use Illuminate\Support\Facades\Mail;
 
 class ProblemController extends Controller
 {
@@ -278,8 +280,13 @@ class ProblemController extends Controller
             'LNCL_HREC_ACTION' => $action,
             'LNCL_UPDATE_STD' => 1,
             'LNCL_UPDATE_LSTDT' => $currentDate,
-            'LNCL_FINAL_STD' => 0
+            'LNCL_FINAL_STD' => 0,
+            'LNCL_SENDAPP_STD' => 0,
+
         ];
+        if ('LNCL_HREC_RJSTD' == 1) {
+            $updatePrb['LNCL_HREC_RJSTD'] = 2;
+        }
 
         // Perform the update operation
         $updatedRows = DB::table('LNCL_HREC_TBL')
@@ -336,7 +343,7 @@ class ProblemController extends Controller
 
         $updatestatusPrb = [
             'LNCL_HREC_TRACKING' => 1,
-
+            'LNCL_SENDAPP_STD' => 1,
         ];
 
         DB::table('LNCL_HREC_TBL')
@@ -379,6 +386,39 @@ class ProblemController extends Controller
 
         $tracking_up = $match + 1;
 
+        $findpersonaldata_approval1 = DB::table('VUSER_DEPT')
+            ->select(
+                'MUSR_ID',
+                'MUSR_NAME',
+                'MSECT_ID',
+                'DEPT_SEC',
+                'DEPT_S_NAME',
+                'USE_PERMISSION'
+            )
+            ->where('MUSR_ID', '=', '2040008')
+            ->get();
+
+        $username = $findpersonaldata_approval1[0]->MUSR_NAME;
+        $empno = $findpersonaldata_approval1[0]->MUSR_ID;
+        $department = $findpersonaldata_approval1[0]->DEPT_S_NAME;
+        $DEPT_SEC = $findpersonaldata_approval1[0]->DEPT_SEC;
+        $MSECT_ID = $findpersonaldata_approval1[0]->MSECT_ID;
+        $per = $findpersonaldata_approval1[0]->USE_PERMISSION;
+
+        // $fill_personaldata = 'http://web-server/32_asset/index.php?username='+$findpersonaldata_approval1[0]->MUSR_NAME+'&empno='+$findpersonaldata_approval1[0]->MUSR_ID+'&department='+$findpersonaldata_approval1[0]->DEPT_S_NAME+'&USE_PERMISSION=1&sec='+$findpersonaldata_approval1[0]->DEPT_SEC+'&MSECT_ID='+$findpersonaldata_approval1[0]->MSECT_ID;
+        $fill_personaldata = "http://web-server/37_linecall/index.php/approve?username={$username}&empno={$empno}&department={$department}&USE_PERMISSION={$per}&sec={$DEPT_SEC}&MSECT_ID={$MSECT_ID}";
+
+
+        if ($tracking_up == 4) {
+            // Send email immediately
+
+            $toLink = [
+                'url' => $fill_personaldata,
+            ];
+
+            Mail::to('j-natdanai@alpine-asia.com')->send(new FinalApprove($toLink));
+        }
+
         if ($tracking_up > 4) {
             $trackupdate = [
                 'LNCL_HREC_TRACKING' => $tracking_up,
@@ -396,6 +436,9 @@ class ProblemController extends Controller
             'LNCL_EMPID_APPR' => $empno,
             'LNCL_RECAPP_STD' => 1
         ];
+
+
+
 
 
 

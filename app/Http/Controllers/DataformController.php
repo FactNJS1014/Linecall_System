@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\MUSR_TBL;
 use Illuminate\Support\Collection;
+use Carbon\Carbon;
 
 class DataformController extends Controller
 {
@@ -34,7 +35,8 @@ class DataformController extends Controller
                 'LNCL_HREC_TRACKING',
                 'LNCL_HREC_RJSTD',
                 'LNCL_HREC_RJREMARK',
-                'LNCL_FINAL_STD'
+                'LNCL_FINAL_STD',
+                'LNCL_SENDAPP_STD'
             )
             ->where('LNCL_FINAL_STD', 0)
             ->get();
@@ -409,5 +411,42 @@ class DataformController extends Controller
 
             ->get();
         return response()->json(['datafirst' => $data_01]);
+    }
+
+    public function AlarmNotification()
+    {
+        $alarm_app = DB::table('LNCL_HREC_TBL')
+            ->select(
+                'LNCL_HREC_RANKTYPE',
+                'LNCL_HREC_ID',
+                'LNCL_HREC_LSTDT'
+            )
+            ->get();
+
+
+
+        foreach ($alarm_app as $alarm) {
+            $alarmDate = null;
+
+            if ($alarm->LNCL_HREC_RANKTYPE == 'A') {
+                $alarmDate = Carbon::parse($alarm->LNCL_HREC_LSTDT)->subDays(3);
+            } elseif ($alarm->LNCL_HREC_RANKTYPE == 'B') {
+                $alarmDate = Carbon::parse($alarm->LNCL_HREC_LSTDT)->subDays(5);
+            }
+        }
+
+        $alarm_show = DB::table('LNCL_HREC_TBL')
+            ->select(
+                'LNCL_HREC_ID',
+                'LNCL_HREC_LSTDT'
+            )
+            ->whereTime('LNCL_HREC_LSTDT', $alarmDate)
+            //->where('LNCL_HREC_ID', $alarm_app->pluck('LNCL_HREC_ID'))
+            ->get();
+
+        // Return a simple JSON response indicating success
+        return response()->json([
+            'success' => $alarm_show,
+        ]);
     }
 }
