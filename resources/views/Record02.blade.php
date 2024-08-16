@@ -538,24 +538,5 @@
                 reader.readAsDataURL(file);
             });
         }
-
-
-        document.addEventListener('DOMContentLoaded', function() {
-            fetch('{{ route('alarm.notification') }}')
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data.success);
-                    if (data.success){
-                        Swal.fire({
-                            title: 'แจ้งเตือนบันทึก Linecall',
-                            text: 'อย่าลืมนะ',
-                            icon: 'info',
-                            showConfirmButton: false,
-                            timer: 3000
-                        });
-                    }
-                })
-
-        });
     </script>
 @endpush

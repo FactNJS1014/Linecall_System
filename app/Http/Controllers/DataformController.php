@@ -41,6 +41,13 @@ class DataformController extends Controller
             ->where('LNCL_FINAL_STD', 0)
             ->get();
 
+
+        $data_02 = DB::table('LNCL_LEAKANDROOT_TBL')
+            ->select('LNCL_LEAKANDROOT_EMPID')
+            ->whereIn('LNCL_HREC_ID', $data_01->pluck('LNCL_HREC_ID'))
+            ->get();
+
+
         $level2 = DB::table('LNCL_HREC_APP')
             ->select('LNCL_RECAPP_EMPLV', 'LNCL_EMPID_RECAPP')
             ->whereIn('LNCL_HREC_ID', $data_01->pluck('LNCL_HREC_ID')) // กรองตาม LNCL_HREC_ID ที่อยู่ใน data_01
@@ -56,7 +63,7 @@ class DataformController extends Controller
             }
         }
 
-        return response()->json(['datafirst' => $data_01, 'match' => $match]);
+        return response()->json(['datafirst' => $data_01, 'match' => $match, 'datasecond' => $data_02]);
     }
 
 
@@ -411,42 +418,5 @@ class DataformController extends Controller
 
             ->get();
         return response()->json(['datafirst' => $data_01]);
-    }
-
-    public function AlarmNotification()
-    {
-        $alarm_app = DB::table('LNCL_HREC_TBL')
-            ->select(
-                'LNCL_HREC_RANKTYPE',
-                'LNCL_HREC_ID',
-                'LNCL_HREC_LSTDT'
-            )
-            ->get();
-
-
-
-        foreach ($alarm_app as $alarm) {
-            $alarmDate = null;
-
-            if ($alarm->LNCL_HREC_RANKTYPE == 'A') {
-                $alarmDate = Carbon::parse($alarm->LNCL_HREC_LSTDT)->subDays(3);
-            } elseif ($alarm->LNCL_HREC_RANKTYPE == 'B') {
-                $alarmDate = Carbon::parse($alarm->LNCL_HREC_LSTDT)->subDays(5);
-            }
-        }
-
-        $alarm_show = DB::table('LNCL_HREC_TBL')
-            ->select(
-                'LNCL_HREC_ID',
-                'LNCL_HREC_LSTDT'
-            )
-            ->whereTime('LNCL_HREC_LSTDT', $alarmDate)
-            //->where('LNCL_HREC_ID', $alarm_app->pluck('LNCL_HREC_ID'))
-            ->get();
-
-        // Return a simple JSON response indicating success
-        return response()->json([
-            'success' => $alarm_show,
-        ]);
     }
 }
