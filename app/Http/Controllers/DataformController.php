@@ -419,4 +419,38 @@ class DataformController extends Controller
             ->get();
         return response()->json(['datafirst' => $data_01]);
     }
+
+    public function Dataform1()
+    {
+        $dataformrec_01 = DB::table('LNCL_HREC_TBL')
+            ->select(
+                'LNCL_HREC_EMPID',
+                'LNCL_HREC_SECTION',
+                'LNCL_HREC_LINE',
+                'LNCL_HREC_CUS',
+                'LNCL_HREC_WON',
+                'LNCL_HREC_MDLNM',
+                'LNCL_HREC_MDLCD',
+                'LNCL_HREC_NGCD',
+                'LNCL_HREC_NGPRCS',
+                'LNCL_HREC_NGPST',
+                'LNCL_HREC_QTY',
+                'LNCL_HREC_DEFICT',
+                'LNCL_HREC_PERCENT',
+                'LNCL_HREC_SERIAL',
+                'LNCL_HREC_REFDOC',
+                'LNCL_HREC_PROBLEM',
+                'LNCL_HREC_RANKTYPE',
+                'LNCL_HREC_ID',
+                'LNCL_HREC_TRACKING',
+                'LNCL_HREC_RJSTD',
+                'LNCL_HREC_RJREMARK',
+                'LNCL_FINAL_STD',
+                'LNCL_SENDAPP_STD'
+            )
+            ->where('LNCL_SENDAPP_STD', 0)
+            ->get();
+
+        return response()->json(['dataformrec' => $dataformrec_01]);
+    }
 }

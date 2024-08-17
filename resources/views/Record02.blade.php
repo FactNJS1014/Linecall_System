@@ -218,11 +218,11 @@
 
 
 
-            axios.get('{{ route('data_first') }}')
+            axios.get('{{ route('dataform1') }}')
                 .then(function(show) {
 
                     let html = '';
-                    show.data.datafirst.map((list) => {
+                    show.data.dataformrec.map((list) => {
                         console.log(list)
                         html += '<tr id="row-' + list.LNCL_HREC_ID + '">'
                         html += '<td>' + list.LNCL_HREC_SECTION + '</td>'
@@ -381,7 +381,9 @@
                                                     icon: "success",
                                                     showConfirmButton: false,
                                                     timer: 1000
-                                                });
+                                                }).then(function() {
+                                                    location.reload();
+                                                })
                                             } else {
                                                 Swal.fire({
                                                     title: 'ไม่สามารถบันทึกได้',
@@ -423,7 +425,7 @@
                 return;
             }
 
-            var container = document.getElementById('imageContainer');
+            var container = document.getElementById('imagePreview1');
             container.innerHTML = ''; // Clear previous images
 
             Array.from(files).forEach(file => {
@@ -486,7 +488,7 @@
                 return;
             }
 
-            var container = document.getElementById('imageContainer');
+            var container = document.getElementById('imagePreview2');
             container.innerHTML = ''; // Clear previous images
 
             Array.from(files).forEach(file => {

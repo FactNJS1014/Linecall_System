@@ -90,6 +90,7 @@ Route::get('/get/approve', [ProblemController::class, 'ApproveData'])->name('get
 Route::get('/get/lvapp', [ProblemController::class, 'ApproveOfLevel'])->name('getlevelapp');
 Route::get('/get/compare', [DataformController::class, 'compareLevel'])->name('compareLevel');
 Route::get('/get/report', [DataformController::class, 'DataReport'])->name('datareport');
+Route::get('/get/dataform1', [DataformController::class, 'Dataform1'])->name('dataform1');
 
 
 //Delete data linecall

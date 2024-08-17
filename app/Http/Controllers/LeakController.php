@@ -61,7 +61,7 @@ class LeakController extends Controller
             foreach ($files as $file) {
                 $extension = $file->getClientOriginalExtension();
                 $fileName = 'IMG-' . $YM . '-' . rand(000, 999) . '.' . $extension;
-                $destinationPath = 'public/images/';
+                $destinationPath = 'public/images_project/';
                 $file->move($destinationPath, $fileName);
 
 
@@ -123,7 +123,7 @@ class LeakController extends Controller
             foreach ($files as $file) {
                 $extension = $file->getClientOriginalExtension();
                 $fileName = 'IMG-' . $YM . '-' . rand(000, 999) . '.' . $extension;
-                $destinationPath = 'public/images/';
+                $destinationPath = 'public/images_project/';
                 $file->move($destinationPath, $fileName);
 
 

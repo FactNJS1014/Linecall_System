@@ -165,7 +165,7 @@ if (empty($_SESSION['empno'])) {
                         @foreach ($images as $group)
                             @foreach ($group as $image)
                                 <div>
-                                    <img src="{{ asset('public/images/' . $image->LNCL_IMAGES_FILES) }}"class="mt-1"
+                                    <img src="{{ asset('public/images_project/' . $image->LNCL_IMAGES_FILES) }}"class="mt-1"
                                         width="300px" onclick="ViewImage('{{ $image->LNCL_IMAGES_FILES }}')"><br>
                                     <!-- Display other image fields -->
                                 </div>
@@ -221,7 +221,7 @@ if (empty($_SESSION['empno'])) {
                         @foreach ($imagesleak as $group)
                             @foreach ($group as $imgl)
                                 <div>
-                                    <img src="{{ asset('public/images/' . $imgl->LNCL_IMAGES_FILES) }}"class="mt-1"
+                                    <img src="{{ asset('public/images_project/' . $imgl->LNCL_IMAGES_FILES) }}"class="mt-1"
                                         width="300px" onclick="ViewImage('{{ $imgl->LNCL_IMAGES_FILES }}')"><br>
                                     <!-- Display other image fields -->
                                 </div>
@@ -254,7 +254,7 @@ if (empty($_SESSION['empno'])) {
                         @foreach ($imagesroot as $group)
                             @foreach ($group as $imgr)
                                 <div>
-                                    <img src="{{ asset('public/images/' . $imgr->LNCL_IMAGES_FILES) }}"class="mt-1"
+                                    <img src="{{ asset('public/images_project/' . $imgr->LNCL_IMAGES_FILES) }}"class="mt-1"
                                         width="300px" onclick="ViewImage('{{ $imgr->LNCL_IMAGES_FILES }}')"><br>
                                     <!-- Display other image fields -->
                                 </div>
@@ -279,15 +279,30 @@ if (empty($_SESSION['empno'])) {
                 </div>
             @else
                 <div class="d-flex justify-content-center mt-3">
-                    <button type="button" class="btn btnapprove" onclick="submitApprove('{{ $recid }}')"><i
-                            class="fa-solid fa-check-double mx-2"></i>ยืนยันการส่งอนุมัติ</button>
-                    <button type="button" class="btn btnedit" onclick="gotoEdit('{{ $recid }}')"><i
-                            class="fa-solid fa-pen mx-2"></i>แก้ไขข้อมูลการบันทึก</button>
-                    <button type="button" class="btn btndelete" onclick="DeleteData('{{ $recid }}')"><i
-                            class="fa-solid fa-trash mx-2"></i>ลบข้อมูลการบันทึก</button>
-                    {{-- <button type="button" class="btn btndelete2" onclick="DeleteImage('{{ $recid }}')"><i
-                        class="fa-solid fa-image mx-2"></i>ลบข้อมูลรูปภาพ</button> --}}
+                    @foreach ($leakdoc as $leak)
+                        @if ($leak->LNCL_ROOTREC_STD === null || $leak->LNCL_LEAKREC_STD === null)
+                            <button type="button" class="btn btnapprove"
+                                onclick="submitApprove('{{ $recid }}')" disabled><i
+                                    class="fa-solid fa-check-double mx-2"></i>ยืนยันการส่งอนุมัติ</button>
+                            <button type="button" class="btn btnedit" onclick="gotoEdit('{{ $recid }}')"><i
+                                    class="fa-solid fa-pen mx-2"></i>แก้ไขข้อมูลการบันทึก</button>
+                            <button type="button" class="btn btndelete"
+                                onclick="DeleteData('{{ $recid }}')"><i
+                                    class="fa-solid fa-trash mx-2"></i>ลบข้อมูลการบันทึก</button>
+                        @else
+                            <button type="button" class="btn btnapprove"
+                                onclick="submitApprove('{{ $recid }}')"><i
+                                    class="fa-solid fa-check-double mx-2"></i>ยืนยันการส่งอนุมัติ</button>
+                            <button type="button" class="btn btnedit" onclick="gotoEdit('{{ $recid }}')"><i
+                                    class="fa-solid fa-pen mx-2"></i>แก้ไขข้อมูลการบันทึก</button>
+                            <button type="button" class="btn btndelete"
+                                onclick="DeleteData('{{ $recid }}')"><i
+                                    class="fa-solid fa-trash mx-2"></i>ลบข้อมูลการบันทึก</button>
+                        @endif
 
+                        {{-- <button type="button" class="btn btndelete2" onclick="DeleteImage('{{ $recid }}')"><i
+                        class="fa-solid fa-image mx-2"></i>ลบข้อมูลรูปภาพ</button> --}}
+                    @endforeach
                 </div>
             @endif
 
@@ -320,7 +335,7 @@ if (empty($_SESSION['empno'])) {
             };
             //Createzoomedimage
             var zoomedImage = document.createElement('img');
-            zoomedImage.src = "{{ asset('public/images/') }}" + "/" + images;
+            zoomedImage.src = "{{ asset('public/images_project/') }}" + "/" + images;
             zoomedImage.className = 'zoomed';
             //Appendtobody
             document.body.appendChild(overlay);

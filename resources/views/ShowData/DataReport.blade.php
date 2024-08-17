@@ -91,14 +91,14 @@
                             <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
                                 {{ $document->LNCL_HREC_LINE }}</td>
                             @if ($document->LNCL_HREC_CUS === 'TCTC')
-                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
-                                CTC</td>
+                                <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
+                                    CTC</td>
                             @elseif($document->LNCL_HREC_CUS === 'TCTD')
-                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
-                                CTD</td>
+                                <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
+                                    CTD</td>
                             @else
-                            <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
-                                {{ $document->LNCL_HREC_CUS }}</td>
+                                <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
+                                    {{ $document->LNCL_HREC_CUS }}</td>
                             @endif
 
                             <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
@@ -153,7 +153,7 @@
                         @foreach ($images as $group)
                             @foreach ($group as $image)
                                 <div>
-                                    <img src="{{ asset('public/images/' . $image->LNCL_IMAGES_FILES) }}"class="mt-1"
+                                    <img src="{{ asset('public/images_project/' . $image->LNCL_IMAGES_FILES) }}"class="mt-1"
                                         width="300px" onclick="ViewImage('{{ $image->LNCL_IMAGES_FILES }}')"><br>
                                     <!-- Display other image fields -->
                                 </div>
@@ -209,7 +209,7 @@
                         @foreach ($imagesleak as $group)
                             @foreach ($group as $imgl)
                                 <div>
-                                    <img src="{{ asset('public/images/' . $imgl->LNCL_IMAGES_FILES) }}"class="mt-1"
+                                    <img src="{{ asset('public/images_project/' . $imgl->LNCL_IMAGES_FILES) }}"class="mt-1"
                                         width="300px" onclick="ViewImage('{{ $imgl->LNCL_IMAGES_FILES }}')"><br>
                                     <!-- Display other image fields -->
                                 </div>
@@ -242,7 +242,7 @@
                         @foreach ($imagesroot as $group)
                             @foreach ($group as $imgr)
                                 <div>
-                                    <img src="{{ asset('public/images/' . $imgr->LNCL_IMAGES_FILES) }}"class="mt-1"
+                                    <img src="{{ asset('public/images_project/' . $imgr->LNCL_IMAGES_FILES) }}"class="mt-1"
                                         width="300px" onclick="ViewImage('{{ $imgr->LNCL_IMAGES_FILES }}')"><br>
                                     <!-- Display other image fields -->
                                 </div>
@@ -279,7 +279,7 @@
             };
             //Createzoomedimage
             var zoomedImage = document.createElement('img');
-            zoomedImage.src = "{{ asset('public/images/') }}" + "/" + images;
+            zoomedImage.src = "{{ asset('public/images_project/') }}" + "/" + images;
             zoomedImage.className = 'zoomed';
             //Appendtobody
             document.body.appendChild(overlay);
