@@ -416,7 +416,7 @@ class ProblemController extends Controller
                 'url' => $fill_personaldata,
             ];
 
-            Mail::to('j-natdanai@alpine-asia.com')->send(new FinalApprove($toLink));
+            Mail::to(['j-natdanai@alpine-asia.com', 'p-chaiwat@alpine-asia.com'])->send(new FinalApprove($toLink));
         }
 
         if ($tracking_up > 4) {
