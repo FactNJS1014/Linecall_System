@@ -91,6 +91,7 @@ Route::get('/get/lvapp', [ProblemController::class, 'ApproveOfLevel'])->name('ge
 Route::get('/get/compare', [DataformController::class, 'compareLevel'])->name('compareLevel');
 Route::get('/get/report', [DataformController::class, 'DataReport'])->name('datareport');
 Route::get('/get/dataform1', [DataformController::class, 'Dataform1'])->name('dataform1');
+Route::get('/get/gendoc', [DataformController::class, 'GenerateDocument'])->name('gen.doc');
 
 
 //Delete data linecall

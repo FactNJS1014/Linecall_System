@@ -453,4 +453,47 @@ class DataformController extends Controller
 
         return response()->json(['dataformrec' => $dataformrec_01]);
     }
+
+    public function GenerateDocument()
+    {
+        $date = Carbon::now()->format('Ym');
+
+        $ref = '';
+        $findPreviousMaxID = DB::table('LNCL_HREC_TBL')
+            ->select('LNCL_HREC_REFDOC')
+            ->orderBy('LNCL_HREC_REFDOC', 'DESC')
+            ->get();
+
+        if (empty($findPreviousMaxID[0])) {
+            $ref = 'LNC-' . $date . '-000001';
+        } else {
+            //* Helper > GenkeyHelper.php > AutogenerateKey()
+            $ref = AutogenerateKey('LNC', $findPreviousMaxID[0]->LNCL_HREC_REFDOC);
+        }
+
+        return response()->json($ref);
+    }
+
+    public function AlarmNotification()
+    {
+        $data = DB::table('LNCL_HREC_TBL')
+            ->select('LNCL_HREC_RANKTYPE',) // Including LNCL_HREC_ID for reference
+            ->where('LNCL_HREC_ID') // Replace $yourId with the actual ID you're checking
+            ->first();
+
+        $today = Carbon::now();
+
+        //return response()->json($today);
+
+        if ($data) {
+
+
+            if ($data->LNCL_HREC_RANKTYPE === 'A') {
+                $alertDate = $today->addDays(3); // Add 3 days for rank type A
+            } elseif ($data->LNCL_HREC_RANKTYPE === 'B') {
+                $alertDate = $today->addDays(5); // Add 5 days for rank type B
+            }
+        }
+        return response()->json(['alarm' => $alertDate]);
+    }
 }

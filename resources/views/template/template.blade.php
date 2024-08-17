@@ -14,11 +14,14 @@ if (!empty($_GET['username'])) {
 ?>
 <script>
     // window.location.replace("http://web-server/37_linecall/index.php");
-    window.location.replace("http://web-server/37_linecall/index.php/approve");
+    // window.location.replace("http://web-server/37_linecall/index.php/approve");
 </script>
 <?php
+header("location: http://" . $_SERVER['HTTP_HOST'] . "/37_linecall/index.php/approve");
+exit(0);
 }else{
-    header('Location: http://web-server/37_linecall/index.php');
+    //header('Location: http://web-server/37_linecall/index.php');
+    header("location: http://" . $_SERVER['HTTP_HOST'] . "/37_linecall/index.php");
     exit(0);
 }
 }

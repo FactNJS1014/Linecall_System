@@ -178,7 +178,7 @@
                         <div class="col-md-4">
                             <label class="h5" style="color: #003f88;">Ref-Document:</label>
                             <input type="text" name="doc" id="doc" class="form-control"
-                                placeholder="กรอกเลขเอกสาร" required>
+                                placeholder="กรอกเลขเอกสาร" required readonly>
                         </div>
 
                     </div>
@@ -579,5 +579,31 @@
             })
 
         }
+
+        $.ajax({
+            url: '{{ route('gen.doc') }}',
+            type: 'GET',
+            success: function(response) {
+                console.log(response);
+                $('#doc').val(response);
+            }
+        })
+
+        $.ajax({
+            url: '{{ route('alarm.notification') }}',
+            type: 'GET',
+            success: function(response) {
+                console.log(response);
+                if (response.alarm.length > 0) {
+                    Swal.fire({
+                        title: 'แจ้งเตือนให้บันทึก Linecall',
+                        icon: 'warning',
+                        timer: 5000,
+                        showConfirmButton: false,
+                    });
+
+                }
+            }
+        })
     </script>
 @endpush
