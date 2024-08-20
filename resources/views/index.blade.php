@@ -449,19 +449,21 @@
 
         customer_name();
 
-        function customer_name() {
+        async function customer_name() {
             axios.get('{{ route('getCustomer') }}')
-                .then(function(response) {
-                    var select = $("#customer");
-                    select.empty();
-                    select.append('<option value="" selected disabled>-- เลือกลูกค้า --</option>');
-                    response.data.cus.forEach(function(customer) {
-                        // Trim spaces and ensure proper encoding
-                        var cleanedValue = customer.BGCD.trim();
-                        select.append(
-                            `<option value="${encodeURIComponent(cleanedValue)}">${cleanedValue}</option>`);
-                    });
-                })
+                .then(await
+                    function(response) {
+                        var select = $("#customer");
+                        select.empty();
+                        select.append('<option value="" selected disabled>-- เลือกลูกค้า --</option>');
+                        response.data.cus.forEach(function(customer) {
+                            // Trim spaces and ensure proper encoding
+                            var cleanedValue = customer.BGCD.trim();
+                            select.append(
+                                `<option value="${encodeURIComponent(cleanedValue)}">${cleanedValue}</option>`
+                            );
+                        });
+                    })
                 .catch(function(error) {
                     console.error(error);
                 });
@@ -473,20 +475,21 @@
          */
         getProcess();
 
-        function getProcess() {
+        async function getProcess() {
             axios.get('{{ route('getProcess') }}')
-                .then(function(response) {
-                    var select = $("#ng_prc");
-                    select.empty();
-                    select.append('<option value="" selected disabled>-- เลือก Process --</option>');
-                    response.data.processes.forEach(function(process) {
-                        // Trim spaces and ensure proper encoding
-                        var cleanedValue = process.PRO_NAME.trim();
-                        select.append(
-                            `<option value="${encodeURIComponent(cleanedValue)}">${cleanedValue}</option>`
-                        );
-                    });
-                })
+                .then(await
+                    function(response) {
+                        var select = $("#ng_prc");
+                        select.empty();
+                        select.append('<option value="" selected disabled>-- เลือก Process --</option>');
+                        response.data.processes.forEach(function(process) {
+                            // Trim spaces and ensure proper encoding
+                            var cleanedValue = process.PRO_NAME.trim();
+                            select.append(
+                                `<option value="${encodeURIComponent(cleanedValue)}">${cleanedValue}</option>`
+                            );
+                        });
+                    })
                 .catch(function(error) {
                     console.error(error);
                 });
@@ -498,21 +501,22 @@
          */
         getNgCode()
 
-        function getNgCode() {
+        async function getNgCode() {
             axios.get('{{ route('getNgCode') }}')
-                .then(function(response) {
-                    var select = $("#ng_code");
-                    select.empty();
-                    select.append('<option value="" selected disabled>-- เลือก NG Codes --</option>');
-                    response.data.ngcodes.forEach(function(ng_code) {
-                        // Trim spaces and ensure proper encoding
-                        var cleanedValue = ng_code.NGCD_NAME.trim();
-                        var cleanedValue2 = ng_code.NGCD_DESC.trim();
-                        select.append(
-                            `<option value="${encodeURIComponent(cleanedValue)}">${cleanedValue}-(${cleanedValue2})</option>`
-                        );
-                    });
-                })
+                .then(await
+                    function(response) {
+                        var select = $("#ng_code");
+                        select.empty();
+                        select.append('<option value="" selected disabled>-- เลือก NG Codes --</option>');
+                        response.data.ngcodes.forEach(function(ng_code) {
+                            // Trim spaces and ensure proper encoding
+                            var cleanedValue = ng_code.NGCD_NAME.trim();
+                            var cleanedValue2 = ng_code.NGCD_DESC.trim();
+                            select.append(
+                                `<option value="${encodeURIComponent(cleanedValue)}">${cleanedValue}-(${cleanedValue2})</option>`
+                            );
+                        });
+                    })
                 .catch(function(error) {
                     console.error(error);
                 });
@@ -605,5 +609,24 @@
                 }
             }
         })
+
+        $(document).on('keydown', '#gen_record', function(e) {
+            console.log(e.target.id);
+            if (e.keyCode == 13) {
+                //alert('ok');
+                if (e.target.id == "serial") {
+                    e.preventDefault();
+                    let val = $("#serial").val();
+                    let val2 = val + ",";
+                    // console.log(val2);
+                    //alert('success');
+                    $("#serial").val(val2);
+
+
+                }
+
+            }
+
+        });
     </script>
 @endpush

@@ -579,6 +579,25 @@
 
         }
 
+        $(document).on('keydown', '#gen_record', function(e) {
+            console.log(e.target.id);
+            if (e.keyCode == 13) {
+                //alert('ok');
+                if (e.target.id == "serial") {
+                    e.preventDefault();
+                    let val = $("#serial").val();
+                    let val2 = val + ",";
+                    // console.log(val2);
+                    //alert('success');
+                    $("#serial").val(val2);
+
+
+                }
+
+            }
+
+        });
+
 
 
         // async function fetchModelData(won) {
