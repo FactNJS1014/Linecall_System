@@ -664,3 +664,10 @@ thead {
     font-weight: 700;
     padding: 5px;
 }
+
+#datereport {
+    color: #463f3a;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 6px;
+}

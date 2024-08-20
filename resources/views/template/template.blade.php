@@ -155,6 +155,7 @@ if (empty($_SESSION['empno'])) {
     <script src="{{ asset('public/js/select2.min.js') }}"></script>
     <script src="{{ asset('public/js/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('public/js/jquery.ui.autocomplete.scroll.min.js') }}"></script>
+    <script src="{{ asset('public/js/moment.js') }}"></script>
     <script>
         const toggler = document.querySelector(".btn");
         toggler.addEventListener("click", function() {

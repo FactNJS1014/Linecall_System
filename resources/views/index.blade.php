@@ -19,7 +19,7 @@
                                 style="font-weight: 700">
                         </div>
                         <div class="col-md-4">
-                            <label class="h5" style="color: #003f88;">Section</label>
+                            <label class="h5" style="color: #003f88;">สายอนุมัติของแผนก</label>
                             <select name="section_rec" id="section_rec" class="form-select form-control" required>
                                 <option value="" selected disabled>เลือกแผนก</option>
                                 <option value="MT">MT</option>

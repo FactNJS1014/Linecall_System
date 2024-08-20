@@ -389,8 +389,12 @@ class DataformController extends Controller
         return response()->json(['update' => $update_comment]);
     }
 
-    public function DataReport()
+    public function DataReport(Request $request)
     {
+        $date_rep = $request->input('datereport');
+        parse_str($date_rep, $daterep);
+
+        //return response()->json($daterep);
         $data_01 = DB::table('LNCL_HREC_TBL')
             ->select(
                 'LNCL_HREC_EMPID',
@@ -415,6 +419,7 @@ class DataformController extends Controller
                 'LNCL_HREC_RJSTD',
                 'LNCL_HREC_RJREMARK'
             )
+            ->whereDate('LNCL_HREC_DATE', $daterep['datereport'])
 
             ->get();
         return response()->json(['datafirst' => $data_01]);

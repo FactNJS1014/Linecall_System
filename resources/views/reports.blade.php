@@ -12,8 +12,18 @@
         <span>:</span>
         <span id="sec">00</span>
     </div> --}}
-    <input type="text" id="searchInput" class="form-control mb-3 mt-3" onkeyup="searchTable()"
-        placeholder="Search for document number..">
+    <div class="row">
+        <div class="col-md-6">
+            <form method="get" id="dateform">
+                <input type="date" name="datereport" id="datereport" class="form-control mb-3 mt-3">
+            </form>
+        </div>
+        <div class="col-md-6">
+            <input type="text" id="searchInput" class="form-control mb-3 mt-3" onkeyup="searchTable()"
+                placeholder="Search for document number..">
+        </div>
+    </div>
+
 
 
     <div id="data_card" class="data-card mt-3">
@@ -65,59 +75,77 @@
          * *Show All Data reord
          */
 
+        const now = moment();
+        let date = now.format("YYYY-MM-DD");
+        $('#datereport').val(date)
+        // let date2 = new Date(date);
+        let daterep = $('#dateform').serialize()
+        console.log(daterep)
 
-        axios.get('{{ route('datareport') }}')
+
+
+
+
+        axios.get('{{ route('datareport') }}', {
+                params: {
+                    datereport: daterep
+                }
+            })
             .then(function(res) {
+                console.log(res);
                 let card = '';
-                res.data.datafirst.map((show) => {
-                    card += '<div class="card mt-3" style="background: #fff;">'
-                    card += '<div class="card-body">'
-                    card += '<table class="table table-bordered">'
-                    card += '<tr>';
-                    card +=
-                        '<th style="width: auto; font-size: 20px; background: #172774; color: #fff; font-weight: 600;">เลขที่เอกสาร</th>';
-                    card +=
-                        '<td class="doc-number" style="font-size: 20px; font-weight: 600; color: #172774;">' +
-                        show.LNCL_HREC_REFDOC + '</td>';
-                    card += '</tr>';
-                    card += '<tr>';
-                    card +=
-                        '<th style="width: auto; font-size: 20px; background: #172774; color: #fff; font-weight: 600;">แผนก</th>';
-                    card += '<td class="section" style="font-size: 20px; font-weight: 600; color: #172774;">' +
-                        show.LNCL_HREC_SECTION + '</td>';
-                    card += '</tr>';
-                    card += '<tr>';
-                    card +=
-                        '<th style="width: auto; font-size: 20px; background: #172774; color: #fff; font-weight: 600;">ลูกค้า</th>';
-                    if (show.LNCL_HREC_CUS === 'TCTC') {
-                        card +=
-                            '<td class="customer" style="font-size: 20px; font-weight: 600; color: #172774;">CTC</td>';
-                    } else if (show.LNCL_HREC_CUS === 'TCTD') {
-                        card +=
-                            '<td class="customer" style="font-size: 20px; font-weight: 600; color: #172774;">CTD</td>';
-                    } else {
-                        card +=
-                            '<td class="customer" style="font-size: 20px; font-weight: 600; color: #172774;">' +
-                            show.LNCL_HREC_CUS + '</td>';
-                    }
+                // res.data.datafirst.map((show) => {
+                //     card += '<div class="card mt-3" style="background: #fff;">'
+                //     card += '<div class="card-body">'
+                //     card += '<table class="table table-bordered">'
+                //     card += '<tr>';
+                //     card +=
+                //         '<th style="width: auto; font-size: 20px; background: #172774; color: #fff; font-weight: 600;">เลขที่เอกสาร</th>';
+                //     card +=
+                //         '<td class="doc-number" style="font-size: 20px; font-weight: 600; color: #172774;">' +
+                //         show.LNCL_HREC_REFDOC + '</td>';
+                //     card += '</tr>';
+                //     card += '<tr>';
+                //     card +=
+                //         '<th style="width: auto; font-size: 20px; background: #172774; color: #fff; font-weight: 600;">แผนก</th>';
+                //     card += '<td class="section" style="font-size: 20px; font-weight: 600; color: #172774;">' +
+                //         show.LNCL_HREC_SECTION + '</td>';
+                //     card += '</tr>';
+                //     card += '<tr>';
+                //     card +=
+                //         '<th style="width: auto; font-size: 20px; background: #172774; color: #fff; font-weight: 600;">ลูกค้า</th>';
+                //     if (show.LNCL_HREC_CUS === 'TCTC') {
+                //         card +=
+                //             '<td class="customer" style="font-size: 20px; font-weight: 600; color: #172774;">CTC</td>';
+                //     } else if (show.LNCL_HREC_CUS === 'TCTD') {
+                //         card +=
+                //             '<td class="customer" style="font-size: 20px; font-weight: 600; color: #172774;">CTD</td>';
+                //     } else {
+                //         card +=
+                //             '<td class="customer" style="font-size: 20px; font-weight: 600; color: #172774;">' +
+                //             show.LNCL_HREC_CUS + '</td>';
+                //     }
 
-                    card += '</tr>';
-                    card += '<tr>';
-                    card +=
-                        '<th style="width: auto; font-size: 20px; background: #172774; color: #fff; font-weight: 600;">NG Code</th>';
-                    card += '<td style="font-size: 20px; font-weight: 600; color: #172774;">' + show
-                        .LNCL_HREC_NGCD + '</td>';
-                    card += '</tr>';
-                    card += '</table>';
-                    card += '<button class="btn btnviewrep ms-1 mb-1 mt-2" onclick=\'btnReport("' + show
-                        .LNCL_HREC_ID +
-                        '")\'><i class="fa-solid fa-eye fa-lg mx-2"></i>ดูรายงานข้อมูล</button>';
-                    card += '</div>';
-                    card += '</div>';
-                });
+                //     card += '</tr>';
+                //     card += '<tr>';
+                //     card +=
+                //         '<th style="width: auto; font-size: 20px; background: #172774; color: #fff; font-weight: 600;">NG Code</th>';
+                //     card += '<td style="font-size: 20px; font-weight: 600; color: #172774;">' + show
+                //         .LNCL_HREC_NGCD + '</td>';
+                //     card += '</tr>';
+                //     card += '</table>';
+                //     card += '<button class="btn btnviewrep ms-1 mb-1 mt-2" onclick=\'btnReport("' + show
+                //         .LNCL_HREC_ID +
+                //         '")\'><i class="fa-solid fa-eye fa-lg mx-2"></i>ดูรายงานข้อมูล</button>';
+                //     card += '</div>';
+                //     card += '</div>';
+                // });
 
                 $('#data_card').html(card); // Initial display
             });
+
+
+
 
 
 

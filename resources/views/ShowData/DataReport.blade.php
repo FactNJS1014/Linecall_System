@@ -74,7 +74,7 @@
                             <th style="background: #2e363e; color: #ffee;">NG Code</th>
                             <th style="background: #2e363e; color: #ffee;">NG Process</th>
                             <th style="background: #2e363e; color: #ffee;">Qty</th>
-                            <th style="background: #2e363e; color: #ffee;">Defict</th>
+                            <th style="background: #2e363e; color: #ffee;">Defect</th>
                             <th style="background: #2e363e; color: #ffee;">Percent</th>
                             <th style="background: #2e363e; color: #ffee;">NG Position</th>
                             <th style="background: #2e363e; color: #ffee;">Serial Number</th>
