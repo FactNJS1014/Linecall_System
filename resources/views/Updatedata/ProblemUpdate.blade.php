@@ -161,7 +161,7 @@
                     <div class="row mt-2">
 
                         <div class="col-md-4">
-                            <label class="h5" style="color: #003f88;">Defict (จำนวนงานเสีย):</label>
+                            <label class="h5" style="color: #003f88;">Defect (จำนวนงานเสีย):</label>
                             <input type="number" name="defict" id="defict" class="form-control"
                                 placeholder="กรอก Defict" oninput="calculate()" required>
                         </div>
