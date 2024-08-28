@@ -156,8 +156,8 @@
                             <label class="h5" style="color: #003f88;">Rank Approve:</label>
                             <select name="rank" id="rank" class="form-select form-control">
                                 <option value="" selected disabled>เลือก Rank</option>
-                                <option value="A">Rank A</option>
-                                <option value="B">Rank B</option>
+                                <option value="A">Rank A (K.Chaiwat)</option>
+                                <option value="B">Rank B (K.Kriangsak)</option>
 
 
                             </select>

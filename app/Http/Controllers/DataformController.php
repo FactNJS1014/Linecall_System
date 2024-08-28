@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\DB;
 use App\Models\MUSR_TBL;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
+use DateTime;
+use DateInterval;
+
 
 class DataformController extends Controller
 {
@@ -453,7 +456,8 @@ class DataformController extends Controller
                 'LNCL_FINAL_STD',
                 'LNCL_SENDAPP_STD'
             )
-            ->where('LNCL_SENDAPP_STD', 0)
+            ->where('LNCL_SENDAPP_STD', null)
+            ->where('LNCL_FINAL_STD', 0)
             ->get();
 
         return response()->json(['dataformrec' => $dataformrec_01]);
@@ -479,26 +483,11 @@ class DataformController extends Controller
         return response()->json($ref);
     }
 
+
+
     public function AlarmNotification()
     {
-        $data = DB::table('LNCL_HREC_TBL')
-            ->select('LNCL_HREC_RANKTYPE',) // Including LNCL_HREC_ID for reference
-            ->where('LNCL_HREC_ID') // Replace $yourId with the actual ID you're checking
-            ->first();
+        // Retrieve the date from the database
 
-        $today = Carbon::now();
-
-        //return response()->json($today);
-
-        if ($data) {
-
-
-            if ($data->LNCL_HREC_RANKTYPE === 'A') {
-                $alertDate = $today->addDays(3); // Add 3 days for rank type A
-            } elseif ($data->LNCL_HREC_RANKTYPE === 'B') {
-                $alertDate = $today->addDays(5); // Add 5 days for rank type B
-            }
-        }
-        return response()->json(['alarm' => $alertDate]);
     }
 }

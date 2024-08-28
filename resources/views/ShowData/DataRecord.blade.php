@@ -202,71 +202,79 @@ if (empty($_SESSION['empno'])) {
                         <p id="text1">แผนก: <span>{{ $leak->LNCL_LEAKANDROOT_SECTION }}</span></p>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;"
-                            class="p-2">
-                            5 Why of leak</p>
-                        <textarea rows="3" class="form-control" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_LEAK_WHY1 }}</textarea>
-                        <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_LEAK_WHY2 }}</textarea>
-                        <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_LEAK_WHY3 }}</textarea>
-                        <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_LEAK_WHY4 }}</textarea>
-                        <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_LEAK_WHY5 }}</textarea>
 
-                    </div>
-                    <div class="col-md-6">
-                        <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;"
-                            class="p-2">
-                            Images 5 Why of leak</p>
-                        @foreach ($imagesleak as $group)
-                            @foreach ($group as $imgl)
-                                <div>
-                                    <img src="{{ asset('public/images_project/' . $imgl->LNCL_IMAGES_FILES) }}"class="mt-1"
-                                        width="300px" onclick="ViewImage('{{ $imgl->LNCL_IMAGES_FILES }}')"><br>
-                                    <!-- Display other image fields -->
-                                </div>
+                @if ($leak->LNCL_LEAKREC_STD == 1)
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;"
+                                class="p-2">
+                                5 Why of leak</p>
+                            <textarea rows="3" class="form-control" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_LEAK_WHY1 }}</textarea>
+                            <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_LEAK_WHY2 }}</textarea>
+                            <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_LEAK_WHY3 }}</textarea>
+                            <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_LEAK_WHY4 }}</textarea>
+                            <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_LEAK_WHY5 }}</textarea>
+
+                        </div>
+                        <div class="col-md-6">
+                            <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;"
+                                class="p-2">
+                                Images 5 Why of leak</p>
+                            @foreach ($imagesleak as $group)
+                                @foreach ($group as $imgl)
+                                    <div>
+                                        <img src="{{ asset('public/images_project/' . $imgl->LNCL_IMAGES_FILES) }}"class="mt-1"
+                                            width="300px" onclick="ViewImage('{{ $imgl->LNCL_IMAGES_FILES }}')"><br>
+                                        <!-- Display other image fields -->
+                                    </div>
+                                @endforeach
                             @endforeach
-                        @endforeach
+                        </div>
                     </div>
-                </div>
-                <div class="row p-2">
-                    <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;" class="p-2">
-                        leak Action from 5 Why</p>
-                    <textarea rows="3" class="form-control" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_LEAK_ACTION }}</textarea>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6">
+                    <div class="row p-2">
                         <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;"
                             class="p-2">
-                            5 Why of Root</p>
-                        <textarea rows="3" class="form-control" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_ESC_WHY1 }}</textarea>
-                        <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_ESC_WHY2 }}</textarea>
-                        <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_ESC_WHY3 }}</textarea>
-                        <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_ESC_WHY4 }}</textarea>
-                        <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_ESC_WHY5 }}</textarea>
-
+                            leak Action from 5 Why</p>
+                        <textarea rows="3" class="form-control" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_LEAK_ACTION }}</textarea>
                     </div>
-                    <div class="col-md-6">
-                        <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;"
-                            class="p-2">
-                            Images 5 Why of leak</p>
-                        @foreach ($imagesroot as $group)
-                            @foreach ($group as $imgr)
-                                <div>
-                                    <img src="{{ asset('public/images_project/' . $imgr->LNCL_IMAGES_FILES) }}"class="mt-1"
-                                        width="300px" onclick="ViewImage('{{ $imgr->LNCL_IMAGES_FILES }}')"><br>
-                                    <!-- Display other image fields -->
-                                </div>
+                @endif
+
+
+                @if ($leak->LNCL_ROOTREC_STD == 1)
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;"
+                                class="p-2">
+                                5 Why of Root</p>
+                            <textarea rows="3" class="form-control" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_ESC_WHY1 }}</textarea>
+                            <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_ESC_WHY2 }}</textarea>
+                            <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_ESC_WHY3 }}</textarea>
+                            <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_ESC_WHY4 }}</textarea>
+                            <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_ESC_WHY5 }}</textarea>
+
+                        </div>
+                        <div class="col-md-6">
+                            <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;"
+                                class="p-2">
+                                Images 5 Why of leak</p>
+                            @foreach ($imagesroot as $group)
+                                @foreach ($group as $imgr)
+                                    <div>
+                                        <img src="{{ asset('public/images_project/' . $imgr->LNCL_IMAGES_FILES) }}"class="mt-1"
+                                            width="300px" onclick="ViewImage('{{ $imgr->LNCL_IMAGES_FILES }}')"><br>
+                                        <!-- Display other image fields -->
+                                    </div>
+                                @endforeach
                             @endforeach
-                        @endforeach
+                        </div>
                     </div>
-                </div>
-                <div class="row p-2">
-                    <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;" class="p-2">
-                        Root Action from 5 Why</p>
-                    <textarea rows="3" class="form-control" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_ESC_ACTION }}</textarea>
-                </div>
+                    <div class="row p-2">
+                        <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;"
+                            class="p-2">
+                            Root Action from 5 Why</p>
+                        <textarea rows="3" class="form-control" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_ESC_ACTION }}</textarea>
+                    </div>
+                @endif
             @endforeach
 
             @if ($_SESSION['USE_PERMISSION'] == 8)
@@ -279,8 +287,8 @@ if (empty($_SESSION['empno'])) {
                 </div>
             @else
                 <div class="d-flex justify-content-center mt-3">
-                    @foreach ($leakdoc as $leak)
-                        @if ($leak->LNCL_ROOTREC_STD === null || $leak->LNCL_LEAKREC_STD === null)
+                    {{-- @foreach ($leakdoc as $leak) --}}
+                    {{-- @if ($leak->LNCL_ROOTREC_STD === null || $leak->LNCL_LEAKREC_STD === null)
                             <button type="button" class="btn btnapprove"
                                 onclick="submitApprove('{{ $recid }}')" disabled><i
                                     class="fa-solid fa-check-double mx-2"></i>ยืนยันการส่งอนุมัติ</button>
@@ -288,21 +296,19 @@ if (empty($_SESSION['empno'])) {
                                     class="fa-solid fa-pen mx-2"></i>แก้ไขข้อมูลการบันทึก</button>
                             <button type="button" class="btn btndelete"
                                 onclick="DeleteData('{{ $recid }}')"><i
-                                    class="fa-solid fa-trash mx-2"></i>ลบข้อมูลการบันทึก</button>
-                        @else
-                            <button type="button" class="btn btnapprove"
-                                onclick="submitApprove('{{ $recid }}')"><i
-                                    class="fa-solid fa-check-double mx-2"></i>ยืนยันการส่งอนุมัติ</button>
-                            <button type="button" class="btn btnedit" onclick="gotoEdit('{{ $recid }}')"><i
-                                    class="fa-solid fa-pen mx-2"></i>แก้ไขข้อมูลการบันทึก</button>
-                            <button type="button" class="btn btndelete"
-                                onclick="DeleteData('{{ $recid }}')"><i
-                                    class="fa-solid fa-trash mx-2"></i>ลบข้อมูลการบันทึก</button>
-                        @endif
+                                    class="fa-solid fa-trash mx-2"></i>ลบข้อมูลการบันทึก</button> --}}
+                    {{-- @else --}}
+                    <button type="button" class="btn btnapprove" onclick="submitApprove('{{ $recid }}')"><i
+                            class="fa-solid fa-check-double mx-2"></i>ยืนยันการส่งอนุมัติ</button>
+                    <button type="button" class="btn btnedit" onclick="gotoEdit('{{ $recid }}')"><i
+                            class="fa-solid fa-pen mx-2"></i>แก้ไขข้อมูลการบันทึก</button>
+                    <button type="button" class="btn btndelete" onclick="DeleteData('{{ $recid }}')"><i
+                            class="fa-solid fa-trash mx-2"></i>ลบข้อมูลการบันทึก</button>
+                    {{-- @endif --}}
 
-                        {{-- <button type="button" class="btn btndelete2" onclick="DeleteImage('{{ $recid }}')"><i
+                    {{-- <button type="button" class="btn btndelete2" onclick="DeleteImage('{{ $recid }}')"><i
                         class="fa-solid fa-image mx-2"></i>ลบข้อมูลรูปภาพ</button> --}}
-                    @endforeach
+                    {{-- @endforeach --}}
                 </div>
             @endif
 
