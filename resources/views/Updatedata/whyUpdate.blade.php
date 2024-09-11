@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>หน้าแก้ไขข้อมูล 5 Why Leak and Root</title>
+    <title>หน้าแก้ไขข้อมูล 5 Why</title>
     <link rel="stylesheet" href="{{ asset('public/css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('public/css/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('public/css/icons.css') }}">
@@ -22,7 +22,8 @@
                 class="fa-solid fa-file-medical fa-lg mx-4"></i>แบบฟอร์มแก้ไขข้อมูล 5 Why
             Leak and Root</h3>
 
-        <form method="post" id="leak_rec" class="needs-validation" enctype=
+
+        <form method="post" id="leak_rec2" class="needs-validation" enctype=
             "multipart/form-data"
             novalidate>
 
@@ -44,6 +45,7 @@
                         <option value="MT">MT</option>
                         <option value="AM">AM</option>
                         <option value="QA">QA</option>
+
                     </select>
                 </div>
             </div>
@@ -128,7 +130,7 @@
 
         </form>
 
-        <form method="post" id="Root_rec" class="needs-validation" enctype=
+        <form method="post" id="Root_rec2" class="needs-validation" enctype=
             "multipart/form-data"
             novalidate>
             <button type="button" class="btn btnviewData mt-3" onclick="viewRoot()"><i
@@ -330,8 +332,13 @@
                 reader.readAsDataURL(file);
             });
         }
+
+        function getQueryParam(param) {
+            let urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
         viewleak = () => {
-            $('#UpdateLeak').show();
+            //$('#UpdateLeak').show();
 
             let recid = getQueryParam('recid');
 
@@ -358,10 +365,7 @@
                 })
         }
 
-        function getQueryParam(param) {
-            let urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(param);
-        }
+
 
         function updateleak() {
             let recid = getQueryParam('recid');
@@ -391,7 +395,7 @@
         }
 
         viewRoot = () => {
-            $('#UpdateRoot').show();
+            //$('#UpdateRoot').show();
 
             let recid = getQueryParam('recid');
 

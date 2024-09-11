@@ -246,7 +246,7 @@
             $('#li-record').addClass('active')
 
 
-
+             //TODO: ตรวจสอบการกรอกข้อมูลและบันทึกข้อมูล
             'use strict'
 
             // Fetch all the forms we want to apply custom Bootstrap validation styles to
@@ -339,10 +339,7 @@
         $('#empid').val(emp_rec)
         //$('#section_rec').val(section_rec)
         //console.log(emp_rec)
-        /**
-         * TODO: 12-07-2024
-         * * show Preview Image
-         *  */
+         //README: "แสดงรูปภาพในขณะบันทึก"
         function previewImages(event) {
             var files = event.target.files;
 
@@ -406,10 +403,7 @@
         }
 
 
-        /**
-         * TODO: 16-07-2024
-         * * calculate percentage
-         * */
+         //TODO: คำนวณหาเปอร์เซ็น
 
         function calculate() {
             var input1 = document.getElementById('qty').value;
@@ -424,10 +418,7 @@
 
         }
 
-        /**
-         * TODO:18-07-2024
-         * ?show date moment input date
-         * */
+         //TODO: แสดงข้อมูลวันที่ใน input
         var currentDate = new Date();
         var day = currentDate.getDate();
         var month = currentDate.getMonth() + 1; // เพิ่ม 1 เนื่องจากเดือนเริ่มที่ 0
@@ -442,10 +433,7 @@
 
         document.getElementById("datenow").value = formattedDate;
 
-        /**
-         * TODO:05-08-2024
-         * *แสดงข้อมูลลูกค้าจากฐานข้อมูลบน dropdown list
-         */
+         //TODO:แสดงข้อมูลลูกค้าจากฐานข้อมูลบน dropdown list
 
         customer_name();
 
@@ -469,10 +457,8 @@
                 });
         }
 
-        /**
-         * TODO:05-08-2024
-         * *แสดงข้อมูล Process จากฐานข้อมูลบน dropdown list
-         */
+         //TODO:แสดงข้อมูล Process จากฐานข้อมูลบน dropdown list
+
         getProcess();
 
         async function getProcess() {
@@ -495,10 +481,8 @@
                 });
         }
 
-        /**
-         * TODO:05-08-2024
-         * *แสดงข้อมูล ng code จากฐานข้อมูลบน dropdown list
-         */
+         //TODO:แสดงข้อมูล ng code จากฐานข้อมูลบน dropdown list
+
         getNgCode()
 
         async function getNgCode() {
@@ -523,10 +507,8 @@
         }
 
 
-        /**
-         * TODO:05-08-2024
-         * *Auto dropdown after choose customer
-         */
+         //TODO:Auto dropdown after choose customer
+
 
         async function completeCus(e) {
             let cus = e.value;

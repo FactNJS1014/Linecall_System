@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Mail;
 
 class ProblemController extends Controller
 {
+
+    //TODO: record data
     public function recordData(Request $request)
     {
         $currentDate = date('Y-m-d H:i:s');
@@ -170,6 +172,8 @@ class ProblemController extends Controller
         ]);
     }
 
+    //TODO: fetch data from record by reference LNCL_HREC_ID
+
     public function fetchDataProblem()
     {
         // Fetch images and group by LNCL_HREC_ID
@@ -216,6 +220,9 @@ class ProblemController extends Controller
             'ngcodes'
         ));
     }
+
+
+     //TODO: updating data
 
     public function updateData(Request $request)
     {
@@ -359,6 +366,9 @@ class ProblemController extends Controller
         // }
     }
 
+
+     //TODO: process approve of level Master Approval
+
     public function ApproveOfLevel(Request $request)
     {
         $id = $request->input('id');
@@ -409,7 +419,7 @@ class ProblemController extends Controller
         $fill_personaldata = "http://web-server/37_linecall/index.php/approve?username={$username}&empno={$empno}&department={$department}&USE_PERMISSION={$per}&sec={$DEPT_SEC}&MSECT_ID={$MSECT_ID}";
 
 
-        if ($tracking_up == 4) {
+        if (($level2->LNCL_EMPID_RECAPP == '2040008' && $tracking_up == 4) || ($level2->LNCL_EMPID_RECAPP == '2040008' && $tracking_up == 5)) {
             // Send email immediately
 
             $toLink = [

@@ -54,7 +54,7 @@ if (empty($_SESSION['empno'])) {
         </div> --}}
         <button class="btn btnreturn" onclick="btnback()"><i class="fa-solid fa-arrow-left mx-2"></i>Back</button>
         <div style="background: #FFDA76;" class="p-3 mt-3 mb-3">
-            <p class="mt-1 text-center" id="textheader3">ตรวจสอบข้อมูลหลัก Line Call</p>
+            <p class="mt-1 text-center" id="textheader3">ตรวจสอบข้อมูลหลัก Line Call Rank Type {{$document->LNCL_HREC_RANKTYPE}}</p>
             @foreach ($documents as $document)
                 <div class="row">
                     <div class="col-sm-4">
@@ -330,6 +330,8 @@ if (empty($_SESSION['empno'])) {
         var MSECT_ID = '<?= $_SESSION['MSECT_ID'] ?>';
         var server = '<?= $_SERVER['HTTP_HOST'] ?>';
 
+        //TODO: View Images in content
+
         function ViewImage(images) {
 
             //Createoverlay
@@ -349,11 +351,7 @@ if (empty($_SESSION['empno'])) {
 
         }
 
-        /**
-         * TODO:31-07-2024
-         * *ส่งค่า recid ไปยังหน้าที่จะแก้ไขข้อมูล
-         * **/
-
+        //TODO:ส่งค่า recid ไปยังหน้าแก้ไขข้อมูล
         function gotoEdit(id) {
             //alert(id)
             let html = '';
@@ -373,6 +371,7 @@ if (empty($_SESSION['empno'])) {
             })
         }
 
+        //TODO: link Page Update Form 1
         function gotoPageForm1(recid) {
             axios.get('{{ route('PrbUpdate') }}?recid=' + recid)
                 .then(response => {
@@ -385,9 +384,9 @@ if (empty($_SESSION['empno'])) {
                 });
 
         }
-
-        function gotoPageForm2(recid2) {
-            axios.get('{{ route('whyUpdate') }}?recid=' + recid2)
+        //TODO: link Page Update Form 2
+        function gotoPageForm2(recid) {
+            axios.get('{{ route('fivewhyUpdate') }}?recid=' + recid)
                 .then(response => {
                     // Handle the response
                     window.location.href = response.request.responseURL;
@@ -400,6 +399,7 @@ if (empty($_SESSION['empno'])) {
 
         }
 
+        //TODO: ลบข้อมูลจากฐานข้อมูล
         DeleteData = (id) => {
             Swal.fire({
                     title: 'คุณต้องการลบข้อมูลใช่หรือไม่?',
@@ -447,6 +447,7 @@ if (empty($_SESSION['empno'])) {
 
         }
 
+        //TODO: ลบรูปภาพที่ต้องการจะลบทิ้ง และบันทึกใหม่
         DeleteImage = (id) => {
             let html = '';
             html += '<form id="formtype" method="post">';
@@ -492,6 +493,7 @@ if (empty($_SESSION['empno'])) {
 
         }
 
+        //TODO: ส่งกลับไปแก้ไข ถึงลำดับก่อนหน้า
         btnrejected = (id) => {
             let empid = empno;
             let form = '';
@@ -529,6 +531,8 @@ if (empty($_SESSION['empno'])) {
             })
         }
 
+
+        //TODO: Button Back Page
         btnback = () => {
             // Redirect to the route and reload the page
             window.location.href = '{{ route('approve') }}';
@@ -547,6 +551,8 @@ if (empty($_SESSION['empno'])) {
             }
         };
 
+
+        //TODO: approve by user record
         submitApprove = (id) => {
             console.log(empno);
             console.log(id)
@@ -570,6 +576,8 @@ if (empty($_SESSION['empno'])) {
             })
         }
 
+
+        //TODO: approve by level record
         LevelApprove = (id) => {
             console.log(empno);
             console.log(id)

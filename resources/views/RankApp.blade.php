@@ -34,15 +34,18 @@
                     <select name="lv[1][]" id="lv1_app" class="form-select form-control" multiple required>
                     </select><br>
 
-                    <label for="" class="h5 mt-2" style="color: #003f88;">ผู้อนุมัติในแผนก:</label><br>
+                    <label for="" class="h5 mt-2" style="color: #003f88;">ผู้อนุมัติในแผนกลำดับที่ 1:</label><br>
                     <select name="lv[2][]" id="lv2_app" class="form-select form-control" multiple required>
                     </select><br>
+                    <label for="" class="h5 mt-2" style="color: #003f88;">ผู้อนุมัติในแผนกลำดับที่ 2:</label><br>
+                    <select name="lv[3][]" id="lv3_app" class="form-select form-control" multiple required>
+                    </select><br>
                     <label for="" class="h5 mt-2" style="color: #003f88;">QC Manager:</label><br>
-                    <select name="lv[3][]" id="lv3_app" class="form-select form-control " multiple required>
+                    <select name="lv[4][]" id="lv4_app" class="form-select form-control " multiple required>
                     </select><br>
 
                     <label for="" class="h5 mt-2" style="color: #003f88;">QC Executive</label><br>
-                    <select name="lv[4][]" id="lv4_app" class="form-select form-control" required>
+                    <select name="lv[5][]" id="lv5_app" class="form-select form-control" required>
                     </select><br>
 
 
@@ -63,15 +66,14 @@
 
         </div>
         <div class="card-body">
-            <table class="table table-bordered" id="master_db">
+            <table class="table table-bordered nowrap w-100" id="master_db">
                 <thead>
                     <tr>
                         <th style="background: #FFAF00; font-weight: 700;">Section</th>
                         <th style="background: #FFAF00; font-weight: 700;">Rank</th>
-                        <th style="background: #FFAF00; font-weight: 700;">ผู้ตรวจสอบในแผนก</th>
-                        <th style="background: #FFAF00; font-weight: 700;">ผู้อนุมัติในแผนก</th>
-                        <th style="background: #FFAF00; font-weight: 700;">ผู้อนุมัติก่อน Final</th>
-                        <th style="background: #FFAF00; font-weight: 700;">Final Approve</th>
+                        <th style="background: #FFAF00; font-weight: 700;">ลำดับอนุมัติ</th>
+                        <th style="background: #FFAF00; font-weight: 700;">ผู้ตรวจสอบและอนุมัติ</th>
+
                     </tr>
                 </thead>
 
@@ -90,6 +92,8 @@
     <script !src="">
         $(document).ready(function() {
             $('#li-rank').addClass('active');
+
+            //TODO: บันทึกข้อมูลและตรวจสอบการกรอกข้อมูล
 
             'use strict'
 
@@ -133,94 +137,74 @@
             $('#lv2_app').select2()
             $('#lv3_app').select2()
             $('#lv4_app').select2()
+            $('#lv5_app').select2()
 
         })
+
+        //TODO: show data from record data
         loadData();
 
         function loadData() {
             axios.get('{{ route('data.master') }}')
                 .then(function(response) {
-                    const data = response.data.data;
+                    let html = '';
+                    response.data.data.map((data) => {
 
-                    // Group data by LNCL_APP_SECTION and LNCL_RANKTYPE, and collect all LNCL_APP_EMPID values
-                    const groupedData = data.reduce((acc, item) => {
-                        const section = item.LNCL_APP_SECTION;
-                        const rank = item.LNCL_RANKTYPE;
-                        if (!acc[section]) {
-                            acc[section] = {
-                                A: [],
-                                B: []
-                            };
-                        }
-                        acc[section][rank].push(item.LNCL_APP_EMPID);
-                        return acc;
-                    }, {});
 
-                    // Collect all unique EMPID values
-                    const allEmpIds = [...new Set(data.flatMap(item => item.LNCL_APP_EMPID.split(',')))];
 
-                    // Fetch names for all EMPID values
-                    axios.get('{{ route('getUsershow') }}', {
-                        params: {
-                            empIds: allEmpIds
-                        }
-                    }).then(function(nameResponse) {
-                        const names = nameResponse.data;
 
-                        // Prepare table rows
-                        let html = '';
-                        for (const section in groupedData) {
-                            if (groupedData.hasOwnProperty(section)) {
-                                ['A', 'B'].forEach(rank => {
-                                    if (groupedData[section][rank].length > 0) {
-                                        const empIds = groupedData[section][rank];
-                                        html += '<tr>';
-                                        html +=
-                                            `<td style="background: #f0f2ef; font-size: 20px; font-weight: 700;">${section}</td>`;
-                                        html +=
-                                            `<td style="background: #f0f2ef; font-size: 20px; font-weight: 700;">${rank}</td>`;
+                        html += '<tr>';
+                        html += '<td style="font-weight: 700; font-size: 18px;">' + data
+                            .LNCL_APP_SECTION +
+                            '</td>';
+                        html += '<td style="font-weight: 700; font-size: 18px;">' + data
+                            .LNCL_RANKTYPE +
+                            '</td>';
+                        html += '<td style="font-weight: 700; font-size: 18px;">' + data
+                            .LNCL_EMP_LEVEL +
+                            '</td>';
+                        html += '<td style="font-weight: 700; font-size: 18px;">' + data.empname +
+                            '</td>';
 
-                                        // Add names for each EMPID in a column
-                                        empIds.forEach(empId => {
-                                            const empIdArray = empId.split(',');
-                                            const empNames = empIdArray.map(id => names[id
-                                                .trim()] || id).join(', ');
-                                            html +=
-                                                `<td style="background: #f0f2ef; font-size: 20px; font-weight: 700;">${empNames}</td>`;
-                                        });
+                        html += '</tr>';
 
-                                        html += '</tr>';
-                                    }
-                                });
-                            }
-                        }
 
-                        // Update the table body with the generated HTML
+                    })
 
-                        $('#master_db tbody').html(html);
-                        $('#master_db').DataTable({
-                            scrollX: true,
-                        });
-                    }).catch(function(error) {
-                        console.error('Error fetching names:', error);
+
+                    // Clear the DataTable if it already exists and add the new data
+                    if ($.fn.DataTable.isDataTable('#master_db')) {
+                        $('#master_db').DataTable().destroy();
+                        $('#master_db tbody').empty();
+                    }
+
+                    // Update the table body with the generated HTML
+                    $('#master_db tbody').html(html);
+
+                    // Initialize DataTables with horizontal scroll
+                    $('#master_db').DataTable({
+                        scrollX: true,
+                        scrollY: "50vh",
+                        paging: false,
+                        searching: false,
+                        info: false,
+                        responsive: true,
+
                     });
-
-                })
-                .catch(function(error) {
-                    console.error('Error loading data:', error);
+                }).catch(function(error) {
+                    console.error('Error fetching names:', error);
                 });
+
         }
 
 
 
-
-
-
-
+        //TODO: get data to dropdownlist
         userApp1();
         userApp2();
         userApp3();
         userApp4();
+        userApp5();
 
         function userApp1() {
             axios.get('{{ route('getUserWeb') }}')
@@ -245,7 +229,7 @@
                 .then(function(response) {
                     var select = $("#lv2_app");
                     select.empty();
-                    select.append('<option value="" selected disabled>-- เลือกผู้อนุมัติในแผนก --</option>');
+                    select.append('<option value="" selected disabled>-- เลือกผู้อนุมัติในแผนกลำดับที่ 1 --</option>');
                     response.data.us.forEach(function(user) {
                         // Trim spaces and ensure proper encoding
 
@@ -263,7 +247,7 @@
                 .then(function(response) {
                     var select = $("#lv3_app");
                     select.empty();
-                    select.append('<option value="" selected disabled>-- เลือกผู้อนุมัติ Semi-final --</option>');
+                    select.append('<option value="" selected disabled>-- เลือกผู้อนุมัติในแผนกลำดับที่ 2 --</option>');
                     response.data.us.forEach(function(user) {
                         // Trim spaces and ensure proper encoding
 
@@ -280,6 +264,24 @@
             axios.get('{{ route('getUserWeb') }}')
                 .then(function(response) {
                     var select = $("#lv4_app");
+                    select.empty();
+                    select.append('<option value="" selected disabled>-- เลือกผู้อนุมัติ Semifinal --</option>');
+                    response.data.us.forEach(function(user) {
+                        // Trim spaces and ensure proper encoding
+
+                        select.append(
+                            `<option value="${user.MUSR_ID}">${user.MUSR_ID} ${user.MUSR_NAME}</option>`);
+                    });
+                })
+                .catch(function(error) {
+                    console.error(error);
+                });
+        }
+
+        function userApp5() {
+            axios.get('{{ route('getUserWeb') }}')
+                .then(function(response) {
+                    var select = $("#lv5_app");
                     select.empty();
                     select.append('<option value="" selected disabled>-- เลือกผู้อนุมัติ Final --</option>');
                     response.data.us.forEach(function(user) {

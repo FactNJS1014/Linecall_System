@@ -45,7 +45,7 @@ if (empty($_SESSION['empno'])) {
     <link rel="stylesheet" href="{{ asset('public/css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('public/css/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('public/css/icons.css') }}">
-    <link rel="stylesheet" href="{{ asset('public/css/fonts.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('public/css/fonts.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('public/css/fonts/vendor/boxicons') }}">
     <link rel="stylesheet" href="{{ asset('public/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('public/css/boxicons.min.css') }}">
@@ -66,7 +66,7 @@ if (empty($_SESSION['empno'])) {
                         <div class="d-flex justify-content-center">
                             <img src="{{ asset('public/images/linecallsys.png') }}" alt="" width="100px">
                         </div>
-                        <h5 class="text-center mt-2">Linecall-Production</h5>
+                        <h5 class="text-center mt-2" style="font-weight: bold;">Linecall-Production</h5>
                     </a>
                 </div>
                 <hr>

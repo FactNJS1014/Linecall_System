@@ -19,6 +19,8 @@
 
         })
 
+        //TODO: แสดงข้อมูลที่บันทึก
+
         axios.get('{{ route('data_first') }}')
             .then(function(res) {
                 //console.log(res)
@@ -213,7 +215,7 @@
 
 
             })
-
+        //TODO: open page with view data
         btnviewdata = (rec_id) => {
             console.log(rec_id)
             const url = `{{ route('data_record') }}?rec_id=${rec_id}`;

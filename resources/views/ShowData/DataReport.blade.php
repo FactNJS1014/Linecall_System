@@ -61,7 +61,7 @@
                         <!-- Display other document fields -->
                     </div>
                 </div>
-                <table class="table table-bordered nowrap" id="table-report">
+                <table class="table table-bordered nowrap" id="table_report">
                     <thead>
                         <tr>
 
@@ -122,248 +122,261 @@
                             <td style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
                                 {{ $document->LNCL_HREC_SERIAL }}</td>
                             @foreach ($recapp as $app)
+                                @php $nameFound = false; @endphp
                                 @foreach ($dataname as $name)
                                     @if ($app->LNCL_EMPID_APPR == $name->MUSR_ID)
                                         <td
                                             style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
-                                            {{ $name->MUSR_NAME }}</td>
-                                    @endif
+                                            {{ $name->MUSR_NAME }}
+                                        </td>
+                                        @php $nameFound = true; @endphp
+                                    @break
+                                @endif
                                 @endforeach
-                            @endforeach
 
-                        </tr>
-                    </tbody>
+                                 @if (!$nameFound)
+                                    <td
+                                    style="color: #001233; font-size: 20px; font-weight: bold; background: #fbf8cc;">
+                                        รอการอนุมัติ
+                                    </td>
+                                @endif
+                        @endforeach
 
 
 
-                </table>
+                    </tr>
+                </tbody>
 
+
+
+            </table>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;"
+                        class="p-2">
+                        Problem</p>
+                    <textarea rows="11" class="form-control" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $document->LNCL_HREC_PROBLEM }}</textarea>
+                </div>
+                <div class="col-md-6">
+                    <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;"
+                        class="p-2">
+                        Images (Problem)</p>
+
+                    @foreach ($images as $group)
+                        @foreach ($group as $image)
+                            <div>
+                                <img src="{{ asset('public/images_project/' . $image->LNCL_IMAGES_FILES) }}"class="mt-1"
+                                    width="300px" onclick="ViewImage('{{ $image->LNCL_IMAGES_FILES }}')"><br>
+                                <!-- Display other image fields -->
+                            </div>
+                        @endforeach
+                    @endforeach
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;"
+                        class="p-2">
+                        Cause</p>
+                    <textarea rows="5" class="form-control" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $document->LNCL_HREC_CAUSE }}</textarea>
+                </div>
+                <div class="col-md-6">
+                    <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;"
+                        class="p-2">
+                        Temporary Action</p>
+                    <textarea rows="5" class="form-control" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $document->LNCL_HREC_ACTION }}</textarea>
+                </div>
+            </div>
+        @endforeach
+
+        <p class="mt-3 text-center" id="textheader3">ข้อมูลปัญหา 5 Why ของ Leak Problem</p>
+        @foreach ($leakdoc as $leak)
+            <div class="row">
+                <div class="col-md-4">
+                    <p id="text1">รหัสพนักงาน: <span>{{ $leak->LNCL_LEAKANDROOT_EMPID }}</span></p>
+                </div>
+                <div class="col-md-4">
+                    <p id="text1">ชื่อผู้บันทึก: <span>{{ $leak->LNCL_LEAKANDROOT_NAME }}</span></p>
+                </div>
+                <div class="col-md-4">
+                    <p id="text1">แผนก: <span>{{ $leak->LNCL_LEAKANDROOT_SECTION }}</span></p>
+                </div>
+            </div>
+            @if ($leak->LNCL_LEAKREC_STD == 1)
                 <div class="row">
                     <div class="col-md-6">
                         <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;"
                             class="p-2">
-                            Problem</p>
-                        <textarea rows="11" class="form-control" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $document->LNCL_HREC_PROBLEM }}</textarea>
+                            5 Why of leak</p>
+                        <textarea rows="3" class="form-control" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_LEAK_WHY1 }}</textarea>
+                        <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_LEAK_WHY2 }}</textarea>
+                        <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_LEAK_WHY3 }}</textarea>
+                        <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_LEAK_WHY4 }}</textarea>
+                        <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_LEAK_WHY5 }}</textarea>
+
                     </div>
                     <div class="col-md-6">
                         <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;"
                             class="p-2">
-                            Images (Problem)</p>
-
-                        @foreach ($images as $group)
-                            @foreach ($group as $image)
+                            Images 5 Why of leak</p>
+                        @foreach ($imagesleak as $group)
+                            @foreach ($group as $imgl)
                                 <div>
-                                    <img src="{{ asset('public/images_project/' . $image->LNCL_IMAGES_FILES) }}"class="mt-1"
-                                        width="300px" onclick="ViewImage('{{ $image->LNCL_IMAGES_FILES }}')"><br>
+                                    <img src="{{ asset('public/images_project/' . $imgl->LNCL_IMAGES_FILES) }}"class="mt-1"
+                                        width="300px" onclick="ViewImage('{{ $imgl->LNCL_IMAGES_FILES }}')"><br>
                                     <!-- Display other image fields -->
                                 </div>
                             @endforeach
                         @endforeach
                     </div>
                 </div>
-                <div class="row mt-3">
-                    <div class="col-md-6">
-                        <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;"
-                            class="p-2">
-                            Cause</p>
-                        <textarea rows="5" class="form-control" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $document->LNCL_HREC_CAUSE }}</textarea>
-                    </div>
-                    <div class="col-md-6">
-                        <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;"
-                            class="p-2">
-                            Temporary Action</p>
-                        <textarea rows="5" class="form-control" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $document->LNCL_HREC_ACTION }}</textarea>
-                    </div>
+                <div class="row p-2">
+                    <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;"
+                        class="p-2">
+                        leak Action from 5 Why</p>
+                    <textarea rows="3" class="form-control" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_LEAK_ACTION }}</textarea>
                 </div>
-            @endforeach
+            @endif
 
-            <p class="mt-3 text-center" id="textheader3">ข้อมูลปัญหา 5 Why ของ Leak Problem</p>
-            @foreach ($leakdoc as $leak)
+
+            @if ($leak->LNCL_ROOTREC_STD == 1)
                 <div class="row">
-                    <div class="col-md-4">
-                        <p id="text1">รหัสพนักงาน: <span>{{ $leak->LNCL_LEAKANDROOT_EMPID }}</span></p>
+                    <div class="col-md-6">
+                        <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;"
+                            class="p-2">
+                            5 Why of Root</p>
+                        <textarea rows="3" class="form-control" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_ESC_WHY1 }}</textarea>
+                        <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_ESC_WHY2 }}</textarea>
+                        <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_ESC_WHY3 }}</textarea>
+                        <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_ESC_WHY4 }}</textarea>
+                        <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_ESC_WHY5 }}</textarea>
+
                     </div>
-                    <div class="col-md-4">
-                        <p id="text1">ชื่อผู้บันทึก: <span>{{ $leak->LNCL_LEAKANDROOT_NAME }}</span></p>
-                    </div>
-                    <div class="col-md-4">
-                        <p id="text1">แผนก: <span>{{ $leak->LNCL_LEAKANDROOT_SECTION }}</span></p>
+                    <div class="col-md-6">
+                        <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;"
+                            class="p-2">
+                            Images 5 Why of leak</p>
+                        @foreach ($imagesroot as $group)
+                            @foreach ($group as $imgr)
+                                <div>
+                                    <img src="{{ asset('public/images_project/' . $imgr->LNCL_IMAGES_FILES) }}"class="mt-1"
+                                        width="300px" onclick="ViewImage('{{ $imgr->LNCL_IMAGES_FILES }}')"><br>
+                                    <!-- Display other image fields -->
+                                </div>
+                            @endforeach
+                        @endforeach
                     </div>
                 </div>
-                @if ($leak->LNCL_LEAKREC_STD == 1)
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;"
-                                class="p-2">
-                                5 Why of leak</p>
-                            <textarea rows="3" class="form-control" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_LEAK_WHY1 }}</textarea>
-                            <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_LEAK_WHY2 }}</textarea>
-                            <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_LEAK_WHY3 }}</textarea>
-                            <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_LEAK_WHY4 }}</textarea>
-                            <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_LEAK_WHY5 }}</textarea>
-
-                        </div>
-                        <div class="col-md-6">
-                            <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;"
-                                class="p-2">
-                                Images 5 Why of leak</p>
-                            @foreach ($imagesleak as $group)
-                                @foreach ($group as $imgl)
-                                    <div>
-                                        <img src="{{ asset('public/images_project/' . $imgl->LNCL_IMAGES_FILES) }}"class="mt-1"
-                                            width="300px" onclick="ViewImage('{{ $imgl->LNCL_IMAGES_FILES }}')"><br>
-                                        <!-- Display other image fields -->
-                                    </div>
-                                @endforeach
-                            @endforeach
-                        </div>
-                    </div>
-                    <div class="row p-2">
-                        <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;"
-                            class="p-2">
-                            leak Action from 5 Why</p>
-                        <textarea rows="3" class="form-control" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_LEAK_ACTION }}</textarea>
-                    </div>
-                @endif
-
-
-                @if ($leak->LNCL_ROOTREC_STD == 1)
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;"
-                                class="p-2">
-                                5 Why of Root</p>
-                            <textarea rows="3" class="form-control" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_ESC_WHY1 }}</textarea>
-                            <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_ESC_WHY2 }}</textarea>
-                            <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_ESC_WHY3 }}</textarea>
-                            <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_ESC_WHY4 }}</textarea>
-                            <textarea rows="3" class="form-control mt-2" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_ESC_WHY5 }}</textarea>
-
-                        </div>
-                        <div class="col-md-6">
-                            <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;"
-                                class="p-2">
-                                Images 5 Why of leak</p>
-                            @foreach ($imagesroot as $group)
-                                @foreach ($group as $imgr)
-                                    <div>
-                                        <img src="{{ asset('public/images_project/' . $imgr->LNCL_IMAGES_FILES) }}"class="mt-1"
-                                            width="300px" onclick="ViewImage('{{ $imgr->LNCL_IMAGES_FILES }}')"><br>
-                                        <!-- Display other image fields -->
-                                    </div>
-                                @endforeach
-                            @endforeach
-                        </div>
-                    </div>
-                    <div class="row p-2">
-                        <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;"
-                            class="p-2">
-                            Root Action from 5 Why</p>
-                        <textarea rows="3" class="form-control" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_ESC_ACTION }}</textarea>
-                    </div>
-                @endif
-            @endforeach
-
-
-        </div>
+                <div class="row p-2">
+                    <p style="background: #2e363e; color: #ffee; font-size: 20px; font-weight: bold;"
+                        class="p-2">
+                        Root Action from 5 Why</p>
+                    <textarea rows="3" class="form-control" style="color: #001233; font-size: 20px; font-weight: bold;">{{ $leak->LNCL_ESC_ACTION }}</textarea>
+                </div>
+            @endif
+        @endforeach
 
 
     </div>
 
-    <script src="{{ asset('public/js/app.js') }}"></script>
-    <script src="{{ asset('public/js/datatables.min.js') }}"></script>
-    <script src="{{ asset('public/js/all.min.js') }}"></script>
-    <script src="{{ asset('public/js/moment.js') }}"></script>
-    <script>
-        function ViewImage(images) {
 
-            //Createoverlay
-            var overlay = document.createElement('div');
-            overlay.className = 'overlay';
-            overlay.onclick = function() {
-                document.body.removeChild(overlay);
-                document.body.removeChild(zoomedImage);
-            };
-            //Createzoomedimage
-            var zoomedImage = document.createElement('img');
-            zoomedImage.src = "{{ asset('public/images_project/') }}" + "/" + images;
-            zoomedImage.className = 'zoomed';
-            //Appendtobody
-            document.body.appendChild(overlay);
-            document.body.appendChild(zoomedImage);
+</div>
 
-        }
+<script src="{{ asset('public/js/app.js') }}"></script>
+<script src="{{ asset('public/js/datatables.min.js') }}"></script>
+<script src="{{ asset('public/js/all.min.js') }}"></script>
+<script src="{{ asset('public/js/moment.js') }}"></script>
+<script>
+    function ViewImage(images) {
 
-        $(document).ready(function() {
-            /**
-             * TODO:02-08-2024
-             * *DataTable of table-report
-             */
-
-            if ($.fn.DataTable.isDataTable('table#table-report')) {
-                $('#table-report').DataTable().destroy();
-                $('#table-report tbody').empty();
-            }
-            $('#table-report').DataTable({
-
-                scrollX: true,
-                scrollCollapse: true,
-                responsive: false,
-                fixedHeader: true,
-                fixedColumns: {
-                    leftColumns: 1 // ปรับค่า 1 เป็นจำนวนคอลัมน์ที่คุณต้องการให้คงที่ทางด้านซ้าย
-                },
-                layout: {
-                    topStart: {
-                        buttons: [{
-                                extend: 'copyHtml5',
-                                text: 'Copy',
-                                className: 'btn-success',
-                                exportOptions: {
-                                    charset: 'UTF-8',
-                                    bom: true // Byte Order Mark for UTF-8
-                                }
-                            },
-                            {
-                                extend: 'excelHtml5',
-                                text: 'Excel',
-                                className: 'btn-success',
-                                exportOptions: {
-                                    charset: 'UTF-8',
-                                    bom: true // Byte Order Mark for UTF-8
-                                },
-                                title: function() {
-                                    const date = new Date();
-                                    const formattedDate = date.toISOString().slice(0,
-                                        10); // Format as YYYY-MM-DD
-                                    const dateFormat = moment(formattedDate).format('DD-MM-YYYY');
-                                    return 'รายงาน Linecall ' + dateFormat;
-                                }
-
-
-                            },
-
-                        ]
-                    }
-                },
-
-
-
-            })
-        });
-        btnback = () => {
-            // Redirect to the route and reload the page
-
-            window.close();
-            // Adjust the timeout if needed
-        }
-
-        window.onbeforeunload = function() {
-            if (window.opener) {
-                window.opener.location.reload(); // รีโหลดหน้าหลักเมื่อหน้าต่างนี้ถูกปิด
-            }
+        //Createoverlay
+        var overlay = document.createElement('div');
+        overlay.className = 'overlay';
+        overlay.onclick = function() {
+            document.body.removeChild(overlay);
+            document.body.removeChild(zoomedImage);
         };
-    </script>
+        //Createzoomedimage
+        var zoomedImage = document.createElement('img');
+        zoomedImage.src = "{{ asset('public/images_project/') }}" + "/" + images;
+        zoomedImage.className = 'zoomed';
+        //Appendtobody
+        document.body.appendChild(overlay);
+        document.body.appendChild(zoomedImage);
+
+    }
+
+    $(document).ready(function() {
+        /**
+         * TODO:02-08-2024
+         * *DataTable of table-report
+         */
+
+        if ($.fn.DataTable.isDataTable('table#table_report')) {
+            $('#table_report').DataTable().destroy();
+            $('#table_report').empty();
+        }
+        $('#table_report').DataTable({
+
+            scrollX: true,
+            scrollCollapse: true,
+            responsive: false,
+            fixedHeader: true,
+            fixedColumns: {
+                leftColumns: 1 // ปรับค่า 1 เป็นจำนวนคอลัมน์ที่คุณต้องการให้คงที่ทางด้านซ้าย
+            },
+            layout: {
+                topStart: {
+                    buttons: [{
+                            extend: 'copyHtml5',
+                            text: 'Copy',
+                            className: 'btn-success',
+                            exportOptions: {
+                                charset: 'UTF-8',
+                                bom: true // Byte Order Mark for UTF-8
+                            }
+                        },
+                        {
+                            extend: 'excelHtml5',
+                            text: 'Excel',
+                            className: 'btn-success',
+                            exportOptions: {
+                                charset: 'UTF-8',
+                                bom: true // Byte Order Mark for UTF-8
+                            },
+                            title: function() {
+                                const date = new Date();
+                                const formattedDate = date.toISOString().slice(0,
+                                    10); // Format as YYYY-MM-DD
+                                const dateFormat = moment(formattedDate).format('DD-MM-YYYY');
+                                return 'รายงาน Linecall ' + dateFormat;
+                            }
+
+
+                        },
+
+                    ]
+                }
+            },
+
+
+
+        })
+    });
+    btnback = () => {
+        // Redirect to the route and reload the page
+
+        window.close();
+        // Adjust the timeout if needed
+    }
+
+    window.onbeforeunload = function() {
+        if (window.opener) {
+            window.opener.location.reload(); // รีโหลดหน้าหลักเมื่อหน้าต่างนี้ถูกปิด
+        }
+    };
+</script>
 </body>
 
 </html>

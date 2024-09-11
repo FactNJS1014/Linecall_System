@@ -50,10 +50,12 @@ Route::get('/ProblemUpdate', function () {
     return view('Updatedata.ProblemUpdate');
 })->name('PrbUpdate');
 
-Route::get('/WhyUpdate', function () {
-    return view('Updatedata.fiveWhy');
-})->name('whyUpdate');
-
+// Route::get('/WhyUpdate', function () {
+//     return view('Updatedata.fiveWhy');
+// })->name('whyUpdate');
+Route::get('/fiveWhyUpdate', function () {
+    return view('Updatedata.whyUpdate');
+})->name('fivewhyUpdate');
 
 //Route::get('/images_upload',[ImageController::class , 'index'])->name('images-upload');
 

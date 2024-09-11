@@ -225,6 +225,7 @@ class DataformController extends Controller
 
         $recapp = DB::table('LNCL_HREC_APP')
             ->where('LNCL_HREC_ID', $recid)
+            ->orderby('LNCL_HREC_ID', 'ASC')
             ->get();
 
         $dataname = MUSR_TBL::all();
@@ -394,8 +395,8 @@ class DataformController extends Controller
 
     public function DataReport(Request $request)
     {
-        $date_rep = $request->input('datereport');
-        parse_str($date_rep, $daterep);
+       // $date_rep = $request->input('datereport');
+
 
         //return response()->json($daterep);
         $data_01 = DB::table('LNCL_HREC_TBL')
@@ -422,7 +423,7 @@ class DataformController extends Controller
                 'LNCL_HREC_RJSTD',
                 'LNCL_HREC_RJREMARK'
             )
-            ->whereDate('LNCL_HREC_DATE', $daterep['datereport'])
+            // ->whereDate('LNCL_HREC_DATE', $date_rep)
 
             ->get();
         return response()->json(['datafirst' => $data_01]);
@@ -488,6 +489,15 @@ class DataformController extends Controller
     public function AlarmNotification()
     {
         // Retrieve the date from the database
+        $db = DB::table('LNCL_HREC_TBL')
+            ->select('LNCL_HREC_DATE', 'LNCL_HREC_ID', 'LNCL_HREC_RANKTYPE')
+            ->get();
 
+        if ($db->LNCL_HREC_RANKTYPE == 'A') {
+            return response()->json(['message' => 'Rank type is A']);
+        }
+
+
+        return response()->json($db);
     }
 }
