@@ -13,13 +13,14 @@
                 <div class="card-body">
 
                     <label for="" class="h5" style="color: #003f88;">Section:</label>
-                    <select name="section_master" id="section_master" class="form-select form-control" required>
+                    {{-- <select name="section_master" id="section_master" class="form-select form-control" required>
                         <option value="" selected disabled>Choose Section</option>
                         <option value="MT">MT</option>
                         <option value="AM">AM</option>
                         <option value="QA">QA</option>
 
-                    </select>
+                    </select> --}}
+                    <input type="text" name="section_master" id="section_master" class="form-control" placeholder="กรอกแผนก" oninput="this.value = this.value.toUpperCase()">
 
                     <label for="" class="h5" style="color: #003f88;">Rank Approve:</label>
                     <select name="rank" id="rank" class="form-select form-control" required>
@@ -295,5 +296,7 @@
                     console.error(error);
                 });
         }
+
+
     </script>
 @endpush
